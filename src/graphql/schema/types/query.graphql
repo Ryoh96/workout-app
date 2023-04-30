@@ -1,0 +1,21 @@
+type Query {
+  user: User
+  
+  note(date: Date): Note
+  notes(limit: Int, orderBy: OrderBy!): [Note!]
+
+  training(trainingId: ID!): Training!
+  trainings: [Training!]
+
+  exercise(partId: $ID): Exercise!
+  exercises(limit: Int): [Exercise!]
+
+  place(noteId: ID!): place
+  places: [Place!]
+
+  part(partId: ID!): Part
+  parts: [Part!]
+
+  round(trainingId: ID!): Round
+  rounds: [Round]
+}

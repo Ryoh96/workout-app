@@ -1,0 +1,7 @@
+query getExerciseNamesByParts($partIds: [ID!]!) {
+  part(id: $partIds) {
+    exercises {
+      name
+    }
+  }
+}

@@ -1,0 +1,8 @@
+query getUser {
+  user {
+    name
+    gender
+    height
+    weight
+  }
+}

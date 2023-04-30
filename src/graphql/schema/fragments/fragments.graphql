@@ -1,0 +1,6 @@
+fragment roundSets on Round {
+  setCount
+  weight
+  repetition
+  interval
+}

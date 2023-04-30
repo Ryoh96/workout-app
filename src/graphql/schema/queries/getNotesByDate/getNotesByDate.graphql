@@ -1,0 +1,15 @@
+query getNotesByDate($date: Date!) {
+  note(date: $date) {
+    trainings {
+      exercise {
+        name
+        parts {
+          name
+        }
+      }
+      rounds {
+       ...roundSets
+      }
+   }
+  }
+}
