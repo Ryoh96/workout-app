@@ -1,11 +1,18 @@
-import '@testing-library/jest-dom/extend-expect'
-
 import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { getPage } from 'next-page-tester'
 
-import Home from '@/pages/index'
+const user = userEvent.setup()
 
-test('test', async () => {
-  render(<Home />)
-  // screen.debug()
-  expect(screen.getByText('Workout app')).toBeInTheDocument()
+describe('index page', () => {
+  it('otherにページ遷移する', async () => {
+    const { page } = await getPage({
+      route: '/index',
+    })
+
+    render(page)
+
+    await user.click(screen.getByRole('link'))
+    await screen.findByText('other page')
+  })
 })
