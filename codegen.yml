@@ -1,0 +1,16 @@
+generates:
+  src/graphql/generated/schema.graphql:
+    schema:
+      - 'src/graphql/schema/**/*.graphql'
+    plugins:
+      - schema-ast
+  src/graphql/generated/resolvers-types.ts:
+    schema:
+      - 'src/graphql/schema/**/*.graphql'
+    plugins:
+      - add:
+          content: '/* eslint-disable */'
+      - typescript
+      - typescript-resolvers
+    config:
+      globalPartial: true
