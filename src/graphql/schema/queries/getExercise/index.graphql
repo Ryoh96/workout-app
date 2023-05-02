@@ -1,0 +1,25 @@
+query getExercise($exerciseId: ID!) {
+  exercise(id: $exerciseId) {
+    name
+    parts {
+      name
+    }
+    trainings{
+      rounds {
+        ...roundSets
+      }
+      createdAt
+    }
+    movieUrl
+    articleUrl
+    memos {
+      content
+      round {
+        setCount
+        createdAt
+      }
+    }
+    maxWeight
+    maxTotalLoad
+  }
+}

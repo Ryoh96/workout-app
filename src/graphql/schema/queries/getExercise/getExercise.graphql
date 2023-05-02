@@ -1,3 +1,0 @@
-query getExercise($exerciseId: ID!) {
-  exercise(id: $exerciseId)
-}

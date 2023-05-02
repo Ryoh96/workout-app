@@ -2,7 +2,9 @@ query getRoundByTraining($trainingId: ID!) {
   training(id: $trainingId) {
     rounds {
       ...roundSets,
-      memo
+      memo {
+        content
+      }
     }
   }
 }

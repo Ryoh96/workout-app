@@ -10,6 +10,7 @@ query getNotesByDate($date: Date!) {
       rounds {
        ...roundSets
       }
-   }
+   },
+   createdAt
   }
 }

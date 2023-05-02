@@ -1,0 +1,103 @@
+scalar Date
+
+type Exercise {
+  articleUrl: [String!]
+  id: ID
+  maxTotalLoad: Int
+  maxWeight: Int
+  memos: [Memo]
+  movieUrl: [String!]
+  name: String
+  parts: [Part!]
+  trainings: [Training!]
+  user: User
+}
+
+enum Gender {
+  FEMALE
+  MALE
+  OTHER
+}
+
+type Memo {
+  content: String
+  exercise: Exercise
+  round: Round
+}
+
+type Note {
+  createdAt: Date
+  id: ID
+  parts: [Part!]
+  place: Place
+  trainings: [Training!]
+  user: User
+}
+
+enum OrderBy {
+  ASC
+  DESC
+}
+
+type Part {
+  exercises: [Exercise!]
+  id: ID
+  name: String
+}
+
+type Place {
+  id: ID
+  name: String
+  notes: [Note!]
+  user: User
+}
+
+type Query {
+  exercise(partId: ID): Exercise!
+  exercises(limit: Int, offset: Int): [Exercise!]
+  note(date: Date): Note
+  notes(limit: Int, offset: Int, orderBy: OrderBy!): [Note!]
+  part(partId: ID!): Part
+  parts(limit: Int, offset: Int): [Part!]
+  place(noteId: ID!): Place
+  places(limit: Int, offset: Int): [Place!]
+  round(trainingId: ID!): Round
+  rounds(limit: Int, offset: Int): [Round]
+  training(trainingId: ID!): Training!
+  trainings(limit: Int, offset: Int): [Training!]
+  user: User
+}
+
+type Round {
+  createdAt: Date
+  id: ID
+  interval: Int
+  memo: Memo
+  repetition: Int
+  setCount: Int
+  training: Training
+  weight: Int
+}
+
+type Training {
+  createdAt: Date
+  exercise: Exercise
+  id: ID
+  memo: String
+  note: Note
+  rounds: [Round!]
+}
+
+type User {
+  createdAt: Date
+  exercises: [Exercise!]
+  gender: Gender
+  height: Int
+  id: ID
+  name: String
+  notes: [Note!]
+  password: String
+  places: [Place!]
+  updatedAt: Date
+  weight: Int
+}

@@ -2,20 +2,20 @@ type Query {
   user: User
   
   note(date: Date): Note
-  notes(limit: Int, orderBy: OrderBy!): [Note!]
+  notes(offset: Int, limit: Int, orderBy: OrderBy!): [Note!]
 
   training(trainingId: ID!): Training!
-  trainings: [Training!]
+  trainings(offset: Int, limit: Int): [Training!]
 
-  exercise(partId: $ID): Exercise!
-  exercises(limit: Int): [Exercise!]
+  exercise(partId: ID): Exercise!
+  exercises(offset: Int, limit: Int): [Exercise!]
 
-  place(noteId: ID!): place
-  places: [Place!]
+  place(noteId: ID!): Place
+  places(offset: Int, limit: Int): [Place!]
 
   part(partId: ID!): Part
-  parts: [Part!]
+  parts(offset: Int, limit: Int): [Part!]
 
   round(trainingId: ID!): Round
-  rounds: [Round]
+  rounds(offset: Int, limit: Int): [Round]
 }
