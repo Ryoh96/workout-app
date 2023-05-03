@@ -19,58 +19,61 @@ export type Scalars = {
 export type Exercise = {
   __typename?: 'Exercise';
   articleUrl?: Maybe<Array<Scalars['String']>>;
-  id?: Maybe<Scalars['ID']>;
+  id: Scalars['ID'];
   maxTotalLoad?: Maybe<Scalars['Int']>;
   maxWeight?: Maybe<Scalars['Int']>;
   memos?: Maybe<Array<Maybe<Memo>>>;
   movieUrl?: Maybe<Array<Scalars['String']>>;
-  name?: Maybe<Scalars['String']>;
+  name: Scalars['String'];
   parts?: Maybe<Array<Part>>;
   trainings?: Maybe<Array<Training>>;
-  user?: Maybe<User>;
+  user: User;
 };
 
-export enum Gender {
-  Female = 'FEMALE',
-  Male = 'MALE',
-  Other = 'OTHER'
-}
+export const Gender = {
+  Female: 'FEMALE',
+  Male: 'MALE',
+  Other: 'OTHER'
+} as const;
 
+export type Gender = typeof Gender[keyof typeof Gender];
 export type Memo = {
   __typename?: 'Memo';
-  content?: Maybe<Scalars['String']>;
-  exercise?: Maybe<Exercise>;
-  round?: Maybe<Round>;
+  content: Scalars['String'];
+  exercise: Exercise;
+  id: Scalars['ID'];
+  round: Round;
 };
 
 export type Note = {
   __typename?: 'Note';
-  createdAt?: Maybe<Scalars['Date']>;
-  id?: Maybe<Scalars['ID']>;
+  createdAt: Scalars['Date'];
+  id: Scalars['ID'];
   parts?: Maybe<Array<Part>>;
-  place?: Maybe<Place>;
-  trainings?: Maybe<Array<Training>>;
-  user?: Maybe<User>;
+  place: Place;
+  trainings: Array<Training>;
+  user: User;
 };
 
-export enum OrderBy {
-  Asc = 'ASC',
-  Desc = 'DESC'
-}
+export const OrderBy = {
+  Asc: 'ASC',
+  Desc: 'DESC'
+} as const;
 
+export type OrderBy = typeof OrderBy[keyof typeof OrderBy];
 export type Part = {
   __typename?: 'Part';
   exercises?: Maybe<Array<Exercise>>;
-  id?: Maybe<Scalars['ID']>;
-  name?: Maybe<Scalars['String']>;
+  id: Scalars['ID'];
+  name: Scalars['String'];
 };
 
 export type Place = {
   __typename?: 'Place';
-  id?: Maybe<Scalars['ID']>;
-  name?: Maybe<Scalars['String']>;
+  id: Scalars['ID'];
+  name: Scalars['String'];
   notes?: Maybe<Array<Note>>;
-  user?: Maybe<User>;
+  user: User;
 };
 
 export type Query = {
@@ -92,7 +95,7 @@ export type Query = {
 
 
 export type QueryExerciseArgs = {
-  partId?: InputMaybe<Scalars['ID']>;
+  id: Scalars['ID'];
 };
 
 
@@ -103,7 +106,7 @@ export type QueryExercisesArgs = {
 
 
 export type QueryNoteArgs = {
-  date?: InputMaybe<Scalars['Date']>;
+  date: Scalars['Date'];
 };
 
 
@@ -115,7 +118,7 @@ export type QueryNotesArgs = {
 
 
 export type QueryPartArgs = {
-  partId: Scalars['ID'];
+  id: Scalars['ID'];
 };
 
 
@@ -126,7 +129,7 @@ export type QueryPartsArgs = {
 
 
 export type QueryPlaceArgs = {
-  noteId: Scalars['ID'];
+  id: Scalars['ID'];
 };
 
 
@@ -137,7 +140,7 @@ export type QueryPlacesArgs = {
 
 
 export type QueryRoundArgs = {
-  trainingId: Scalars['ID'];
+  id: Scalars['ID'];
 };
 
 
@@ -148,7 +151,7 @@ export type QueryRoundsArgs = {
 
 
 export type QueryTrainingArgs = {
-  trainingId: Scalars['ID'];
+  id: Scalars['ID'];
 };
 
 
@@ -159,38 +162,38 @@ export type QueryTrainingsArgs = {
 
 export type Round = {
   __typename?: 'Round';
-  createdAt?: Maybe<Scalars['Date']>;
-  id?: Maybe<Scalars['ID']>;
+  createdAt: Scalars['Date'];
+  id: Scalars['ID'];
   interval?: Maybe<Scalars['Int']>;
   memo?: Maybe<Memo>;
-  repetition?: Maybe<Scalars['Int']>;
-  setCount?: Maybe<Scalars['Int']>;
-  training?: Maybe<Training>;
-  weight?: Maybe<Scalars['Int']>;
+  repetition: Scalars['Int'];
+  setCount: Scalars['Int'];
+  training: Training;
+  weight: Scalars['Int'];
 };
 
 export type Training = {
   __typename?: 'Training';
-  createdAt?: Maybe<Scalars['Date']>;
-  exercise?: Maybe<Exercise>;
-  id?: Maybe<Scalars['ID']>;
+  createdAt: Scalars['Date'];
+  exercise: Exercise;
+  id: Scalars['ID'];
   memo?: Maybe<Scalars['String']>;
-  note?: Maybe<Note>;
-  rounds?: Maybe<Array<Round>>;
+  note: Note;
+  rounds: Array<Round>;
 };
 
 export type User = {
   __typename?: 'User';
-  createdAt?: Maybe<Scalars['Date']>;
+  createdAt: Scalars['Date'];
   exercises?: Maybe<Array<Exercise>>;
   gender?: Maybe<Gender>;
   height?: Maybe<Scalars['Int']>;
-  id?: Maybe<Scalars['ID']>;
-  name?: Maybe<Scalars['String']>;
+  id: Scalars['ID'];
+  name: Scalars['String'];
   notes?: Maybe<Array<Note>>;
-  password?: Maybe<Scalars['String']>;
+  password: Scalars['String'];
   places?: Maybe<Array<Place>>;
-  updatedAt?: Maybe<Scalars['Date']>;
+  updatedAt: Scalars['Date'];
   weight?: Maybe<Scalars['Int']>;
 };
 
@@ -307,99 +310,100 @@ export interface DateScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes
 
 export type ExerciseResolvers<ContextType = any, ParentType extends ResolversParentTypes['Exercise'] = ResolversParentTypes['Exercise']> = {
   articleUrl?: Resolver<Maybe<Array<ResolversTypes['String']>>, ParentType, ContextType>;
-  id?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   maxTotalLoad?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   maxWeight?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   memos?: Resolver<Maybe<Array<Maybe<ResolversTypes['Memo']>>>, ParentType, ContextType>;
   movieUrl?: Resolver<Maybe<Array<ResolversTypes['String']>>, ParentType, ContextType>;
-  name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   parts?: Resolver<Maybe<Array<ResolversTypes['Part']>>, ParentType, ContextType>;
   trainings?: Resolver<Maybe<Array<ResolversTypes['Training']>>, ParentType, ContextType>;
-  user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
+  user?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type MemoResolvers<ContextType = any, ParentType extends ResolversParentTypes['Memo'] = ResolversParentTypes['Memo']> = {
-  content?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  exercise?: Resolver<Maybe<ResolversTypes['Exercise']>, ParentType, ContextType>;
-  round?: Resolver<Maybe<ResolversTypes['Round']>, ParentType, ContextType>;
+  content?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  exercise?: Resolver<ResolversTypes['Exercise'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  round?: Resolver<ResolversTypes['Round'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type NoteResolvers<ContextType = any, ParentType extends ResolversParentTypes['Note'] = ResolversParentTypes['Note']> = {
-  createdAt?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
-  id?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   parts?: Resolver<Maybe<Array<ResolversTypes['Part']>>, ParentType, ContextType>;
-  place?: Resolver<Maybe<ResolversTypes['Place']>, ParentType, ContextType>;
-  trainings?: Resolver<Maybe<Array<ResolversTypes['Training']>>, ParentType, ContextType>;
-  user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
+  place?: Resolver<ResolversTypes['Place'], ParentType, ContextType>;
+  trainings?: Resolver<Array<ResolversTypes['Training']>, ParentType, ContextType>;
+  user?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type PartResolvers<ContextType = any, ParentType extends ResolversParentTypes['Part'] = ResolversParentTypes['Part']> = {
   exercises?: Resolver<Maybe<Array<ResolversTypes['Exercise']>>, ParentType, ContextType>;
-  id?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
-  name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type PlaceResolvers<ContextType = any, ParentType extends ResolversParentTypes['Place'] = ResolversParentTypes['Place']> = {
-  id?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
-  name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   notes?: Resolver<Maybe<Array<ResolversTypes['Note']>>, ParentType, ContextType>;
-  user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
+  user?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
-  exercise?: Resolver<ResolversTypes['Exercise'], ParentType, ContextType, Partial<QueryExerciseArgs>>;
+  exercise?: Resolver<ResolversTypes['Exercise'], ParentType, ContextType, RequireFields<QueryExerciseArgs, 'id'>>;
   exercises?: Resolver<Maybe<Array<ResolversTypes['Exercise']>>, ParentType, ContextType, Partial<QueryExercisesArgs>>;
-  note?: Resolver<Maybe<ResolversTypes['Note']>, ParentType, ContextType, Partial<QueryNoteArgs>>;
+  note?: Resolver<Maybe<ResolversTypes['Note']>, ParentType, ContextType, RequireFields<QueryNoteArgs, 'date'>>;
   notes?: Resolver<Maybe<Array<ResolversTypes['Note']>>, ParentType, ContextType, RequireFields<QueryNotesArgs, 'orderBy'>>;
-  part?: Resolver<Maybe<ResolversTypes['Part']>, ParentType, ContextType, RequireFields<QueryPartArgs, 'partId'>>;
+  part?: Resolver<Maybe<ResolversTypes['Part']>, ParentType, ContextType, RequireFields<QueryPartArgs, 'id'>>;
   parts?: Resolver<Maybe<Array<ResolversTypes['Part']>>, ParentType, ContextType, Partial<QueryPartsArgs>>;
-  place?: Resolver<Maybe<ResolversTypes['Place']>, ParentType, ContextType, RequireFields<QueryPlaceArgs, 'noteId'>>;
+  place?: Resolver<Maybe<ResolversTypes['Place']>, ParentType, ContextType, RequireFields<QueryPlaceArgs, 'id'>>;
   places?: Resolver<Maybe<Array<ResolversTypes['Place']>>, ParentType, ContextType, Partial<QueryPlacesArgs>>;
-  round?: Resolver<Maybe<ResolversTypes['Round']>, ParentType, ContextType, RequireFields<QueryRoundArgs, 'trainingId'>>;
+  round?: Resolver<Maybe<ResolversTypes['Round']>, ParentType, ContextType, RequireFields<QueryRoundArgs, 'id'>>;
   rounds?: Resolver<Maybe<Array<Maybe<ResolversTypes['Round']>>>, ParentType, ContextType, Partial<QueryRoundsArgs>>;
-  training?: Resolver<ResolversTypes['Training'], ParentType, ContextType, RequireFields<QueryTrainingArgs, 'trainingId'>>;
+  training?: Resolver<ResolversTypes['Training'], ParentType, ContextType, RequireFields<QueryTrainingArgs, 'id'>>;
   trainings?: Resolver<Maybe<Array<ResolversTypes['Training']>>, ParentType, ContextType, Partial<QueryTrainingsArgs>>;
   user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
 };
 
 export type RoundResolvers<ContextType = any, ParentType extends ResolversParentTypes['Round'] = ResolversParentTypes['Round']> = {
-  createdAt?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
-  id?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   interval?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   memo?: Resolver<Maybe<ResolversTypes['Memo']>, ParentType, ContextType>;
-  repetition?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-  setCount?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-  training?: Resolver<Maybe<ResolversTypes['Training']>, ParentType, ContextType>;
-  weight?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  repetition?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  setCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  training?: Resolver<ResolversTypes['Training'], ParentType, ContextType>;
+  weight?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type TrainingResolvers<ContextType = any, ParentType extends ResolversParentTypes['Training'] = ResolversParentTypes['Training']> = {
-  createdAt?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
-  exercise?: Resolver<Maybe<ResolversTypes['Exercise']>, ParentType, ContextType>;
-  id?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  exercise?: Resolver<ResolversTypes['Exercise'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   memo?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  note?: Resolver<Maybe<ResolversTypes['Note']>, ParentType, ContextType>;
-  rounds?: Resolver<Maybe<Array<ResolversTypes['Round']>>, ParentType, ContextType>;
+  note?: Resolver<ResolversTypes['Note'], ParentType, ContextType>;
+  rounds?: Resolver<Array<ResolversTypes['Round']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type UserResolvers<ContextType = any, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
-  createdAt?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   exercises?: Resolver<Maybe<Array<ResolversTypes['Exercise']>>, ParentType, ContextType>;
   gender?: Resolver<Maybe<ResolversTypes['Gender']>, ParentType, ContextType>;
   height?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-  id?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
-  name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   notes?: Resolver<Maybe<Array<ResolversTypes['Note']>>, ParentType, ContextType>;
-  password?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  password?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   places?: Resolver<Maybe<Array<ResolversTypes['Place']>>, ParentType, ContextType>;
-  updatedAt?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   weight?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };

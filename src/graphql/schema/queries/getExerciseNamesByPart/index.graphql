@@ -1,4 +1,4 @@
-query getExerciseNamesByParts($partIds: [ID!]!) {
+query getExerciseNamesByPart($partIds: ID!) {
   part(id: $partIds) {
     name
     exercises {

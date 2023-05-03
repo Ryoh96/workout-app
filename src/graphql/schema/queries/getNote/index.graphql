@@ -1,6 +1,10 @@
 query getNote($date: Date!) {
   note(date: $date) {
-    place
-    parts
+    place {
+      name
+    }
+    parts {
+      name
+    }
   }
 }

@@ -1,5 +1,5 @@
-query getNotesByDate($date: Date!) {
-  note(date: $date) {
+query getNotesByDate($orderBy: OrderBy!) {
+  notes(orderBy: $orderBy) {
     trainings {
       exercise {
         name

@@ -1,5 +1,0 @@
-query getExerciseByPart($partId: ID!) {
-  part(id: $partId) {
-    exercises
-  }
-}

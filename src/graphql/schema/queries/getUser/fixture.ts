@@ -1,9 +1,11 @@
-import type { User } from '@/graphql/generated/resolvers-types'
-import { Gender } from '@/graphql/generated/resolvers-types'
+import type { GetUserQuery } from '@/graphql/generated/operations-type'
+import type { Gender } from '@/graphql/generated/resolvers-types'
 
-export const user: User = {
-  name: 'ももちゃん',
-  gender: Gender.Female,
-  height: 170,
-  weight: 70,
+export const user: GetUserQuery = {
+  user: {
+    name: 'ももちゃん',
+    gender: "FEMALE",
+    height: 170,
+    weight: 70,
+  },
 }

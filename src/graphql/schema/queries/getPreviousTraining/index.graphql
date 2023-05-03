@@ -1,5 +1,5 @@
 query getPreviousTraining($exerciseID: ID!) {
-  training(id: $exercise) {
+  training(id: $exerciseID) {
     rounds {
       ...roundSets
     }

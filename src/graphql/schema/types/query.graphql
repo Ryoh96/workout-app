@@ -1,21 +1,21 @@
 type Query {
   user: User
   
-  note(date: Date): Note
+  note(date: Date!): Note
   notes(offset: Int, limit: Int, orderBy: OrderBy!): [Note!]
 
-  training(trainingId: ID!): Training!
+  training(id: ID!): Training!
   trainings(offset: Int, limit: Int): [Training!]
 
-  exercise(partId: ID): Exercise!
+  exercise(id: ID!): Exercise!
   exercises(offset: Int, limit: Int): [Exercise!]
 
-  place(noteId: ID!): Place
+  place(id: ID!): Place
   places(offset: Int, limit: Int): [Place!]
 
-  part(partId: ID!): Part
+  part(id: ID!): Part
   parts(offset: Int, limit: Int): [Part!]
 
-  round(trainingId: ID!): Round
+  round(id: ID!): Round
   rounds(offset: Int, limit: Int): [Round]
 }

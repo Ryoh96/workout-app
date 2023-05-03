@@ -4,3 +4,14 @@ fragment roundSets on Round {
   repetition
   interval
 }
+
+fragment exerciseFields on Exercise {
+  id
+  name
+  user {
+    name
+  }
+  parts {
+    name
+  }
+} 

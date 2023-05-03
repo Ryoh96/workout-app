@@ -1,13 +1,13 @@
 # ユーザ
 type User {
-  id: ID
-  name: String
-  password: String
+  id: ID!
+  name: String!
+  password: String!
   gender: Gender
   height: Int
   weight: Int
-  createdAt: Date
-  updatedAt: Date
+  createdAt: Date!
+  updatedAt: Date!
   places: [Place!]
   notes: [Note!]
   exercises: [Exercise!]
@@ -22,9 +22,9 @@ enum Gender {
 
 # 種目
 type Exercise {
-  id: ID
-  name: String
-  user: User
+  id: ID!
+  name: String!
+  user: User!
   parts: [Part!]
   trainings: [Training!]
   movieUrl: [String!]
@@ -36,56 +36,57 @@ type Exercise {
 
 #　部位
 type Part {
-  id: ID
-  name: String
+  id: ID!
+  name: String!
   exercises: [Exercise!]
 }
 
 # 場所
 type Place {
-  id: ID
-  name: String
-  user: User
+  id: ID!
+  name: String!
+  user: User!
   notes: [Note!]
 }
 
 # ノート
 type Note {
-  id: ID
-  place: Place
-  user: User
-  trainings: [Training!]
-  createdAt: Date
+  id: ID!
+  place: Place!
+  user: User!
+  trainings: [Training!]!
+  createdAt: Date!
   parts: [Part!]
 }
 
 # トレーニング
 type Training {
-  id: ID
-  exercise: Exercise
-  note: Note
+  id: ID!
+  exercise: Exercise!
+  note: Note!
   memo: String
-  createdAt: Date
-  rounds: [Round!]
+  createdAt: Date!
+  rounds: [Round!]!
 }
 
 # セット
 type Round {
-  id: ID
-  setCount: Int
-  weight: Int
-  repetition: Int
+  id: ID!
+  setCount: Int!
+  weight: Int!
+  repetition: Int!
   interval: Int
-  training: Training
+  training: Training!
   memo: Memo
-  createdAt: Date
+  createdAt: Date!
 }
 
 # メモ
 type Memo {
-  content: String
-  round: Round
-  exercise: Exercise
+  id: ID!
+  content: String!
+  round: Round!
+  exercise: Exercise!
 }
 
 # 日付
