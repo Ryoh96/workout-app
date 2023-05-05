@@ -16,7 +16,8 @@
     "test": "jest",
     "codegen": "graphql-codegen",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@graphql-tools/graphql-file-loader": "^7.5.17",
@@ -79,6 +80,7 @@
     "storybook": "^7.0.7",
     "text-encoding": "^0.7.0",
     "ts-node": "^10.9.1",
-    "whatwg-fetch": "^3.6.2"
+    "whatwg-fetch": "^3.6.2",
+    "husky": "^8.0.0"
   }
 }
