@@ -11,8 +11,8 @@ describe('Header', () => {
     render(<Header />)
     expect(screen.getByText(title)).toBeInTheDocument()
   })
-  test("should render UserIconMenu", () => {
+  test('should render UserIconMenu', () => {
     render(<Header />)
-    expect(screen.getByRole("button")).toBeInTheDocument()
+    expect(screen.getByRole('button')).toBeInTheDocument()
   })
 })

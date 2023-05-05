@@ -13,4 +13,4 @@ type Story = StoryObj<typeof Header>
 
 export const Default: Story = { ...SPStory }
 
-export const PC: Story = {...PCStory}
+export const PC: Story = { ...PCStory }

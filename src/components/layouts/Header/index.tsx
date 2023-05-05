@@ -4,7 +4,7 @@ import { APP_TITLE } from '@/constants/env'
 const title = APP_TITLE
 
 const userIconMenuProps = {
-  isLogin: false
+  isLogin: false,
 }
 
 const Header = () => {
@@ -13,9 +13,7 @@ const Header = () => {
       <header className="bg-gradient-to-r from-orange-500 to-red-500 text-white text-2xl h-12 grid items-center">
         <div className="flex justify-between  items-center px-4">
           <p>{title}</p>
-          <UserIconMenu
-            {...userIconMenuProps}
-          />
+          <UserIconMenu {...userIconMenuProps} />
         </div>
       </header>
     </>

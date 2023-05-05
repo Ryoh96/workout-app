@@ -1,10 +1,9 @@
-import UserIcon from "../UserIcon"
+import UserIcon from '../UserIcon'
 
 type Props = {
   isLogin: boolean
   src?: string
 }
-
 
 const UserIconMenu = (props: Props) => {
   return (

@@ -8,9 +8,9 @@ query getNotesByDate($orderBy: OrderBy!) {
         }
       }
       rounds {
-       ...roundSets
+        ...roundSets
       }
-   },
-   createdAt
+    }
+    createdAt
   }
 }

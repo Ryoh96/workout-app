@@ -14,4 +14,4 @@ fragment exerciseFields on Exercise {
   parts {
     name
   }
-} 
+}

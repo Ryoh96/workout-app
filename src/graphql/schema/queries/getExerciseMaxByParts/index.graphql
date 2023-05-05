@@ -1,4 +1,4 @@
-query getExerciseMaxByParts ($partId: ID!) {
+query getExerciseMaxByParts($partId: ID!) {
   part(id: $partId) {
     exercises {
       name

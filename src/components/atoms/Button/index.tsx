@@ -5,7 +5,7 @@ type Props = {
 } & React.ComponentPropsWithoutRef<'button'>
 
 const Button = ({ children }: Props) => {
-  return <button className='bg-orange-500'>{children}</button>
+  return <button className="bg-orange-500">{children}</button>
 }
 
 export default Button

@@ -2,12 +2,12 @@ import { INITIAL_VIEWPORTS } from '@storybook/addon-viewport'
 
 const myViewports = {
   iPhoneSE: {
-    name: "iPhone SE",
+    name: 'iPhone SE',
     styles: {
       width: '375px',
-      height: "667px"
-    }
-  }
+      height: '667px',
+    },
+  },
 }
 
 export const SPStory = {

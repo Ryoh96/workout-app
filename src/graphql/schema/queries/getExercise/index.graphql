@@ -4,7 +4,7 @@ query getExercise($exerciseId: ID!) {
     parts {
       name
     }
-    trainings{
+    trainings {
       rounds {
         ...roundSets
       }

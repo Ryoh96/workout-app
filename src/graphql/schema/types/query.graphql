@@ -1,6 +1,6 @@
 type Query {
   user: User
-  
+
   note(date: Date!): Note
   notes(offset: Int, limit: Int, orderBy: OrderBy!): [Note!]
 
