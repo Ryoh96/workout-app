@@ -7,7 +7,7 @@ type Props = {
 
 const UserIconMenu = (props: Props) => {
   return (
-    <button className="flex items-center">
+    <div className="flex items-center">
       <UserIcon {...props} />
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -23,7 +23,7 @@ const UserIconMenu = (props: Props) => {
           d="M19.5 8.25l-7.5 7.5-7.5-7.5"
         />
       </svg>
-    </button>
+    </div>
   )
 }
 

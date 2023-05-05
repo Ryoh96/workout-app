@@ -13,6 +13,6 @@ describe('Layout', () => {
   })
   test('should render the footer', () => {
     render(<Layout>content</Layout>)
-    expect(screen.getByText("copyright")).toBeInTheDocument()
+    expect(screen.getByText('copyright')).toBeInTheDocument()
   })
 })
