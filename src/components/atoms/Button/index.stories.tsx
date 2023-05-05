@@ -10,3 +10,7 @@ export default {
 type Story = StoryObj<typeof Button>
 
 export const Default: Story = {}
+
+export const Important: Story = {
+  args: { variant: "important"},
+}
