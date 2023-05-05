@@ -6,3 +6,4 @@ query getUser {
     weight
   }
 }
+
