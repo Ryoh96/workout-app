@@ -24,7 +24,7 @@ const menuItems = [
   },
 ]
 
-const IconMenu = (props: Props) => {
+const IconMenuButton = (props: Props) => {
   return (
     <Menu as="div" className="relative mt-1">
       <Menu.Button>
@@ -60,4 +60,4 @@ const IconMenu = (props: Props) => {
   )
 }
 
-export default IconMenu
+export default IconMenuButton

@@ -6,7 +6,11 @@
 --gradient-to: #c53030;
 
 .ring-gradient {
-  background-image: linear-gradient(to right, var(--gradient-from), var(--gradient-to));
+  background-image: linear-gradient(
+    to right,
+    var(--gradient-from),
+    var(--gradient-to)
+  );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }

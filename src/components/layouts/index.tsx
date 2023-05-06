@@ -2,7 +2,6 @@ import type { ReactNode } from 'react'
 
 import Footer from './Footer'
 import Header from './Header'
-import Section from './Section'
 
 type Props = {
   children: ReactNode
@@ -10,9 +9,11 @@ type Props = {
 
 const Layout = ({ children }: Props) => {
   return (
-    <div className="flex flex-col justify-between min-h-screen bg-dark">
-      <Header />
-      <main className="px-4">{children}</main>
+    <div className=" bg-dark min-h-screen flex flex-col justify-between">
+      <div>
+        <Header />
+        <main className="p-4 h-full">{children}</main>
+      </div>
       <Footer />
     </div>
   )

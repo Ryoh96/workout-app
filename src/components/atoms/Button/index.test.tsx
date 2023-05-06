@@ -4,7 +4,7 @@ import Button from '.'
 
 describe('Header', () => {
   test('should render the title', () => {
-    const text = "button"
+    const text = 'button'
     render(<Button>{text}</Button>)
     expect(screen.getByText(text)).toBeInTheDocument()
   })

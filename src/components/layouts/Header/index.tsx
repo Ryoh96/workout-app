@@ -1,4 +1,4 @@
-import IconMenu from '@/components/organisms/IconMenu'
+import IconMenuButton from '@/components/organisms/IconMenuButton'
 import { APP_TITLE } from '@/constants/env'
 
 const title = APP_TITLE
@@ -13,7 +13,7 @@ const Header = () => {
       <header className="bg-gradient-to-r from-orange-500 to-red-500 text-white text-2xl h-12 grid items-center">
         <div className="flex justify-between items-center px-4">
           <p>{title}</p>
-          <IconMenu {...userIconMenuProps} />
+          <IconMenuButton {...userIconMenuProps} />
         </div>
       </header>
     </>
