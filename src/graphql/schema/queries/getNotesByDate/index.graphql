@@ -11,6 +11,9 @@ query getNotesByDate($orderBy: OrderBy!) {
         ...roundSets
       }
     }
+    place {
+      name
+    }
     createdAt
   }
 }

@@ -1,10 +1,22 @@
 query getNote($date: Date!) {
   note(date: $date) {
+    trainings {
+      exercise {
+        name
+        parts {
+          name
+        }
+      }
+      rounds {
+        ...roundSets
+        memo {
+          content
+        }
+      }
+    }
     place {
       name
     }
-    parts {
-      name
-    }
+    createdAt
   }
 }

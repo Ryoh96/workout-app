@@ -290,8 +290,24 @@ export type GetNoteQuery = {
   __typename?: 'Query'
   note?: {
     __typename?: 'Note'
+    createdAt: any
+    trainings: Array<{
+      __typename?: 'Training'
+      exercise: {
+        __typename?: 'Exercise'
+        name: string
+        parts?: Array<{ __typename?: 'Part'; name: string }> | null
+      }
+      rounds: Array<{
+        __typename?: 'Round'
+        setCount: number
+        weight: number
+        repetition: number
+        interval?: number | null
+        memo?: { __typename?: 'Memo'; content: string } | null
+      }>
+    }>
     place: { __typename?: 'Place'; name: string }
-    parts?: Array<{ __typename?: 'Part'; name: string }> | null
   } | null
 }
 
@@ -319,6 +335,7 @@ export type GetNotesByDateQuery = {
         interval?: number | null
       }>
     }>
+    place: { __typename?: 'Place'; name: string }
   }> | null
 }
 

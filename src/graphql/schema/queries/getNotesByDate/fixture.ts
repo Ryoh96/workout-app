@@ -64,6 +64,9 @@ export const notesByDate: GetNotesByDateQuery = {
           ],
         },
       ],
+      place: {
+        name: '自宅',
+      },
       createdAt: '2023-01-01:10:10:10',
     },
     {
@@ -123,6 +126,9 @@ export const notesByDate: GetNotesByDateQuery = {
           ],
         },
       ],
+      place: {
+        name: 'エニタイム',
+      },
       createdAt: '2023-01-02:10:10:10',
     },
   ],

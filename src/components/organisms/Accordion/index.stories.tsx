@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react'
 
-import HorizontalTable from '@/components/atoms/HorizontalTable'
+import HorizontalTable from '@/components/molecules/HorizontalTable'
 import makeRoundsSummary from '@/components/utils/makeRoundsSummary'
 import { SPStory } from '@/tests/storybook'
 
@@ -62,7 +62,7 @@ export const HasTag: Story = {
 export const HasTable: Story = {
   args: {
     title: 'Title',
-    children: <HorizontalTable array={summary} />,
+    children: <HorizontalTable rounds={summary} />,
   },
   ...SPStory,
 }
@@ -70,7 +70,7 @@ export const HasTable: Story = {
 export const HasTableWithTitle: Story = {
   args: {
     title: 'Title',
-    children: <HorizontalTable title="ダンベルベンチプレス" array={summary} />,
+    children: <HorizontalTable title="ダンベルベンチプレス" rounds={summary} />,
   },
   ...SPStory,
 }
@@ -83,7 +83,7 @@ export const HasTablesWithTitle: Story = {
         <>
           {[...Array(3)].map((_, index) => (
             <div className="pt-4 first:pt-0" key={index}>
-              <HorizontalTable title="ダンベルベンチプレス" array={summary} />
+              <HorizontalTable title="ダンベルベンチプレス" rounds={summary} />
             </div>
           ))}
         </>

@@ -19,11 +19,21 @@ describe('makeRoundsSummary', () => {
         setCount: 3,
         weight: 25,
         repetition: 8,
+        memo: {
+          content: 'content',
+        },
       },
     ]
 
     const results = makeRoundsSummary(rounds)
-    expect(results[0]).toEqual(['1set', '30kg × 10reps (I-V: 90sec)'])
-    expect(results[2]).toEqual(['3set', '25kg × 8reps (I-V: --sec)'])
+    expect(results[0]).toEqual({
+      set: '1set',
+      summary: '30kg × 10reps (I-V: 90sec)',
+    })
+    expect(results[2]).toEqual({
+      set: '3set',
+      summary: '25kg × 8reps (I-V: --sec)',
+      memo: 'content',
+    })
   })
 })

@@ -1,16 +1,21 @@
-import type { Round } from '@/graphql/generated/resolvers-types'
+import type { Maybe } from 'graphql/jsutils/Maybe'
 
-type Rounds = Omit<Round, 'createdAt' | 'id' | 'training'>[]
+import type { Memo, Round } from '@/graphql/generated/resolvers-types'
+
+type Rounds = (Omit<Round, 'createdAt' | 'id' | 'training' | 'memo'> & {
+  memo?: Maybe<Partial<Memo>>
+})[]
 
 const makeRoundsSummary = (
   rounds: Rounds
-): [set: string, summary: string][] => {
-  return rounds.map((round) => [
-    `${round.setCount}set`,
-    `${round.weight}kg × ${round.repetition}reps (I-V: ${
+): { set: string; summary: string; memo?: string }[] => {
+  return rounds.map((round) => ({
+    set: `${round.setCount}set`,
+    summary: `${round.weight}kg × ${round.repetition}reps (I-V: ${
       round.interval ?? '--'
     }sec)`,
-  ])
+    memo: round.memo?.content,
+  }))
 }
 
 export default makeRoundsSummary

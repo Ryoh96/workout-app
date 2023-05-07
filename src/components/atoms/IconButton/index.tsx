@@ -9,7 +9,7 @@ const IconButton = ({ children, text }: Props) => {
   return (
     <div className="text-orange-600 flex items-center">
       <button>{children}</button>
-      <span className='text-sm font-bold'>{text && text}</span>
+      <span className="text-sm font-bold">{text && text}</span>
     </div>
   )
 }

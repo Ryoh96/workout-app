@@ -3,9 +3,9 @@ import Link from 'next/link'
 import { ReactNode } from 'react'
 
 import Button from '@/components/atoms/Button'
-import HorizontalTable from '@/components/atoms/HorizontalTable'
 import Title from '@/components/atoms/Title'
 import Section from '@/components/layouts/Section'
+import HorizontalTable from '@/components/molecules/HorizontalTable'
 import AccordionList from '@/components/organisms/AccordionList'
 import makeRoundsSummary from '@/components/utils/makeRoundsSummary'
 import type { GetNotesByDateQuery } from '@/graphql/generated/operations-type'
@@ -26,7 +26,7 @@ const Home: NextPage<Props> = ({ data }) => {
               <div className="pt-4 first:pt-0" key={index}>
                 <HorizontalTable
                   title={training.exercise.name}
-                  array={makeRoundsSummary(training.rounds)}
+                  rounds={makeRoundsSummary(training.rounds)}
                 />
               </div>
             ))}
@@ -50,11 +50,13 @@ const Home: NextPage<Props> = ({ data }) => {
       <Section>
         <Title as="h2">ノート管理</Title>
         <p className="pb-2">トレーニングを始めよう!!</p>
-        <div className="grid gap-2">
+        <div className="flex gap-2 justify-center">
           <Link href="/notes/edit">
             <Button variant="important">ノートの追加</Button>
           </Link>
-          <Button>ノートを見る</Button>
+          <Link href="/notes/20230507">
+            <Button>ノートを見る</Button>
+          </Link>
         </div>
       </Section>
       <Section>
