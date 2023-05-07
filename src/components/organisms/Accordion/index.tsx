@@ -2,14 +2,17 @@ import { Disclosure, Transition } from '@headlessui/react'
 import type { ReactNode } from 'react'
 import { forwardRef, useRef, useState } from 'react'
 
+import Tag from '@/components/atoms/Tag'
+
 type Props = {
   title: String
   children: ReactNode
   defaultOpen?: boolean
+  tags?: string[]
 } & React.ComponentPropsWithRef<'button'>
 
 const Accordion = forwardRef<HTMLButtonElement, Props>(function Accordion(
-  { title, children, defaultOpen = true },
+  { title, children, tags, defaultOpen = true },
   ref
 ) {
   return (
@@ -22,7 +25,17 @@ const Accordion = forwardRef<HTMLButtonElement, Props>(function Accordion(
               open && 'shadow-none'
             }`}
           >
-            <span>{title}</span>
+            <div className="flex items-center gap-4">
+              <span>{title}</span>
+              {tags && (
+                <div className="flex gap-1">
+                  {tags.map((tag, index) => (
+                    <Tag key={index}>{tag}</Tag>
+                  ))}
+                </div>
+              )}
+            </div>
+
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"

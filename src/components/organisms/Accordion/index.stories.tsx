@@ -21,7 +21,7 @@ export default {
 
 type Story = StoryObj<typeof Accordion>
 
-export const Default: Story = {}
+export const Default: Story = { ...SPStory }
 
 const rounds = [
   {
@@ -45,20 +45,34 @@ const rounds = [
 
 const summary = makeRoundsSummary(rounds)
 
+export const HasTag: Story = {
+  args: {
+    title: '5月30日(水)',
+    children: (
+      <ul>
+        <li>item1</li>
+        <li>item2</li>
+      </ul>
+    ),
+    tags: ['胸', '二頭'],
+  },
+  ...SPStory,
+}
+
 export const HasTable: Story = {
   args: {
     title: 'Title',
     children: <HorizontalTable array={summary} />,
-    ...SPStory,
   },
+  ...SPStory,
 }
 
 export const HasTableWithTitle: Story = {
   args: {
     title: 'Title',
     children: <HorizontalTable title="ダンベルベンチプレス" array={summary} />,
-    ...SPStory,
   },
+  ...SPStory,
 }
 
 export const HasTablesWithTitle: Story = {

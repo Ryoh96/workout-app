@@ -7,6 +7,7 @@ type Props = {
   items: {
     title: string
     content: JSX.Element
+    tags?: string[]
   }[]
 }
 
@@ -22,7 +23,11 @@ const AccordionList = ({ items }: Props) => {
         <div className="grid gap-4 sm:grid-cols-2">
           {items.map((item, index) => (
             <div key={index} className="w-full">
-              <Accordion title={item.title} defaultOpen={defaultOpen}>
+              <Accordion
+                title={item.title}
+                defaultOpen={defaultOpen}
+                tags={item.tags}
+              >
                 {item.content}
               </Accordion>
             </div>

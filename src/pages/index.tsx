@@ -11,27 +11,6 @@ import makeRoundsSummary from '@/components/utils/makeRoundsSummary'
 import type { GetNotesByDateQuery } from '@/graphql/generated/operations-type'
 import { notesByDate } from '@/graphql/schema/queries/getNotesByDate/fixture'
 
-const items = [
-  {
-    title: '8月31日(火)',
-    content: (
-      <ul>
-        <li>content1-1</li>
-        <li>content1-2</li>
-      </ul>
-    ),
-  },
-  {
-    title: '8月30日(月)',
-    content: (
-      <ul>
-        <li>content2-1</li>
-        <li>content2-2</li>
-      </ul>
-    ),
-  },
-]
-
 type Props = {
   data: GetNotesByDateQuery
 }
@@ -39,7 +18,7 @@ type Props = {
 const Home: NextPage<Props> = ({ data }) => {
   const normalizedData = data.notes?.map((note) => {
     return {
-      title: note.createdAt as string,
+      title: (note.createdAt as string).slice(0, 10),
       content: (
         <div className="divide-y-2 divide-gray-100 space-y-8">
           <>
@@ -54,8 +33,17 @@ const Home: NextPage<Props> = ({ data }) => {
           </>
         </div>
       ),
+      tags: Array.from(
+        new Set(
+          note.trainings.flatMap(
+            (training) =>
+              training.exercise.parts?.flatMap((part) => part.name) ?? []
+          )
+        )
+      ),
     }
   })
+
   return (
     <div className="h-full space-y-3 self-start">
       <Title as="h1">Workout App</Title>
@@ -71,7 +59,7 @@ const Home: NextPage<Props> = ({ data }) => {
       </Section>
       <Section>
         <Title as="h2">過去30日の記録</Title>
-        {data ? (
+        {normalizedData ? (
           <AccordionList items={normalizedData} />
         ) : (
           <p>記録がありません</p>

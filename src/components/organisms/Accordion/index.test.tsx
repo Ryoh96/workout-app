@@ -40,4 +40,13 @@ describe('Accordion', () => {
     await user.click(screen.getByRole('button', { name: 'accordion' }))
     expect(screen.getByText('content1')).toBeInTheDocument()
   })
+  test('should render the tag', () => {
+    render(
+      <Accordion title={data.title} tags={['tag1', 'tag2']}>
+        {data.content}
+      </Accordion>
+    )
+    expect(screen.getByText('tag1')).toBeInTheDocument()
+    expect(screen.getByText('tag2')).toBeInTheDocument()
+  })
 })
