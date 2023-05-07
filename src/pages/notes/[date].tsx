@@ -1,5 +1,11 @@
+import Title from '@/components/atoms/Title'
+
 const Note = () => {
-  return <h1>note</h1>
+  return (
+    <>
+      <Title as="h1">今までのノート</Title>
+    </>
+  )
 }
 
 export default Note
