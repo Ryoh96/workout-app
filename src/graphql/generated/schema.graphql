@@ -23,6 +23,7 @@ type Memo {
   content: String!
   exercise: Exercise!
   id: ID!
+  pin: Boolean
   round: Round!
 }
 

@@ -5,7 +5,7 @@ type Props = {
 }
 
 const Section = ({ children }: Props) => {
-  return <div className="bg-white rounded p-4">{children}</div>
+  return <div className="bg-white rounded p-4 my-4">{children}</div>
 }
 
 export default Section

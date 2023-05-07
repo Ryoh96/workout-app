@@ -11,9 +11,15 @@ const Title = ({ children, as }: Props) => {
   return (
     <>
       {as === 'h1' ? (
-        <h1 className="text-2xl mb-4 ">{children}</h1>
+        <h1 className="font-bold text-transparent text-2xl bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
+          {children}
+        </h1>
       ) : as === 'h2' ? (
-        <h2 className="text-2xl pb-4">{children}</h2>
+        <>
+          <h2 className="text-xl mb-4 pb-2 border-b border-gray-300">
+            {children}
+          </h2>
+        </>
       ) : (
         <h3 className="text-2xl pb-4">{children}</h3>
       )}

@@ -54,6 +54,7 @@ export type Memo = {
   content: Scalars['String']
   exercise: Exercise
   id: Scalars['ID']
+  pin?: Maybe<Scalars['Boolean']>
   round: Round
 }
 
@@ -389,6 +390,7 @@ export type MemoResolvers<
   content?: Resolver<ResolversTypes['String'], ParentType, ContextType>
   exercise?: Resolver<ResolversTypes['Exercise'], ParentType, ContextType>
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
+  pin?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>
   round?: Resolver<ResolversTypes['Round'], ParentType, ContextType>
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }

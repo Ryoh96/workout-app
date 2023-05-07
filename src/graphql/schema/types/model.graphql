@@ -87,6 +87,7 @@ type Memo {
   content: String!
   round: Round!
   exercise: Exercise!
+  pin: Boolean
 }
 
 # 日付

@@ -6,7 +6,7 @@ import Accordion from '../Accordion'
 type Props = {
   items: {
     title: string
-    content: ReactNode
+    content: JSX.Element
   }[]
 }
 

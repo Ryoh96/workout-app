@@ -45,6 +45,7 @@ export type Memo = {
   content: Scalars['String']
   exercise: Exercise
   id: Scalars['ID']
+  pin?: Maybe<Scalars['Boolean']>
   round: Round
 }
 

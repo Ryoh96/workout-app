@@ -18,7 +18,7 @@ const Accordion = forwardRef<HTMLButtonElement, Props>(function Accordion(
         <>
           <Disclosure.Button
             ref={ref}
-            className={`bg-orange-300 w-full text-orange-700 py-2 flex items-center justify-between px-4 rounded-t-md hover:bg-orange-300 hover:text-orange-700 shadow-md ${
+            className={`bg-orange-300 w-full text-orange-800 py-2 flex items-center justify-between px-4 rounded-t-md hover:bg-orange-300  shadow-md ${
               open && 'shadow-none'
             }`}
           >
