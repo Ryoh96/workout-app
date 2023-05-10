@@ -21,6 +21,6 @@ describe('Header', () => {
   test('should open icon menu', async () => {
     render(<Header />)
     await user.click(screen.getByRole('button'))
-    expect(await screen.findByText('Settings1')).toBeInTheDocument()
+    expect(await screen.findByText('登録種目一覧')).toBeInTheDocument()
   })
 })

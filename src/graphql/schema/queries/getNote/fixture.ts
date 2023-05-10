@@ -18,17 +18,20 @@ export const note: GetNoteQuery = {
             weight: 30,
             repetition: 10,
             interval: 90,
+            unit: 'KG',
           },
           {
             setCount: 2,
             weight: 30,
             repetition: 9,
             interval: 90,
+            unit: 'KG',
           },
           {
             setCount: 3,
             weight: 25,
             repetition: 8,
+            unit: 'KG',
           },
         ],
       },
@@ -47,6 +50,7 @@ export const note: GetNoteQuery = {
             weight: 30,
             repetition: 10,
             interval: 90,
+            unit: 'KG',
             memo: {
               content: '腰を上げてデクライン気味にする。肩甲骨を寄せる。',
             },
@@ -56,12 +60,14 @@ export const note: GetNoteQuery = {
             weight: 30,
             repetition: 9,
             interval: 90,
+            unit: 'KG',
           },
           {
             setCount: 3,
             weight: 25,
             repetition: 8,
             interval: 90,
+            unit: 'KG',
             memo: {
               content: '腰に負担がかからないように気をつける',
             },

@@ -1,0 +1,13 @@
+type Mutation {
+  createExerciseAtNote(name: String!, parts: [String!]): Exercise
+  addRound(input: RoundInput): Round
+}
+
+input RoundInput {
+  setCount: Int!
+  weight: Int!
+  repetition: Int!
+  interval: Int
+  memo: String
+  isPinned: Boolean
+}

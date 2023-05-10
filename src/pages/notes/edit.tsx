@@ -1,7 +1,8 @@
 import { format } from 'date-fns'
 import ja from 'date-fns/locale/ja'
 import type { NextPage } from 'next'
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
+import { v4 as uuidv4 } from 'uuid'
 
 import Button from '@/components/atoms/Button'
 import Title from '@/components/atoms/Title'
@@ -37,6 +38,19 @@ const exercises: ComboBoxOption[] = [
   { id: 4, name: 'プルオーバー' },
 ]
 
+type Training = {
+  id: string
+  exerciseName: string
+  partName?: string
+  sets: {
+    setCount: number
+    weight?: number
+    interval?: number
+    memo?: string
+  }[]
+  isEditing: boolean
+}
+
 const EditNote: NextPage = () => {
   const date = new Date()
   const formattedDate = format(date, 'M月d日(E)', { locale: ja })
@@ -44,6 +58,48 @@ const EditNote: NextPage = () => {
   const [place, setPlace] = useState<ComboBoxOption>(places[0])
   const [part, setPart] = useState<ComboBoxOption>(parts[0])
   const [exercise, setExercise] = useState<ComboBoxOption>(exercises[0])
+
+  const [trainings, setTrainings] = useState<Training[]>([])
+
+  const [training, setTraining] = useState<Training | null>(null)
+
+  // Global
+  const [isTraining, setIsTraining] = useState(false)
+
+  const [currentSet, setCurrentSet] = useState(0)
+
+  const createTraining = () => {
+    const id = uuidv4()
+    const exerciseName = exercise.name
+    const partName = part.name
+
+    const newTraining: Training = {
+      id,
+      exerciseName,
+      partName,
+      sets: [
+        {
+          setCount: currentSet,
+        },
+      ],
+      isEditing: false,
+    }
+
+    setTrainings((prev) => [...prev, newTraining])
+  }
+
+  const addTraining = () => {
+    createTraining()
+    addSet()
+  }
+
+  const addSet = () => {
+    setCurrentSet((prev) => prev + 1)
+  }
+
+  const doneTraining = () => {
+    setCurrentSet(0)
+  }
 
   return (
     <>
@@ -85,7 +141,9 @@ const EditNote: NextPage = () => {
           <AddIconButton />
         </div>
         <div className="text-center mt-4">
-          <Button variant="important">トレーニング開始</Button>
+          <Button variant="important" onClick={addTraining}>
+            トレーニング開始
+          </Button>
         </div>
       </Section>
     </>

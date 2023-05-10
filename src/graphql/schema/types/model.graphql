@@ -4,20 +4,13 @@ type User {
   name: String!
   password: String!
   gender: Gender
-  height: Int
-  weight: Int
+  height: Float
+  weight: Float
   createdAt: Date!
   updatedAt: Date!
   places: [Place!]
   notes: [Note!]
   exercises: [Exercise!]
-}
-
-# 性別
-enum Gender {
-  MALE
-  FEMALE
-  OTHER
 }
 
 # 種目
@@ -30,11 +23,13 @@ type Exercise {
   movieUrl: [String!]
   articleUrl: [String!]
   memos: [Memo]
-  maxWeight: Int
-  maxTotalLoad: Int
+  maxWeight: Float
+  maxWeightUnit: Unit
+  maxTotalLoad: Float
+  updatedAt: Date!
 }
 
-#　部位
+# 部位
 type Part {
   id: ID!
   name: String!
@@ -55,8 +50,8 @@ type Note {
   place: Place!
   user: User!
   trainings: [Training!]!
-  createdAt: Date!
   parts: [Part!]
+  createdAt: Date!
 }
 
 # トレーニング
@@ -73,7 +68,8 @@ type Training {
 type Round {
   id: ID!
   setCount: Int!
-  weight: Int!
+  weight: Float!
+  unit: Unit!
   repetition: Int!
   interval: Int
   training: Training!
@@ -93,8 +89,21 @@ type Memo {
 # 日付
 scalar Date
 
+# 性別
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+}
+
 # 並び順
 enum OrderBy {
   DESC
   ASC
+}
+
+# 単位
+enum Unit {
+  KG
+  LB
 }

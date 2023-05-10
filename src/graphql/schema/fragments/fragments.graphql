@@ -3,6 +3,7 @@ fragment roundSets on Round {
   weight
   repetition
   interval
+  unit
 }
 
 fragment exerciseFields on Exercise {

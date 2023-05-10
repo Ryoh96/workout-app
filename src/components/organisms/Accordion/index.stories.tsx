@@ -2,7 +2,9 @@ import type { Meta, StoryObj } from '@storybook/react'
 
 import HorizontalTable from '@/components/molecules/HorizontalTable'
 import makeRoundsSummary from '@/components/utils/makeRoundsSummary'
+import type { Round } from '@/graphql/generated/resolvers-types'
 import { SPStory } from '@/tests/storybook'
+import type { DeepPartial } from '@/types/utils'
 
 import Accordion from '.'
 
@@ -23,23 +25,26 @@ type Story = StoryObj<typeof Accordion>
 
 export const Default: Story = { ...SPStory }
 
-const rounds = [
+const rounds: DeepPartial<Round>[] = [
   {
     setCount: 1,
     weight: 30,
     repetition: 10,
     interval: 90,
+    unit: 'KG',
   },
   {
     setCount: 2,
     weight: 30,
     repetition: 9,
     interval: 90,
+    unit: 'KG',
   },
   {
     setCount: 3,
     weight: 25,
     repetition: 8,
+    unit: 'KG',
   },
 ]
 

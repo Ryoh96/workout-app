@@ -11,8 +11,8 @@ type Props = {
 
 const menuItems = [
   {
-    name: 'Settings1',
-    link: '/',
+    name: '登録種目一覧',
+    link: '/exercises',
   },
   {
     name: 'Settings2',

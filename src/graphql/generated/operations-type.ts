@@ -23,13 +23,15 @@ export type Exercise = {
   __typename?: 'Exercise'
   articleUrl?: Maybe<Array<Scalars['String']>>
   id: Scalars['ID']
-  maxTotalLoad?: Maybe<Scalars['Int']>
-  maxWeight?: Maybe<Scalars['Int']>
+  maxTotalLoad?: Maybe<Scalars['Float']>
+  maxWeight?: Maybe<Scalars['Float']>
+  maxWeightUnit?: Maybe<Unit>
   memos?: Maybe<Array<Maybe<Memo>>>
   movieUrl?: Maybe<Array<Scalars['String']>>
   name: Scalars['String']
   parts?: Maybe<Array<Part>>
   trainings?: Maybe<Array<Training>>
+  updatedAt: Scalars['Date']
   user: User
 }
 
@@ -47,6 +49,21 @@ export type Memo = {
   id: Scalars['ID']
   pin?: Maybe<Scalars['Boolean']>
   round: Round
+}
+
+export type Mutation = {
+  __typename?: 'Mutation'
+  addRound?: Maybe<Round>
+  createExerciseAtNote?: Maybe<Exercise>
+}
+
+export type MutationAddRoundArgs = {
+  input?: InputMaybe<RoundInput>
+}
+
+export type MutationCreateExerciseAtNoteArgs = {
+  name: Scalars['String']
+  parts?: InputMaybe<Array<Scalars['String']>>
 }
 
 export type Note = {
@@ -161,6 +178,16 @@ export type Round = {
   repetition: Scalars['Int']
   setCount: Scalars['Int']
   training: Training
+  unit: Unit
+  weight: Scalars['Float']
+}
+
+export type RoundInput = {
+  interval?: InputMaybe<Scalars['Int']>
+  isPinned?: InputMaybe<Scalars['Boolean']>
+  memo?: InputMaybe<Scalars['String']>
+  repetition: Scalars['Int']
+  setCount: Scalars['Int']
   weight: Scalars['Int']
 }
 
@@ -174,19 +201,25 @@ export type Training = {
   rounds: Array<Round>
 }
 
+export const Unit = {
+  Kg: 'KG',
+  Lb: 'LB',
+} as const
+
+export type Unit = (typeof Unit)[keyof typeof Unit]
 export type User = {
   __typename?: 'User'
   createdAt: Scalars['Date']
   exercises?: Maybe<Array<Exercise>>
   gender?: Maybe<Gender>
-  height?: Maybe<Scalars['Int']>
+  height?: Maybe<Scalars['Float']>
   id: Scalars['ID']
   name: Scalars['String']
   notes?: Maybe<Array<Note>>
   password: Scalars['String']
   places?: Maybe<Array<Place>>
   updatedAt: Scalars['Date']
-  weight?: Maybe<Scalars['Int']>
+  weight?: Maybe<Scalars['Float']>
 }
 
 export type RoundSetsFragment = {
@@ -195,6 +228,7 @@ export type RoundSetsFragment = {
   weight: number
   repetition: number
   interval?: number | null
+  unit: Unit
 }
 
 export type ExerciseFieldsFragment = {
@@ -203,6 +237,54 @@ export type ExerciseFieldsFragment = {
   name: string
   user: { __typename?: 'User'; name: string }
   parts?: Array<{ __typename?: 'Part'; name: string }> | null
+}
+
+export type AddRoundMutationVariables = Exact<{
+  input?: InputMaybe<RoundInput>
+}>
+
+export type AddRoundMutation = {
+  __typename?: 'Mutation'
+  addRound?: {
+    __typename?: 'Round'
+    id: string
+    setCount: number
+    weight: number
+    repetition: number
+    interval?: number | null
+    createdAt: any
+    memo?: { __typename?: 'Memo'; content: string; pin?: boolean | null } | null
+  } | null
+}
+
+export type CreateExerciseAtNoteMutationVariables = Exact<{
+  name: Scalars['String']
+  parts?: InputMaybe<Array<Scalars['String']> | Scalars['String']>
+}>
+
+export type CreateExerciseAtNoteMutation = {
+  __typename?: 'Mutation'
+  createExerciseAtNote?: {
+    __typename?: 'Exercise'
+    id: string
+    name: string
+    parts?: Array<{ __typename?: 'Part'; name: string }> | null
+  } | null
+}
+
+export type GetAllExercisesMaxQueryVariables = Exact<{ [key: string]: never }>
+
+export type GetAllExercisesMaxQuery = {
+  __typename?: 'Query'
+  exercises?: Array<{
+    __typename?: 'Exercise'
+    id: string
+    name: string
+    maxWeight?: number | null
+    maxTotalLoad?: number | null
+    maxWeightUnit?: Unit | null
+    updatedAt: any
+  }> | null
 }
 
 export type GetAllPartsNameQueryVariables = Exact<{ [key: string]: never }>
@@ -232,6 +314,7 @@ export type GetExerciseQuery = {
     articleUrl?: Array<string> | null
     maxWeight?: number | null
     maxTotalLoad?: number | null
+    maxWeightUnit?: Unit | null
     parts?: Array<{ __typename?: 'Part'; name: string }> | null
     trainings?: Array<{
       __typename?: 'Training'
@@ -242,6 +325,7 @@ export type GetExerciseQuery = {
         weight: number
         repetition: number
         interval?: number | null
+        unit: Unit
       }>
     }> | null
     memos?: Array<{
@@ -265,6 +349,7 @@ export type GetExerciseMaxByPartsQuery = {
       name: string
       maxWeight?: number | null
       maxTotalLoad?: number | null
+      maxWeightUnit?: Unit | null
     }> | null
   } | null
 }
@@ -304,6 +389,7 @@ export type GetNoteQuery = {
         weight: number
         repetition: number
         interval?: number | null
+        unit: Unit
         memo?: { __typename?: 'Memo'; content: string } | null
       }>
     }>
@@ -333,6 +419,7 @@ export type GetNotesByDateQuery = {
         weight: number
         repetition: number
         interval?: number | null
+        unit: Unit
       }>
     }>
     place: { __typename?: 'Place'; name: string }
@@ -353,6 +440,7 @@ export type GetPreviousTrainingQuery = {
       weight: number
       repetition: number
       interval?: number | null
+      unit: Unit
     }>
   }
 }
@@ -371,6 +459,7 @@ export type GetRoundByTrainingQuery = {
       weight: number
       repetition: number
       interval?: number | null
+      unit: Unit
       memo?: { __typename?: 'Memo'; content: string } | null
     }>
   }

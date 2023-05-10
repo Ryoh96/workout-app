@@ -4,6 +4,7 @@ query getExerciseMaxByParts($partId: ID!) {
       name
       maxWeight
       maxTotalLoad
+      maxWeightUnit
     }
   }
 }

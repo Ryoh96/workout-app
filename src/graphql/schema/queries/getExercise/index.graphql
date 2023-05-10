@@ -21,5 +21,6 @@ query getExercise($exerciseId: ID!) {
     }
     maxWeight
     maxTotalLoad
+    maxWeightUnit
   }
 }

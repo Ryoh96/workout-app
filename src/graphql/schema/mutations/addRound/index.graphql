@@ -1,0 +1,14 @@
+mutation addRound($input: RoundInput) {
+  addRound(input: $input) {
+    id
+    setCount
+    weight
+    repetition
+    interval
+    memo {
+      content
+      pin
+    }
+    createdAt
+  }
+}

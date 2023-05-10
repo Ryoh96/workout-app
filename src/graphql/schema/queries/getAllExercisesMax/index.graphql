@@ -1,0 +1,10 @@
+query getAllExercisesMax {
+  exercises {
+    id
+    name
+    maxWeight
+    maxTotalLoad
+    maxWeightUnit
+    updatedAt
+  }
+}

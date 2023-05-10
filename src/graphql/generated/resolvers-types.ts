@@ -32,13 +32,15 @@ export type Exercise = {
   __typename?: 'Exercise'
   articleUrl?: Maybe<Array<Scalars['String']>>
   id: Scalars['ID']
-  maxTotalLoad?: Maybe<Scalars['Int']>
-  maxWeight?: Maybe<Scalars['Int']>
+  maxTotalLoad?: Maybe<Scalars['Float']>
+  maxWeight?: Maybe<Scalars['Float']>
+  maxWeightUnit?: Maybe<Unit>
   memos?: Maybe<Array<Maybe<Memo>>>
   movieUrl?: Maybe<Array<Scalars['String']>>
   name: Scalars['String']
   parts?: Maybe<Array<Part>>
   trainings?: Maybe<Array<Training>>
+  updatedAt: Scalars['Date']
   user: User
 }
 
@@ -56,6 +58,21 @@ export type Memo = {
   id: Scalars['ID']
   pin?: Maybe<Scalars['Boolean']>
   round: Round
+}
+
+export type Mutation = {
+  __typename?: 'Mutation'
+  addRound?: Maybe<Round>
+  createExerciseAtNote?: Maybe<Exercise>
+}
+
+export type MutationAddRoundArgs = {
+  input?: InputMaybe<RoundInput>
+}
+
+export type MutationCreateExerciseAtNoteArgs = {
+  name: Scalars['String']
+  parts?: InputMaybe<Array<Scalars['String']>>
 }
 
 export type Note = {
@@ -170,6 +187,16 @@ export type Round = {
   repetition: Scalars['Int']
   setCount: Scalars['Int']
   training: Training
+  unit: Unit
+  weight: Scalars['Float']
+}
+
+export type RoundInput = {
+  interval?: InputMaybe<Scalars['Int']>
+  isPinned?: InputMaybe<Scalars['Boolean']>
+  memo?: InputMaybe<Scalars['String']>
+  repetition: Scalars['Int']
+  setCount: Scalars['Int']
   weight: Scalars['Int']
 }
 
@@ -183,19 +210,25 @@ export type Training = {
   rounds: Array<Round>
 }
 
+export const Unit = {
+  Kg: 'KG',
+  Lb: 'LB',
+} as const
+
+export type Unit = (typeof Unit)[keyof typeof Unit]
 export type User = {
   __typename?: 'User'
   createdAt: Scalars['Date']
   exercises?: Maybe<Array<Exercise>>
   gender?: Maybe<Gender>
-  height?: Maybe<Scalars['Int']>
+  height?: Maybe<Scalars['Float']>
   id: Scalars['ID']
   name: Scalars['String']
   notes?: Maybe<Array<Note>>
   password: Scalars['String']
   places?: Maybe<Array<Place>>
   updatedAt: Scalars['Date']
-  weight?: Maybe<Scalars['Int']>
+  weight?: Maybe<Scalars['Float']>
 }
 
 export type ResolverTypeWrapper<T> = Promise<T> | T
@@ -308,18 +341,22 @@ export type ResolversTypes = {
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>
   Date: ResolverTypeWrapper<Scalars['Date']>
   Exercise: ResolverTypeWrapper<Exercise>
+  Float: ResolverTypeWrapper<Scalars['Float']>
   Gender: Gender
   ID: ResolverTypeWrapper<Scalars['ID']>
   Int: ResolverTypeWrapper<Scalars['Int']>
   Memo: ResolverTypeWrapper<Memo>
+  Mutation: ResolverTypeWrapper<{}>
   Note: ResolverTypeWrapper<Note>
   OrderBy: OrderBy
   Part: ResolverTypeWrapper<Part>
   Place: ResolverTypeWrapper<Place>
   Query: ResolverTypeWrapper<{}>
   Round: ResolverTypeWrapper<Round>
+  RoundInput: RoundInput
   String: ResolverTypeWrapper<Scalars['String']>
   Training: ResolverTypeWrapper<Training>
+  Unit: Unit
   User: ResolverTypeWrapper<User>
 }
 
@@ -328,14 +365,17 @@ export type ResolversParentTypes = {
   Boolean: Scalars['Boolean']
   Date: Scalars['Date']
   Exercise: Exercise
+  Float: Scalars['Float']
   ID: Scalars['ID']
   Int: Scalars['Int']
   Memo: Memo
+  Mutation: {}
   Note: Note
   Part: Part
   Place: Place
   Query: {}
   Round: Round
+  RoundInput: RoundInput
   String: Scalars['String']
   Training: Training
   User: User
@@ -356,8 +396,17 @@ export type ExerciseResolvers<
     ContextType
   >
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
-  maxTotalLoad?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>
-  maxWeight?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>
+  maxTotalLoad?: Resolver<
+    Maybe<ResolversTypes['Float']>,
+    ParentType,
+    ContextType
+  >
+  maxWeight?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>
+  maxWeightUnit?: Resolver<
+    Maybe<ResolversTypes['Unit']>,
+    ParentType,
+    ContextType
+  >
   memos?: Resolver<
     Maybe<Array<Maybe<ResolversTypes['Memo']>>>,
     ParentType,
@@ -379,6 +428,7 @@ export type ExerciseResolvers<
     ParentType,
     ContextType
   >
+  updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>
   user?: Resolver<ResolversTypes['User'], ParentType, ContextType>
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
@@ -393,6 +443,24 @@ export type MemoResolvers<
   pin?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>
   round?: Resolver<ResolversTypes['Round'], ParentType, ContextType>
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
+}
+
+export type MutationResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']
+> = {
+  addRound?: Resolver<
+    Maybe<ResolversTypes['Round']>,
+    ParentType,
+    ContextType,
+    Partial<MutationAddRoundArgs>
+  >
+  createExerciseAtNote?: Resolver<
+    Maybe<ResolversTypes['Exercise']>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationCreateExerciseAtNoteArgs, 'name'>
+  >
 }
 
 export type NoteResolvers<
@@ -535,7 +603,8 @@ export type RoundResolvers<
   repetition?: Resolver<ResolversTypes['Int'], ParentType, ContextType>
   setCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>
   training?: Resolver<ResolversTypes['Training'], ParentType, ContextType>
-  weight?: Resolver<ResolversTypes['Int'], ParentType, ContextType>
+  unit?: Resolver<ResolversTypes['Unit'], ParentType, ContextType>
+  weight?: Resolver<ResolversTypes['Float'], ParentType, ContextType>
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 
@@ -563,7 +632,7 @@ export type UserResolvers<
     ContextType
   >
   gender?: Resolver<Maybe<ResolversTypes['Gender']>, ParentType, ContextType>
-  height?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>
+  height?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>
   notes?: Resolver<
@@ -578,7 +647,7 @@ export type UserResolvers<
     ContextType
   >
   updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>
-  weight?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>
+  weight?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 
@@ -586,6 +655,7 @@ export type Resolvers<ContextType = any> = {
   Date?: GraphQLScalarType
   Exercise?: ExerciseResolvers<ContextType>
   Memo?: MemoResolvers<ContextType>
+  Mutation?: MutationResolvers<ContextType>
   Note?: NoteResolvers<ContextType>
   Part?: PartResolvers<ContextType>
   Place?: PlaceResolvers<ContextType>

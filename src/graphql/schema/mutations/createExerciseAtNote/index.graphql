@@ -1,0 +1,9 @@
+mutation createExerciseAtNote($name: String!, $parts: [String!]) {
+  createExerciseAtNote(name: $name, parts: $parts) {
+    id
+    name
+    parts {
+      name
+    }
+  }
+}
