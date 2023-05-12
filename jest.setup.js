@@ -23,3 +23,12 @@ if (typeof global.TextEncoder === 'undefined') {
 if (typeof global.TextDecoder === 'undefined') {
   global.TextDecoder = TextDecoder
 }
+
+global.ResizeObserver = jest.fn(function (callback) {
+  this.observe = jest.fn()
+  this.unobserve = jest.fn()
+  this.disconnect = jest.fn()
+  this.trigger = (changes) => {
+    callback(changes, this)
+  }
+})
