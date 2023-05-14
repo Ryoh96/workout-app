@@ -6,7 +6,12 @@ type Props = {
   size?: 'default' | 'long'
 } & React.ComponentPropsWithoutRef<'button'>
 
-const Button = ({ children, variant = 'default', size = 'default', ...props }: Props) => {
+const Button = ({
+  children,
+  variant = 'default',
+  size = 'default',
+  ...props
+}: Props) => {
   return (
     <>
       {variant === 'important' ? (

@@ -31,14 +31,13 @@ export const Default: Story = {
 export const Selected: Story = {
   args: {
     options,
-    selected: "LB"
+    selected: 'LB',
   },
 }
 
 export const Large: Story = {
   args: {
     options,
-    variant: "large"
+    variant: 'large',
   },
 }
-
