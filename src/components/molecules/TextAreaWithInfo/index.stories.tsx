@@ -56,6 +56,14 @@ export const HasInputCounter: Story = {
   },
 }
 
+export const HiddenLabelAndHasInfo: Story = {
+  args: {
+    label: 'ラベル',
+    labelVisible: false,
+    info: <EmphasizedText content={30} unit="kg" />,
+  },
+}
+
 export const HasAllProps: Story = {
   args: {
     label: 'ラベル',

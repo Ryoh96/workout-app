@@ -13,6 +13,9 @@ export default {
 type Story = StoryObj<typeof SwitchWithLabel>
 
 export const Default: Story = { args: { label: 'ラベル' } }
+export const LabelTop: Story = {
+  args: { label: 'ラベル', labelPosition: 'top', variant: 'large' },
+}
 
 export const HiddenLabel: Story = {
   args: { label: 'ラベル', labelVisible: false },

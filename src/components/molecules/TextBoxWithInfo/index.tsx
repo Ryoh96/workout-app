@@ -23,7 +23,7 @@ const TextBoxWithInfo = forwardRef<HTMLInputElement, Props>(
 
     return (
       <div>
-        <div className={`pb-1`}>
+        <div className="pb-1 flex items-end justify-between">
           <label
             htmlFor={id}
             className={`text-sm pl-1 text-sky-800 font-bold ${
@@ -32,7 +32,7 @@ const TextBoxWithInfo = forwardRef<HTMLInputElement, Props>(
           >
             {label}
           </label>
-          <div className="float-right">{info}</div>
+          <div className="ml-auto">{info}</div>
         </div>
         <div className="flex items-baseline">
           <TextBox
@@ -45,16 +45,18 @@ const TextBoxWithInfo = forwardRef<HTMLInputElement, Props>(
           />
           {unit && <span className="pl-2">{unit}</span>}
         </div>
-        {inputCounter}
-        {error && (
-          <p
-            className="text-xs text-red-600 pt-1 pl-1"
-            id={errorMessageId}
-            role="alert"
-          >
-            {error}
-          </p>
-        )}
+        <div className="flex items-center justify-between">
+          {error && (
+            <p
+              className="text-xs text-red-600 pt-1 pl-1"
+              id={errorMessageId}
+              role="alert"
+            >
+              {error}
+            </p>
+          )}
+          <div className="ml-auto">{inputCounter}</div>
+        </div>
       </div>
     )
   }

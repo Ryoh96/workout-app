@@ -22,7 +22,7 @@ export const TextAreaWithInfo = forwardRef<HTMLTextAreaElement, Props>(
     const errorMessageId = `${componentId}-errorMessage`
     return (
       <div>
-        <div className={`pb-1`}>
+        <div className="pb-1 flex items-end justify-between">
           <label
             htmlFor={textareaId}
             className={`text-sm pl-1 text-sky-800 font-bold ${
@@ -31,7 +31,7 @@ export const TextAreaWithInfo = forwardRef<HTMLTextAreaElement, Props>(
           >
             {label}
           </label>
-          <div className="float-right">{info}</div>
+          <div className="ml-auto">{info}</div>
         </div>
         <TextArea
           {...props}

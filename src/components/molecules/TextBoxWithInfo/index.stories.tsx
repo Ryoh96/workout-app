@@ -59,3 +59,14 @@ export const HiddenLabelAndHasInfo: Story = {
     info: <EmphasizedText content={30} unit="kg" />,
   },
 }
+
+export const HasAllProps: Story = {
+  args: {
+    label: 'ラベル',
+    info: <EmphasizedText content={30} unit="kg" />,
+    error: 'エラーがあります',
+    inputCounter: (
+      <div className="text-right pr-1 text-xs text-gray-900">0 / 30</div>
+    ),
+  },
+}

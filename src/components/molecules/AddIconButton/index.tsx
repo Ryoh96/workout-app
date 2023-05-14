@@ -2,11 +2,11 @@ import IconButton from '@/components/atoms/IconButton'
 
 type Props = {
   text?: string
-}
+} & React.ComponentPropsWithoutRef<'button'>
 
-const AddIconButton = ({ text }: Props) => {
+const AddIconButton = ({ text, ...props }: Props) => {
   return (
-    <IconButton text={text}>
+    <IconButton text={text} {...props}>
       <>
         <svg
           xmlns="http://www.w3.org/2000/svg"
