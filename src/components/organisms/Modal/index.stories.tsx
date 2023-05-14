@@ -23,7 +23,7 @@ const TestComponent = (props: Props) => {
   return (
     <>
       <Button onClick={openModal}>Click</Button>
-      <Modal {...props} isOpen={isOpen} closeModal={closeModal}/>
+      <Modal {...props} isOpen={isOpen} closeModal={closeModal} />
     </>
   )
 }

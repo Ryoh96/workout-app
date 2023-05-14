@@ -33,7 +33,7 @@ const TestComponent = ({ openModalButton, ...props }: Props) => {
   )
 }
 
-const openModalButton = "click"
+const openModalButton = 'click'
 
 const props = {
   title: 'title',
@@ -51,10 +51,9 @@ const props = {
   openModalButton: 'click',
 }
 
-
 describe('Modal', () => {
   afterEach(() => {
-    props.handlers.forEach(handler => handler.handleClick.mockClear())
+    props.handlers.forEach((handler) => handler.handleClick.mockClear())
   })
   test('should not display when initial state', async () => {
     render(<TestComponent {...props} />)
@@ -103,7 +102,7 @@ describe('Modal', () => {
       screen.getByRole('button', { name: props.handlers[0].name })
     )
     expect(props.handlers[0].handleClick).toBeCalled()
-  
+
     waitFor(() => {
       expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
     })
@@ -114,23 +113,9 @@ describe('Modal', () => {
       screen.getByRole('button', { name: props.handlers[1].name })
     )
     expect(props.handlers[1].handleClick).toBeCalled()
-  
+
     waitFor(() => {
       expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
     })
-
   })
 })
-
-const CloseOutOfModal = ({ openModalButton, ...props }: Props) => {
-  const [isOpen, setIsOpen] = useState(false)
-  const closeModal = () => setIsOpen(false)
-
-  const openModal = () => setIsOpen(true)
-  return (
-    <>
-      <Button onClick={openModal}>{openModalButton}</Button>
-      <Modal {...props} isOpen={isOpen} closeModal={closeModal} />
-    </>
-  )
-}

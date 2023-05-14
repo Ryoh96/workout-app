@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react'
 
 import HorizontalTable from '@/components/molecules/HorizontalTable'
-import makeRoundsSummary from '@/components/utils/makeRoundsSummary'
 import type { Round } from '@/graphql/generated/resolvers-types'
 import { SPStory } from '@/tests/storybook'
 import type { DeepPartial } from '@/types/utils'
+import makeRoundsSummary from '@/utils/makeRoundsSummary'
 
 import Accordion from '.'
 
