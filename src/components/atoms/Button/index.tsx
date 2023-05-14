@@ -6,17 +6,23 @@ type Props = {
   size?: 'default' | 'long'
 } & React.ComponentPropsWithoutRef<'button'>
 
-const Button = ({ children, variant = 'default', size = 'default' }: Props) => {
+const Button = ({ children, variant = 'default', size = 'default', ...props }: Props) => {
   return (
     <>
       {variant === 'important' ? (
-        <button className="p-1 rounded-md bg-gradient-to-r from-orange-400 to-fuchsia-500 text-sm">
-          <span className="block px-4 py-2 rounded bg-black text-white hover:bg-gray-500">
+        <button
+          className="p-1 rounded-md bg-gradient-to-r from-orange-400 to-fuchsia-500 text-sm  min-w-[90px]"
+          {...props}
+        >
+          <span className="block px-4 py-2 rounded bg-black text-white hover:bg-gray-500 ">
             {children}
           </span>
         </button>
       ) : (
-        <button className="bg-orange-500 text-white block px-5 py-3 rounded hover:bg-orange-300 text-sm">
+        <button
+          className="bg-orange-500 text-white block px-5 py-3 rounded shadow-md hover:bg-orange-300 text-sm min-w-[90px]"
+          {...props}
+        >
           {children}
         </button>
       )}

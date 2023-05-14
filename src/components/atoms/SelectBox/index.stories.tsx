@@ -27,3 +27,18 @@ export const Default: Story = {
     options,
   },
 }
+
+export const Selected: Story = {
+  args: {
+    options,
+    selected: "LB"
+  },
+}
+
+export const Large: Story = {
+  args: {
+    options,
+    variant: "large"
+  },
+}
+

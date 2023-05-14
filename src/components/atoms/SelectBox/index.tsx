@@ -4,23 +4,28 @@ type Props = {
   options: {
     name: string | number
     value: string
-    selected?: boolean
   }[]
+  selected?: string
+  variant?: 'default' | 'large'
 } & React.ComponentPropsWithoutRef<'select'>
 
 const SelectBox = forwardRef<HTMLSelectElement, Props>(function SelectBox(
-  { options, ...props },
+  { options, selected, variant = 'default', ...props },
   ref
 ) {
   return (
-    <div className="relative w-fit">
+    <div className={`relative w-14 ${variant === 'large' && 'w-full'}`}>
       <select
         {...props}
         ref={ref}
-        className="border p-1 w-14 appearance-none rounded pl-2 text-sm"
+        className={`border p-1 w-full appearance-none rounded pl-2 text-sm `}
       >
         {options.map((option, index) => (
-          <option key={index} value={option.value} selected={option.selected}>
+          <option
+            key={index}
+            value={option.value}
+            selected={option.value === selected}
+          >
             {option.name}
           </option>
         ))}

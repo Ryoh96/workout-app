@@ -14,6 +14,6 @@ describe('TextArea', () => {
     render(<TextArea />)
     const input = 'hoge'
     await user.type(screen.getByRole('textbox'), input)
-    expect(screen.getByRole('textbox')).toHaveValue(input)
+    expect(screen.getByRole('textbox')).toHaveDisplayValue(input)
   })
 })
