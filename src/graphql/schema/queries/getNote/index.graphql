@@ -1,6 +1,7 @@
 query getNote($date: Date!) {
   note(date: $date) {
     trainings {
+      id
       exercise {
         name
         parts {

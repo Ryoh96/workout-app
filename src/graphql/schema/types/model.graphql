@@ -11,6 +11,7 @@ type User {
   places: [Place!]
   notes: [Note!]
   exercises: [Exercise!]
+  menus: [Menu!]
 }
 
 # 種目
@@ -26,7 +27,9 @@ type Exercise {
   maxWeight: Float
   maxWeightUnit: Unit
   maxTotalLoad: Float
+  createdAt: Date
   updatedAt: Date!
+  menus: [Menu!]
 }
 
 # 部位
@@ -47,7 +50,7 @@ type Place {
 # ノート
 type Note {
   id: ID!
-  place: Place!
+  place: Place
   user: User!
   trainings: [Training!]!
   parts: [Part!]
@@ -61,7 +64,8 @@ type Training {
   note: Note!
   memo: String
   createdAt: Date!
-  rounds: [Round!]!
+  updatedAt: Date
+  rounds: [Round!]
 }
 
 # セット
@@ -84,6 +88,13 @@ type Memo {
   round: Round!
   exercise: Exercise!
   pin: Boolean
+}
+
+# メニュー
+type Menu {
+  id: ID!
+  user: User!
+  exercises: [Exercise!]!
 }
 
 # 日付
