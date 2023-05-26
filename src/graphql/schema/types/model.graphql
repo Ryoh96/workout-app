@@ -2,12 +2,14 @@
 type User {
   id: ID!
   name: String!
+  email: String
+  image: String
   password: String!
   gender: Gender
   height: Float
   weight: Float
-  createdAt: Date!
-  updatedAt: Date!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   places: [Place!]
   notes: [Note!]
   exercises: [Exercise!]
@@ -27,8 +29,8 @@ type Exercise {
   maxWeight: Float
   maxWeightUnit: Unit
   maxTotalLoad: Float
-  createdAt: Date
-  updatedAt: Date!
+  createdAt: DateTime
+  updatedAt: DateTime!
   menus: [Menu!]
 }
 
@@ -52,33 +54,32 @@ type Note {
   id: ID!
   place: Place
   user: User!
-  trainings: [Training!]!
+  trainings: [Training!]
   parts: [Part!]
-  createdAt: Date!
+  createdAt: DateTime!
 }
 
 # トレーニング
 type Training {
   id: ID!
-  exercise: Exercise!
+  exercise: Exercise
   note: Note!
   memo: String
-  createdAt: Date!
-  updatedAt: Date
+  createdAt: DateTime!
+  updatedAt: DateTime
   rounds: [Round!]
 }
 
 # セット
 type Round {
   id: ID!
-  setCount: Int!
   weight: Float!
   unit: Unit!
   repetition: Int!
   interval: Int
   training: Training!
   memo: Memo
-  createdAt: Date!
+  createdAt: DateTime!
 }
 
 # メモ
@@ -98,7 +99,7 @@ type Menu {
 }
 
 # 日付
-scalar Date
+scalar DateTime
 
 # 性別
 enum Gender {

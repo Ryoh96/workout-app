@@ -7,6 +7,7 @@ type Props = {
   options: ComboBoxOption[]
   selected: ComboBoxOption
   variant?: 'small' | 'default'
+  placeholder?: string
   setSelected: React.Dispatch<React.SetStateAction<ComboBoxOption>>
 }
 
@@ -14,6 +15,7 @@ const ComboBox = ({
   selected,
   setSelected,
   options,
+  placeholder = '登録してください',
   variant = 'default',
 }: Props) => {
   const [query, setQuery] = useState('')
@@ -37,6 +39,7 @@ const ComboBox = ({
               className="w-full border-none py-2 pl-3 pr-10 text-xs leading-5 text-gray-900 focus:ring-0 focus:outline-none"
               displayValue={(option: ComboBoxOption) => option.name}
               onChange={(event) => setQuery(event.target.value)}
+              placeholder={placeholder}
             />
             <Combobox.Button className="absolute inset-y-0 right-0 flex items-center px-1.5 bg-orange-400">
               <svg

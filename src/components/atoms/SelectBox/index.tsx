@@ -5,39 +5,42 @@ type Props = {
     name: string | number
     value: string
   }[]
-  selected?: string
   variant?: 'default' | 'large'
+  handleChange?: (id: string) => void
 } & React.ComponentPropsWithoutRef<'select'>
 
 const SelectBox = forwardRef<HTMLSelectElement, Props>(function SelectBox(
-  { options, selected, variant = 'default', ...props },
+  { options, handleChange, variant = 'default', ...props },
   ref
 ) {
   return (
-    <div className={`relative w-14 ${variant === 'large' && 'w-full'}`}>
+    <div
+      className={`relative w-14  shadow-md ${variant === 'large' && 'w-full'}`}
+    >
       <select
         {...props}
         ref={ref}
-        className={`border p-1 w-full appearance-none rounded pl-2 text-sm `}
+        className={`border p-1 w-full appearance-none rounded text-xs h-full py-2 pl-3 `}
+        onChange={(e) => handleChange?.(e.target.value)}
       >
         {options.map((option, index) => (
-          <option
-            key={index}
-            value={option.value}
-            selected={option.value === selected}
-          >
+          <option key={index} value={option.value} className="text-xs">
             {option.name}
           </option>
         ))}
       </select>
-      <div className="absolute top-1/2 -translate-y-1/2 right-0 bg-orange-400 h-full grid place-items-center rounded pointer-events-none">
+      <div
+        className={`absolute top-1/2 -translate-y-1/2 right-0 bg-orange-400 h-full grid place-items-center rounded pointer-events-none  ${
+          variant === 'large' && 'px-1.5'
+        } `}
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
           strokeWidth={1.5}
           stroke="currentColor"
-          className="w-6 h-6 text-white"
+          className="w-6 h-6 text-orange-900"
         >
           <path
             strokeLinecap="round"

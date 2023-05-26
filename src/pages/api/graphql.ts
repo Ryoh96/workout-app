@@ -1,7 +1,7 @@
 import { GraphQLFileLoader } from '@graphql-tools/graphql-file-loader'
 import { loadSchemaSync } from '@graphql-tools/load'
 import { addResolversToSchema } from '@graphql-tools/schema'
-import { ApolloServer } from 'apollo-server-micro'
+import { ApolloServer, gql } from 'apollo-server-micro'
 import Cors from 'micro-cors'
 
 import { createContext } from '@/graphql/context'
@@ -23,16 +23,13 @@ const apolloServer = new ApolloServer({
   context: createContext,
 })
 
-const startServer = apolloServer
-  .start()
-  .then((data) => `apollo server started ${data}`)
+const startServer = apolloServer.start()
 
-export default cors(async (req, res) => {
+export default cors(async function handler(req, res) {
   if (req.method === 'OPTIONS') {
     res.end()
     return false
   }
-
   await startServer
   await apolloServer.createHandler({
     path: '/api/graphql',

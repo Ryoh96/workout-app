@@ -2,6 +2,7 @@ query getExerciseNamesByPart($partIds: ID!) {
   part(id: $partIds) {
     name
     exercises {
+      id
       name
     }
   }

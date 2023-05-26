@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react'
 import type { ReactNode } from 'react'
 import { useForm } from 'react-hook-form'
 
-import type { UpsertRoundInput } from '@/lib/schema/upsertRound'
+import type { UpsertRoundInput } from '@/libs/schema/upsertRound'
 import { PCStory, SPStory } from '@/tests/storybook'
 
 import InputTime from '.'

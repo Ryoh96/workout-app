@@ -2,8 +2,10 @@ import type { GetNoteQuery } from '@/graphql/generated/operations-type'
 
 export const note: GetNoteQuery = {
   note: {
+    id: 'hoge',
     trainings: [
       {
+        id: 'fuga',
         exercise: {
           name: 'ダンベルベンチプレス',
           parts: [
@@ -36,6 +38,7 @@ export const note: GetNoteQuery = {
         ],
       },
       {
+        id: 'piyo',
         exercise: {
           name: 'ダンベルフライ',
           parts: [

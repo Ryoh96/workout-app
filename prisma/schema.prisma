@@ -95,8 +95,6 @@ model Part {
   id        String     @id @default(uuid())
   name      String
   exercises Exercise[]
-  Note      Note?      @relation(fields: [noteId], references: [id])
-  noteId    String?
 }
 
 model Place {
@@ -110,11 +108,10 @@ model Place {
 model Note {
   id        String     @id @default(uuid())
   place     Place?     @relation(fields: [placeId], references: [id])
-  placeId   String
+  placeId   String?
   user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    String
   trainings Training[]
-  parts     Part[]
   createdAt DateTime   @default(now())
 }
 
@@ -132,7 +129,6 @@ model Training {
 
 model Round {
   id         String   @id @default(uuid())
-  setCount   Int
   weight     Float
   unit       Unit
   repetition Int

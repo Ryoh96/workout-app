@@ -1,0 +1,5 @@
+mutation createTraining($noteId: ID!, $exerciseId: ID!, $id: ID!) {
+  createTraining(noteId: $noteId, exerciseId: $exerciseId, id: $id) {
+    id
+  }
+}

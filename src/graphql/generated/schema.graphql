@@ -1,8 +1,19 @@
-scalar Date
+input AddRoundInput {
+  exerciseId: ID!
+  roundInput: RoundInput!
+  trainingId: ID!
+}
+
+scalar DateTime
+
+input EditRoundInput {
+  id: ID!
+  roundInput: RoundInput!
+}
 
 type Exercise {
   articleUrl: [String!]
-  createdAt: Date
+  createdAt: DateTime
   id: ID!
   maxTotalLoad: Float
   maxWeight: Float
@@ -13,7 +24,7 @@ type Exercise {
   name: String!
   parts: [Part!]
   trainings: [Training!]
-  updatedAt: Date!
+  updatedAt: DateTime!
   user: User!
 }
 
@@ -38,16 +49,23 @@ type Menu {
 }
 
 type Mutation {
-  addRound(input: RoundInput): Round
+  addExerciseByPart(name: String!, partId: ID!): Exercise
+  addRound(input: AddRoundInput!): Round
   createExerciseAtNote(name: String!, parts: [String!]): Exercise
+  createOrGetNoteId: Note!
+  createOrUpdateTodayNote: Note!
+  createTraining(exerciseId: ID!, id: ID!, noteId: ID!): Training
+  editRound(input: EditRoundInput!): Round
+  removeRound(id: ID!): Round
+  removeTraining(id: ID!): Training
 }
 
 type Note {
-  createdAt: Date!
+  createdAt: DateTime!
   id: ID!
   parts: [Part!]
   place: Place
-  trainings: [Training!]!
+  trainings: [Training!]
   user: User!
 }
 
@@ -71,27 +89,28 @@ type Place {
 
 type Query {
   exercise(id: ID!): Exercise!
+  exerciseByDate(date: DateTime!): [Exercise]
   exercises(limit: Int, offset: Int): [Exercise!]
-  note(date: Date!): Note
+  note(date: DateTime!): Note
+  noteById(id: ID!): Note!
   notes(limit: Int, offset: Int, orderBy: OrderBy!): [Note!]
   part(id: ID!): Part
   parts(limit: Int, offset: Int): [Part!]
   place(id: ID!): Place
   places(limit: Int, offset: Int): [Place!]
   round(id: ID!): Round
-  rounds(limit: Int, offset: Int): [Round]
+  rounds(trainingId: ID!): [Round]
   training(id: ID!): Training!
   trainings(limit: Int, offset: Int): [Training!]
   user: User
 }
 
 type Round {
-  createdAt: Date!
+  createdAt: DateTime!
   id: ID!
   interval: Int
   memo: Memo
   repetition: Int!
-  setCount: Int!
   training: Training!
   unit: Unit!
   weight: Float!
@@ -102,18 +121,18 @@ input RoundInput {
   isPinned: Boolean
   memo: String
   repetition: Int!
-  setCount: Int!
-  weight: Int!
+  unit: Unit!
+  weight: Float!
 }
 
 type Training {
-  createdAt: Date!
-  exercise: Exercise!
+  createdAt: DateTime!
+  exercise: Exercise
   id: ID!
   memo: String
   note: Note!
   rounds: [Round!]
-  updatedAt: Date
+  updatedAt: DateTime
 }
 
 enum Unit {
@@ -122,16 +141,18 @@ enum Unit {
 }
 
 type User {
-  createdAt: Date!
+  createdAt: DateTime!
+  email: String
   exercises: [Exercise!]
   gender: Gender
   height: Float
   id: ID!
+  image: String
   menus: [Menu!]
   name: String!
   notes: [Note!]
   password: String!
   places: [Place!]
-  updatedAt: Date!
+  updatedAt: DateTime!
   weight: Float
 }

@@ -1,0 +1,5 @@
+mutation removeTraining($id: ID!) {
+  removeTraining(id: $id) {
+    id
+  }
+}

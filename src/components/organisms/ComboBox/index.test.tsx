@@ -10,10 +10,11 @@ const user = userEvent.setup()
 
 type Props = {
   options: ComboBoxOption[]
+  placeholder?: string
   variant?: 'default' | 'small'
 }
 
-const TestComponent = ({ options, variant }: Props) => {
+const TestComponent = ({ options, variant, placeholder }: Props) => {
   const [selected, setSelected] = useState<ComboBoxOption>(options[0])
   return (
     <ComboBox
@@ -21,6 +22,7 @@ const TestComponent = ({ options, variant }: Props) => {
       selected={selected}
       setSelected={setSelected}
       variant={variant}
+      placeholder={placeholder}
     />
   )
 }
@@ -113,5 +115,11 @@ describe('ComboBox', () => {
     expect(within(listbox).queryByText(options[2].name)).not.toBeInTheDocument()
     expect(within(listbox).queryByText(options[3].name)).not.toBeInTheDocument()
     expect(within(listbox).queryByText(options[4].name)).not.toBeInTheDocument()
+  })
+  test('should show placeholder if options is empty', () => {
+    const text = 'hoge'
+    render(<TestComponent options={[]} placeholder={text} />)
+    expect(screen.getByRole('combobox')).not.toHaveValue()
+    expect(screen.getByPlaceholderText(text)).toBeInTheDocument()
   })
 })

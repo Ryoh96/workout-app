@@ -46,3 +46,7 @@ export const Default: Story = {
 export const Small: Story = {
   args: { options, variant: 'small' },
 }
+
+export const NoOptions: Story = {
+  args: { options: [] },
+}

@@ -4,9 +4,9 @@ import Tag from '@/components/atoms/Tag'
 import Title from '@/components/atoms/Title'
 import Section from '@/components/layouts/Section'
 import HorizontalTable from '@/components/molecules/HorizontalTable'
-import makeRoundsSummary from '@/components/utils/makeRoundsSummary'
-import type { GetNoteQuery } from '@/graphql/generated/operations-type'
+import type { GetNoteQuery, Round } from '@/graphql/generated/operations-type'
 import { note } from '@/graphql/schema/queries/getNote/fixture'
+import makeRoundsSummary from '@/utils/makeRoundsSummary'
 
 type Props = {
   data: GetNoteQuery
@@ -43,7 +43,9 @@ const Note: NextPage<Props> = ({ data }: Props) => {
               <Tag key={index}>{part.name}</Tag>
             ))}
           </div>
-          <HorizontalTable rounds={makeRoundsSummary(training.rounds)} />
+          <HorizontalTable
+            rounds={makeRoundsSummary(training.rounds as Round[])}
+          />
         </Section>
       ))}
     </>

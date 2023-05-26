@@ -1,0 +1,26 @@
+mutation createOrUpdateTodayNote {
+  createOrUpdateTodayNote {
+    id
+    trainings {
+      id
+      exercise {
+        id
+        name
+        parts {
+          name
+        }
+      }
+      rounds {
+        ...roundSets
+        memo {
+          content
+          pin
+        }
+      }
+    }
+    place {
+      name
+    }
+    createdAt
+  }
+}

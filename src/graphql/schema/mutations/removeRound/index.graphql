@@ -1,0 +1,5 @@
+mutation removeRound($id: ID!) {
+  removeRound(id: $id) {
+    id
+  }
+}

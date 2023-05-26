@@ -12,8 +12,8 @@ import InputCounter from '@/components/atoms/InputCounter'
 import SelectBox from '@/components/atoms/SelectBox'
 import SelectBoxWithLabel from '@/components/molecules/SelectBoxWithLabel'
 import TextBoxWithInfo from '@/components/molecules/TextBoxWithInfo'
-import type { CreateExerciseInput } from '@/lib/schema/createExercise'
-import { createExerciseSchema } from '@/lib/schema/createExercise'
+import type { CreateExerciseInput } from '@/libs/schema/createExercise'
+import { createExerciseSchema } from '@/libs/schema/createExercise'
 import type { ComboBoxOption } from '@/types'
 
 type Props<T extends FieldValues = CreateExerciseInput> = {
@@ -53,9 +53,9 @@ const AddExerciseForm = ({
             label="部位"
             options={partsOptions.map((option) => ({
               name: option.name,
-              value: option.name,
+              value: `${option.id}`,
             }))}
-            selected={selected}
+            defaultValue={selected}
             {...register('part')}
             variant="large"
             labelPosition="top"

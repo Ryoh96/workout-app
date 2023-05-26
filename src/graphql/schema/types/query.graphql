@@ -1,7 +1,8 @@
 type Query {
   user: User
 
-  note(date: Date!): Note
+  note(date: DateTime!): Note
+  noteById(id: ID!): Note!
   notes(offset: Int, limit: Int, orderBy: OrderBy!): [Note!]
 
   training(id: ID!): Training!
@@ -9,6 +10,7 @@ type Query {
 
   exercise(id: ID!): Exercise!
   exercises(offset: Int, limit: Int): [Exercise!]
+  exerciseByDate(date: DateTime!): [Exercise]
 
   place(id: ID!): Place
   places(offset: Int, limit: Int): [Place!]
@@ -17,5 +19,5 @@ type Query {
   parts(offset: Int, limit: Int): [Part!]
 
   round(id: ID!): Round
-  rounds(offset: Int, limit: Int): [Round]
+  rounds(trainingId: ID!): [Round]
 }

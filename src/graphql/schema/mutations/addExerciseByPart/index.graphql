@@ -1,0 +1,6 @@
+mutation addExerciseByPart($name: String!, $partId: ID!) {
+  addExerciseByPart(name: $name, partId: $partId) {
+    id
+    name
+  }
+}

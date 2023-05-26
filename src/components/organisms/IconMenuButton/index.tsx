@@ -1,5 +1,6 @@
 import { Menu, Transition } from '@headlessui/react'
 import Link from 'next/link'
+import type { ReactNode } from 'react'
 import React from 'react'
 
 import UserIconMenu from '@/components/molecules/UserIconMenu'

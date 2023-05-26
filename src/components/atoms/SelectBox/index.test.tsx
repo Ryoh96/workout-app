@@ -29,7 +29,7 @@ describe('SelectBox', () => {
     expect(screen.getByRole('combobox')).not.toHaveValue(options[0].value)
   })
   test('should selected props value when given selected props', () => {
-    render(<SelectBox options={options} selected={options[1].value} />)
+    render(<SelectBox options={options} defaultValue={options[1].value} />)
     expect(screen.getByRole('combobox')).toHaveValue(options[1].value)
     expect(screen.getByRole('combobox')).not.toHaveValue(options[0].value)
   })

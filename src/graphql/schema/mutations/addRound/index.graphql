@@ -1,10 +1,10 @@
-mutation addRound($input: RoundInput) {
+mutation addRound($input: AddRoundInput!) {
   addRound(input: $input) {
     id
-    setCount
     weight
     repetition
     interval
+    unit
     memo {
       content
       pin

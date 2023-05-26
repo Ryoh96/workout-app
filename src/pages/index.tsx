@@ -7,9 +7,12 @@ import Title from '@/components/atoms/Title'
 import Section from '@/components/layouts/Section'
 import HorizontalTable from '@/components/molecules/HorizontalTable'
 import AccordionList from '@/components/organisms/AccordionList'
-import makeRoundsSummary from '@/components/utils/makeRoundsSummary'
-import type { GetNotesByDateQuery } from '@/graphql/generated/operations-type'
+import type {
+  GetNotesByDateQuery,
+  Round,
+} from '@/graphql/generated/operations-type'
 import { notesByDate } from '@/graphql/schema/queries/getNotesByDate/fixture'
+import makeRoundsSummary from '@/utils/makeRoundsSummary'
 
 type Props = {
   data: GetNotesByDateQuery
@@ -26,7 +29,7 @@ const Home: NextPage<Props> = ({ data }) => {
               <div className="pt-4 first:pt-0" key={index}>
                 <HorizontalTable
                   title={training.exercise.name}
-                  rounds={makeRoundsSummary(training.rounds)}
+                  rounds={makeRoundsSummary(training.rounds as Round[])}
                 />
               </div>
             ))}

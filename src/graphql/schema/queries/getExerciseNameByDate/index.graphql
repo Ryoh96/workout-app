@@ -1,0 +1,6 @@
+query getExerciseNameByDate($date: DateTime!) {
+  exerciseByDate(date: $date) {
+    id
+    name
+  }
+}

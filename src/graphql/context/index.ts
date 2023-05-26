@@ -6,7 +6,7 @@ import { prisma } from '@/libs/prisma'
 
 export type Context = {
   prisma: typeof prisma
-  user: User | null
+  currentUser: User | null
 }
 
 export const createContext = async ({
@@ -16,7 +16,7 @@ export const createContext = async ({
 }): Promise<Context> => {
   const session = await getSession({ req })
   const email = session?.user?.email
-  const user = email
+  const currentUser = email
     ? await prisma.user.findUnique({
         where: {
           email,
@@ -26,6 +26,6 @@ export const createContext = async ({
 
   return {
     prisma,
-    user,
+    currentUser,
   }
 }

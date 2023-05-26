@@ -1,0 +1,14 @@
+mutation EditRound($input: EditRoundInput!) {
+  editRound(input: $input) {
+    id
+    weight
+    repetition
+    interval
+    unit
+    memo {
+      content
+      pin
+    }
+    createdAt
+  }
+}

@@ -1,13 +1,31 @@
 type Mutation {
   createExerciseAtNote(name: String!, parts: [String!]): Exercise
-  addRound(input: RoundInput): Round
+  addRound(input: AddRoundInput!): Round
+  addExerciseByPart(name: String!, partId: ID!): Exercise
+  createOrUpdateTodayNote: Note!
+  createTraining(noteId: ID!, exerciseId: ID!, id: ID!): Training
+  removeTraining(id: ID!): Training
+  editRound(input: EditRoundInput!): Round
+  removeRound(id: ID!): Round
+  createOrGetNoteId: Note!
 }
 
 input RoundInput {
-  setCount: Int!
-  weight: Int!
+  weight: Float!
   repetition: Int!
+  unit: Unit!
   interval: Int
   memo: String
   isPinned: Boolean
+}
+
+input AddRoundInput {
+  exerciseId: ID!
+  trainingId: ID!
+  roundInput: RoundInput!
+}
+
+input EditRoundInput {
+  id: ID!
+  roundInput: RoundInput!
 }

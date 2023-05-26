@@ -21,7 +21,19 @@ const codegenConfig: CodegenConfig = {
         enumsAsConst: true,
         contextType: '@/graphql/context#Context',
         scalars: {
-          Date: 'Date',
+          DateTime: 'string',
+        },
+        mapperTypeSuffix: 'Model',
+        mappers: {
+          User: '@prisma/client#User',
+          Exercise: '@prisma/client#Exercise',
+          Part: '@prisma/client#Part',
+          Round: '@prisma/client#Round',
+          Note: '@prisma/client#Note',
+          Training: '@prisma/client#Training',
+          Place: '@prisma/client#Place',
+          Memo: '@prisma/client#Memo',
+          Unit: '@prisma/client#Unit',
         },
       },
     },
@@ -31,15 +43,18 @@ const codegenConfig: CodegenConfig = {
       plugins: ['typescript', 'typescript-operations'],
       config: {
         enumsAsConst: true,
+        scalars: {
+          DateTime: 'string',
+        },
       },
     },
-    'src/graphql/generated/operations.ts': {
+    'src/graphql/generated/operations-csr.ts': {
       schema: ['src/graphql/schema/**/*.graphql'],
       documents: 'src/graphql/schema/**/*.graphql',
       plugins: [
         'typescript',
         'typescript-operations',
-        'typescript-react-query',
+        'typescript-react-apollo',
         {
           add: {
             content: '/* eslint-disable */',
@@ -47,15 +62,36 @@ const codegenConfig: CodegenConfig = {
         },
       ],
       config: {
-        fetcher: 'graphql-request',
-        isReactHook: true,
-        exposeQueryKeys: true,
+        enumsAsConst: true,
+        scalars: {
+          DateTime: 'string',
+        },
+      },
+    },
+    'src/graphql/generated/operations-ssg.ts': {
+      schema: ['src/graphql/schema/**/*.graphql'],
+      documents: 'src/graphql/schema/**/*.graphql',
+      plugins: [
+        'typescript-graphql-request',
+        'typescript',
+        'typescript-operations',
+        {
+          add: {
+            content: '/* eslint-disable */',
+          },
+        },
+      ],
+      config: {
+        enumsAsConst: true,
+        scalars: {
+          DateTime: 'string',
+        },
       },
     },
   },
   hooks: {
     beforeDone: [
-      `find ./src/graphql/generated -name "*.ts" -exec sed -i '' '/graphql-request\\/dist\\/types\\.dom/d' {} \\;`,
+      `find ./src/graphql/generated -name "*.ts" -exec sed -i '' -e '/graphql-request\\/dist\\/types\\.dom/d' -e 's/Dom\\./''/g' {} \\;`,
     ],
   },
 }

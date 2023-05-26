@@ -1,8 +1,10 @@
-query getNote($date: Date!) {
+query getNote($date: DateTime!) {
   note(date: $date) {
+    id
     trainings {
       id
       exercise {
+        id
         name
         parts {
           name
@@ -12,6 +14,7 @@ query getNote($date: Date!) {
         ...roundSets
         memo {
           content
+          pin
         }
       }
     }

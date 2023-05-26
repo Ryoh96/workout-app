@@ -12,6 +12,7 @@ type Props = {
     selected?: boolean
   }[]
   variant?: 'default' | 'large'
+  handleChange?: (id: string) => void
 } & React.ComponentPropsWithoutRef<typeof SelectBox>
 
 const SelectBoxWithLabel = forwardRef<HTMLSelectElement, Props>(
@@ -20,6 +21,7 @@ const SelectBoxWithLabel = forwardRef<HTMLSelectElement, Props>(
       label,
       options,
       variant,
+      handleChange,
       labelPosition = 'default',
       labelVisible = true,
       ...props
@@ -48,6 +50,7 @@ const SelectBoxWithLabel = forwardRef<HTMLSelectElement, Props>(
           ref={ref}
           options={options}
           variant={variant}
+          handleChange={handleChange}
           {...props}
         />
       </div>
