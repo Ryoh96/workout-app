@@ -1,0 +1,6 @@
+query getMaxTotalLoad($exerciseId: ID!) {
+  maxTotalLoad(exerciseId: $exerciseId) {
+    maxTotalLoad
+    createdAt
+  }
+}

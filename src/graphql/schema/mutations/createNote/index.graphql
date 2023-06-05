@@ -1,9 +1,9 @@
-query getNoteById($id: ID!) {
-  noteById(id: $id) {
+mutation createNote($date: DateTime!) {
+  createNote(date: $date) {
     id
     trainings {
-      id
       createdAt
+      id
       exercise {
         id
         name

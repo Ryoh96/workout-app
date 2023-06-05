@@ -9,6 +9,8 @@ import type {
   ResolverTypeWrapper,
 } from '@/graphql/generated/resolvers-types'
 
+import { updateTotalLoad } from '../../utils/updateTotalLoad'
+
 export const addRound:
   | Resolver<
       Maybe<ResolverTypeWrapper<Round>>,
@@ -68,6 +70,19 @@ export const addRound:
       memo: true,
     },
   })
+
+  const trainingUser = await prisma.training
+    .findUnique({
+      where: {
+        id: trainingId,
+      },
+    })
+    .note()
+    .user()
+
+  if (!trainingUser || trainingUser.id !== currentUser.id) {
+    throw new Error('アクセス権限がありません。')
+  }
 
   return createdRound
 }

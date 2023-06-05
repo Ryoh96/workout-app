@@ -64,5 +64,15 @@ export const editRound:
     data: roundData,
   })
 
+  const training = await prisma.round
+    .findUnique({
+      where: {
+        id,
+      },
+    })
+    .training()
+
+  await updateTotalLoad(prisma, training?.id)
+
   return round
 }

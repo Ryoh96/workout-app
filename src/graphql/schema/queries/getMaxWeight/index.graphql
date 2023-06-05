@@ -1,0 +1,6 @@
+query getMaxWeight($exerciseId: ID!) {
+  maxWeight(exerciseId: $exerciseId) {
+    maxWeight
+    createdAt
+  }
+}

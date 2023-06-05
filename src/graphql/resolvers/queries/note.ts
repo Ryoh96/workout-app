@@ -21,7 +21,15 @@ export const note:
     throw new Error('ユーザーがログインしていません。')
   }
 
-  const datetime = new Date(date)
+  const startOfDay = new Date(
+    new Date(date).toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo' })
+  )
+  startOfDay.setHours(0, 0, 0, 0)
+
+  const endOfDay = new Date(
+    new Date(date).toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo' })
+  )
+  endOfDay.setHours(23, 59, 59, 999)
 
   const existingNotes = await prisma.user
     .findUnique({
@@ -32,8 +40,8 @@ export const note:
     .notes({
       where: {
         createdAt: {
-          gte: date,
-          lt: new Date(datetime.getTime() + 24 * 60 * 60 * 1000),
+          gte: startOfDay,
+          lte: endOfDay,
         },
       },
     })

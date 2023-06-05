@@ -5,8 +5,10 @@ export const note: GetNoteQuery = {
     id: 'hoge',
     trainings: [
       {
-        id: 'fuga',
+        createdAt: '2023-01-02:10:10:10',
+        id: 'hoge',
         exercise: {
+          id: 'hoge',
           name: 'ダンベルベンチプレス',
           parts: [
             {
@@ -16,21 +18,21 @@ export const note: GetNoteQuery = {
         },
         rounds: [
           {
-            setCount: 1,
+            id: 'hoge',
             weight: 30,
             repetition: 10,
             interval: 90,
             unit: 'KG',
           },
           {
-            setCount: 2,
+            id: 'piyo',
             weight: 30,
             repetition: 9,
             interval: 90,
             unit: 'KG',
           },
           {
-            setCount: 3,
+            id: 'fuga',
             weight: 25,
             repetition: 8,
             unit: 'KG',
@@ -38,8 +40,10 @@ export const note: GetNoteQuery = {
         ],
       },
       {
-        id: 'piyo',
+        createdAt: '2023-01-02:10:10:10',
+        id: 'hoge',
         exercise: {
+          id: 'hoge',
           name: 'ダンベルフライ',
           parts: [
             {
@@ -49,31 +53,24 @@ export const note: GetNoteQuery = {
         },
         rounds: [
           {
-            setCount: 1,
+            id: 'hoge',
             weight: 30,
             repetition: 10,
             interval: 90,
             unit: 'KG',
-            memo: {
-              content: '腰を上げてデクライン気味にする。肩甲骨を寄せる。',
-            },
           },
           {
-            setCount: 2,
+            id: 'piyo',
             weight: 30,
             repetition: 9,
             interval: 90,
             unit: 'KG',
           },
           {
-            setCount: 3,
+            id: 'fuga',
             weight: 25,
             repetition: 8,
-            interval: 90,
             unit: 'KG',
-            memo: {
-              content: '腰に負担がかからないように気をつける',
-            },
           },
         ],
       },

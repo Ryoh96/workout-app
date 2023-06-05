@@ -34,6 +34,16 @@ enum Gender {
   OTHER
 }
 
+type MaxTotalLoadResult {
+  createdAt: DateTime
+  maxTotalLoad: Float
+}
+
+type MaxWeightResult {
+  createdAt: DateTime
+  maxWeight: Float
+}
+
 type Memo {
   content: String!
   exercise: Exercise!
@@ -52,6 +62,7 @@ type Mutation {
   addExerciseByPart(name: String!, partId: ID!): Exercise
   addRound(input: AddRoundInput!): Round
   createExerciseAtNote(name: String!, parts: [String!]): Exercise
+  createNote(date: DateTime!): Note!
   createOrGetNoteId: Note!
   createOrUpdateTodayNote: Note!
   createTraining(exerciseId: ID!, id: ID!, noteId: ID!): Training
@@ -88,19 +99,22 @@ type Place {
 }
 
 type Query {
-  exercise(id: ID!): Exercise!
+  exercise(id: ID!): Exercise
   exerciseByDate(date: DateTime!): [Exercise]
   exercises(limit: Int, offset: Int): [Exercise!]
+  maxTotalLoad(exerciseId: ID!): MaxTotalLoadResult
+  maxWeight(exerciseId: ID!): MaxWeightResult
   note(date: DateTime!): Note
-  noteById(id: ID!): Note!
-  notes(limit: Int, offset: Int, orderBy: OrderBy!): [Note!]
+  noteById(id: ID): Note
+  notes(orderBy: OrderBy, since: DateTime, until: DateTime): [Note!]
   part(id: ID!): Part
   parts(limit: Int, offset: Int): [Part!]
   place(id: ID!): Place
   places(limit: Int, offset: Int): [Place!]
+  previousTraining(id: ID!): Training
   round(id: ID!): Round
   rounds(trainingId: ID!): [Round]
-  training(id: ID!): Training!
+  training(id: ID!): Training
   trainings(limit: Int, offset: Int): [Training!]
   user: User
 }
@@ -132,6 +146,7 @@ type Training {
   memo: String
   note: Note!
   rounds: [Round!]
+  totalLoad: Float
   updatedAt: DateTime
 }
 

@@ -13,5 +13,5 @@ export const resolvers: Resolvers = {
   Training,
   Round,
   Query,
-  Mutation,
+  Mutation
 }

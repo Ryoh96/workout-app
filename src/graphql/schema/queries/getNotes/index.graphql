@@ -1,6 +1,7 @@
-query getNotesByDate($orderBy: OrderBy!) {
-  notes(orderBy: $orderBy) {
+query getNotes($since: DateTime, $until: DateTime) {
+  notes(since: $since, until: $until) {
     trainings {
+      createdAt
       exercise {
         name
         parts {

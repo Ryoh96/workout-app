@@ -1,5 +1,6 @@
 import { addExerciseByPart } from './addExerciseByPart'
 import { addRound } from './addRound'
+import { createNote } from './createNote'
 import { createOrGetNoteId } from './createOrGetNoteId'
 import { createTraining } from './createTraining'
 import { editRound } from './editRound'
@@ -14,4 +15,5 @@ export const Mutation = {
   editRound,
   removeRound,
   removeTraining,
+  createNote,
 }

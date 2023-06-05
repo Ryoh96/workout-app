@@ -8,6 +8,7 @@ type Mutation {
   editRound(input: EditRoundInput!): Round
   removeRound(id: ID!): Round
   createOrGetNoteId: Note!
+  createNote(date: DateTime!): Note!
 }
 
 input RoundInput {

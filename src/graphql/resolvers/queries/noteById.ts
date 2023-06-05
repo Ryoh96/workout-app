@@ -2,23 +2,25 @@ import type { Note } from '@prisma/client'
 
 import type { Context } from '@/graphql/context'
 import type {
+  Maybe,
   QueryNoteByIdArgs,
-  RequireFields,
   Resolver,
   ResolverTypeWrapper,
 } from '@/graphql/generated/resolvers-types'
 
 export const noteById:
   | Resolver<
-      ResolverTypeWrapper<Note>,
+      Maybe<ResolverTypeWrapper<Note>>,
       {},
       Context,
-      RequireFields<QueryNoteByIdArgs, 'id'>
+      Partial<QueryNoteByIdArgs>
     >
   | undefined = async (_, { id }, { prisma, currentUser }) => {
   if (!currentUser?.id) {
     throw new Error('ユーザーがログインしていません。')
   }
+
+  if (!id) return null
 
   const note = await prisma.note.findUnique({
     where: {

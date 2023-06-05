@@ -68,6 +68,7 @@ type Training {
   createdAt: DateTime!
   updatedAt: DateTime
   rounds: [Round!]
+  totalLoad: Float
 }
 
 # セット

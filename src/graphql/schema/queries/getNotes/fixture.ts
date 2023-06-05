@@ -5,6 +5,7 @@ export const notesByDate: GetNotesByDateQuery = {
     {
       trainings: [
         {
+          createdAt: '2023-01-02:10:10:10',
           exercise: {
             name: 'ダンベルベンチプレス',
             parts: [
@@ -15,21 +16,21 @@ export const notesByDate: GetNotesByDateQuery = {
           },
           rounds: [
             {
-              setCount: 1,
+              id: 'hoge',
               weight: 30,
               repetition: 10,
               interval: 90,
               unit: 'KG',
             },
             {
-              setCount: 2,
+              id: 'piyo',
               weight: 30,
               repetition: 9,
               interval: 90,
               unit: 'KG',
             },
             {
-              setCount: 3,
+              id: 'fuga',
               weight: 25,
               repetition: 8,
               unit: 'KG',
@@ -37,6 +38,7 @@ export const notesByDate: GetNotesByDateQuery = {
           ],
         },
         {
+          createdAt: '2023-01-02:10:10:10',
           exercise: {
             name: 'ダンベルフライ',
             parts: [
@@ -47,24 +49,23 @@ export const notesByDate: GetNotesByDateQuery = {
           },
           rounds: [
             {
-              setCount: 1,
+              id: 'hoge',
               weight: 30,
               repetition: 10,
               interval: 90,
               unit: 'KG',
             },
             {
-              setCount: 2,
+              id: 'piyo',
               weight: 30,
               repetition: 9,
               interval: 90,
               unit: 'KG',
             },
             {
-              setCount: 3,
+              id: 'fuga',
               weight: 25,
               repetition: 8,
-              interval: 90,
               unit: 'KG',
             },
           ],
@@ -78,6 +79,7 @@ export const notesByDate: GetNotesByDateQuery = {
     {
       trainings: [
         {
+          createdAt: '2023-01-02:10:10:10',
           exercise: {
             name: 'ダンベルカール',
             parts: [
@@ -88,29 +90,29 @@ export const notesByDate: GetNotesByDateQuery = {
           },
           rounds: [
             {
-              setCount: 1,
+              id: 'hoge',
               weight: 30,
               repetition: 10,
               interval: 90,
               unit: 'KG',
             },
             {
-              setCount: 2,
+              id: 'piyo',
               weight: 30,
               repetition: 9,
               interval: 90,
               unit: 'KG',
             },
             {
-              setCount: 3,
+              id: 'fuga',
               weight: 25,
               repetition: 8,
-              interval: 90,
               unit: 'KG',
             },
           ],
         },
         {
+          createdAt: '2023-01-02:10:10:10',
           exercise: {
             name: 'スカルクラッシャー',
             parts: [
@@ -121,17 +123,23 @@ export const notesByDate: GetNotesByDateQuery = {
           },
           rounds: [
             {
-              setCount: 1,
+              id: 'hoge',
               weight: 30,
               repetition: 10,
               interval: 90,
               unit: 'KG',
             },
             {
-              setCount: 2,
+              id: 'piyo',
               weight: 30,
               repetition: 9,
               interval: 90,
+              unit: 'KG',
+            },
+            {
+              id: 'fuga',
+              weight: 25,
+              repetition: 8,
               unit: 'KG',
             },
           ],

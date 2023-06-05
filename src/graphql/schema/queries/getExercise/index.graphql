@@ -1,5 +1,5 @@
-query getExercise($exerciseId: ID!) {
-  exercise(id: $exerciseId) {
+query getExercise($id: ID!) {
+  exercise(id: $id) {
     name
     parts {
       name
@@ -18,8 +18,5 @@ query getExercise($exerciseId: ID!) {
         createdAt
       }
     }
-    maxWeight
-    maxTotalLoad
-    maxWeightUnit
   }
 }

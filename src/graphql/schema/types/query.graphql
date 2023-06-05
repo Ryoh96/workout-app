@@ -2,13 +2,14 @@ type Query {
   user: User
 
   note(date: DateTime!): Note
-  noteById(id: ID!): Note!
-  notes(offset: Int, limit: Int, orderBy: OrderBy!): [Note!]
+  noteById(id: ID): Note
+  notes(since: DateTime, until: DateTime, orderBy: OrderBy): [Note!]
 
-  training(id: ID!): Training!
+  training(id: ID!): Training
   trainings(offset: Int, limit: Int): [Training!]
+  previousTraining(id: ID!): Training
 
-  exercise(id: ID!): Exercise!
+  exercise(id: ID!): Exercise
   exercises(offset: Int, limit: Int): [Exercise!]
   exerciseByDate(date: DateTime!): [Exercise]
 
@@ -20,4 +21,17 @@ type Query {
 
   round(id: ID!): Round
   rounds(trainingId: ID!): [Round]
+
+  maxWeight(exerciseId: ID!): MaxWeightResult
+  maxTotalLoad(exerciseId: ID!): MaxTotalLoadResult
+}
+
+type MaxWeightResult {
+  maxWeight: Float
+  createdAt: DateTime
+}
+
+type MaxTotalLoadResult {
+  maxTotalLoad: Float
+  createdAt: DateTime
 }
