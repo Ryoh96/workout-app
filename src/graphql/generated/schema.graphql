@@ -15,9 +15,6 @@ type Exercise {
   articleUrl: [String!]
   createdAt: DateTime
   id: ID!
-  maxTotalLoad: Float
-  maxWeight: Float
-  maxWeightUnit: Unit
   memos: [Memo]
   menus: [Menu!]
   movieUrl: [String!]
@@ -46,6 +43,7 @@ type MaxWeightResult {
 
 type Memo {
   content: String!
+  createdAt: DateTime!
   exercise: Exercise!
   id: ID!
   pin: Boolean
@@ -63,19 +61,24 @@ type Mutation {
   addRound(input: AddRoundInput!): Round
   createExerciseAtNote(name: String!, parts: [String!]): Exercise
   createNote(date: DateTime!): Note!
-  createOrGetNoteId: Note!
-  createOrUpdateTodayNote: Note!
   createTraining(exerciseId: ID!, id: ID!, noteId: ID!): Training
+  deleteExercise(id: ID!): Exercise!
+  deleteMemo(id: ID!): Memo
+  deleteMemoAtNote(id: ID!, index: Int!): Note!
+  deleteNote(id: ID!): Note!
   editRound(input: EditRoundInput!): Round
   removeRound(id: ID!): Round
   removeTraining(id: ID!): Training
+  renameExercise(id: ID!, name: String!): Exercise!
+  upsertMemoAtNote(id: ID!, index: Int, memo: String!): Note!
 }
 
 type Note {
   createdAt: DateTime!
+  date: DateTime!
   id: ID!
+  memos: [String!]
   parts: [Part!]
-  place: Place
   trainings: [Training!]
   user: User!
 }
@@ -91,31 +94,27 @@ type Part {
   name: String!
 }
 
-type Place {
-  id: ID!
-  name: String!
-  notes: [Note!]
-  user: User!
-}
-
 type Query {
   exercise(id: ID!): Exercise
   exerciseByDate(date: DateTime!): [Exercise]
   exercises(limit: Int, offset: Int): [Exercise!]
   maxTotalLoad(exerciseId: ID!): MaxTotalLoadResult
   maxWeight(exerciseId: ID!): MaxWeightResult
+  memo(id: ID!): Memo
+  memos(id: ID!): [Memo]
+  nextTraining(id: ID!): Training
   note(date: DateTime!): Note
   noteById(id: ID): Note
   notes(orderBy: OrderBy, since: DateTime, until: DateTime): [Note!]
   part(id: ID!): Part
   parts(limit: Int, offset: Int): [Part!]
-  place(id: ID!): Place
-  places(limit: Int, offset: Int): [Place!]
-  previousTraining(id: ID!): Training
+  pinnedMemos(id: ID!): [Memo]
+  previousTrainings(id: ID!, limit: Int!): [Training]
   round(id: ID!): Round
   rounds(trainingId: ID!): [Round]
   training(id: ID!): Training
   trainings(limit: Int, offset: Int): [Training!]
+  trainingsStat(exerciseId: ID!, limit: Int!): [Training]
   user: User
 }
 
@@ -167,7 +166,6 @@ type User {
   name: String!
   notes: [Note!]
   password: String!
-  places: [Place!]
   updatedAt: DateTime!
   weight: Float
 }

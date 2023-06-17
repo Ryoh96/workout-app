@@ -56,4 +56,19 @@ export const Training: Resolvers['Training'] = {
 
     return total
   },
+  note: async (parent, args, { prisma, currentUser }) => {
+    const note = await prisma.training
+      .findUnique({
+        where: {
+          id: parent.id,
+        },
+      })
+      .note()
+
+    if (note === null) {
+      throw new Error('ノートが存在しません')
+    }
+
+    return note
+  },
 }

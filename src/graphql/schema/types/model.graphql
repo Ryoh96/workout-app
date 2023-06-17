@@ -10,7 +10,6 @@ type User {
   weight: Float
   createdAt: DateTime!
   updatedAt: DateTime!
-  places: [Place!]
   notes: [Note!]
   exercises: [Exercise!]
   menus: [Menu!]
@@ -26,9 +25,6 @@ type Exercise {
   movieUrl: [String!]
   articleUrl: [String!]
   memos: [Memo]
-  maxWeight: Float
-  maxWeightUnit: Unit
-  maxTotalLoad: Float
   createdAt: DateTime
   updatedAt: DateTime!
   menus: [Menu!]
@@ -41,22 +37,15 @@ type Part {
   exercises: [Exercise!]
 }
 
-# 場所
-type Place {
-  id: ID!
-  name: String!
-  user: User!
-  notes: [Note!]
-}
-
 # ノート
 type Note {
   id: ID!
-  place: Place
   user: User!
   trainings: [Training!]
   parts: [Part!]
   createdAt: DateTime!
+  date: DateTime!
+  memos: [String!]
 }
 
 # トレーニング
@@ -90,6 +79,7 @@ type Memo {
   round: Round!
   exercise: Exercise!
   pin: Boolean
+  createdAt: DateTime!
 }
 
 # メニュー

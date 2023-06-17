@@ -1,0 +1,5 @@
+mutation renameExercise($id: ID!, $name: String!) {
+  renameExercise(id: $id, name: $name) {
+    id
+  }
+}

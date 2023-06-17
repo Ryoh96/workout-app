@@ -1,0 +1,24 @@
+mutation createNote($date: DateTime!) {
+  createNote(date: $date) {
+    id
+    trainings {
+      createdAt
+      id
+      exercise {
+        id
+        name
+        parts {
+          name
+        }
+      }
+      rounds {
+        ...roundSets
+        memo {
+          content
+          pin
+        }
+      }
+    }
+    createdAt
+  }
+}

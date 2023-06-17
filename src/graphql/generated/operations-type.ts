@@ -29,9 +29,6 @@ export type Exercise = {
   articleUrl?: Maybe<Array<Scalars['String']>>;
   createdAt?: Maybe<Scalars['DateTime']>;
   id: Scalars['ID'];
-  maxTotalLoad?: Maybe<Scalars['Float']>;
-  maxWeight?: Maybe<Scalars['Float']>;
-  maxWeightUnit?: Maybe<Unit>;
   memos?: Maybe<Array<Maybe<Memo>>>;
   menus?: Maybe<Array<Menu>>;
   movieUrl?: Maybe<Array<Scalars['String']>>;
@@ -64,6 +61,7 @@ export type MaxWeightResult = {
 export type Memo = {
   __typename?: 'Memo';
   content: Scalars['String'];
+  createdAt: Scalars['DateTime'];
   exercise: Exercise;
   id: Scalars['ID'];
   pin?: Maybe<Scalars['Boolean']>;
@@ -83,12 +81,16 @@ export type Mutation = {
   addRound?: Maybe<Round>;
   createExerciseAtNote?: Maybe<Exercise>;
   createNote: Note;
-  createOrGetNoteId: Note;
-  createOrUpdateTodayNote: Note;
   createTraining?: Maybe<Training>;
+  deleteExercise: Exercise;
+  deleteMemo?: Maybe<Memo>;
+  deleteMemoAtNote: Note;
+  deleteNote: Note;
   editRound?: Maybe<Round>;
   removeRound?: Maybe<Round>;
   removeTraining?: Maybe<Training>;
+  renameExercise: Exercise;
+  upsertMemoAtNote: Note;
 };
 
 
@@ -121,6 +123,27 @@ export type MutationCreateTrainingArgs = {
 };
 
 
+export type MutationDeleteExerciseArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationDeleteMemoArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationDeleteMemoAtNoteArgs = {
+  id: Scalars['ID'];
+  index: Scalars['Int'];
+};
+
+
+export type MutationDeleteNoteArgs = {
+  id: Scalars['ID'];
+};
+
+
 export type MutationEditRoundArgs = {
   input: EditRoundInput;
 };
@@ -135,12 +158,26 @@ export type MutationRemoveTrainingArgs = {
   id: Scalars['ID'];
 };
 
+
+export type MutationRenameExerciseArgs = {
+  id: Scalars['ID'];
+  name: Scalars['String'];
+};
+
+
+export type MutationUpsertMemoAtNoteArgs = {
+  id: Scalars['ID'];
+  index?: InputMaybe<Scalars['Int']>;
+  memo: Scalars['String'];
+};
+
 export type Note = {
   __typename?: 'Note';
   createdAt: Scalars['DateTime'];
+  date: Scalars['DateTime'];
   id: Scalars['ID'];
+  memos?: Maybe<Array<Scalars['String']>>;
   parts?: Maybe<Array<Part>>;
-  place?: Maybe<Place>;
   trainings?: Maybe<Array<Training>>;
   user: User;
 };
@@ -158,14 +195,6 @@ export type Part = {
   name: Scalars['String'];
 };
 
-export type Place = {
-  __typename?: 'Place';
-  id: Scalars['ID'];
-  name: Scalars['String'];
-  notes?: Maybe<Array<Note>>;
-  user: User;
-};
-
 export type Query = {
   __typename?: 'Query';
   exercise?: Maybe<Exercise>;
@@ -173,18 +202,21 @@ export type Query = {
   exercises?: Maybe<Array<Exercise>>;
   maxTotalLoad?: Maybe<MaxTotalLoadResult>;
   maxWeight?: Maybe<MaxWeightResult>;
+  memo?: Maybe<Memo>;
+  memos?: Maybe<Array<Maybe<Memo>>>;
+  nextTraining?: Maybe<Training>;
   note?: Maybe<Note>;
   noteById?: Maybe<Note>;
   notes?: Maybe<Array<Note>>;
   part?: Maybe<Part>;
   parts?: Maybe<Array<Part>>;
-  place?: Maybe<Place>;
-  places?: Maybe<Array<Place>>;
-  previousTraining?: Maybe<Training>;
+  pinnedMemos?: Maybe<Array<Maybe<Memo>>>;
+  previousTrainings?: Maybe<Array<Maybe<Training>>>;
   round?: Maybe<Round>;
   rounds?: Maybe<Array<Maybe<Round>>>;
   training?: Maybe<Training>;
   trainings?: Maybe<Array<Training>>;
+  trainingsStat?: Maybe<Array<Maybe<Training>>>;
   user?: Maybe<User>;
 };
 
@@ -212,6 +244,21 @@ export type QueryMaxTotalLoadArgs = {
 
 export type QueryMaxWeightArgs = {
   exerciseId: Scalars['ID'];
+};
+
+
+export type QueryMemoArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryMemosArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryNextTrainingArgs = {
+  id: Scalars['ID'];
 };
 
 
@@ -243,19 +290,14 @@ export type QueryPartsArgs = {
 };
 
 
-export type QueryPlaceArgs = {
+export type QueryPinnedMemosArgs = {
   id: Scalars['ID'];
 };
 
 
-export type QueryPlacesArgs = {
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-};
-
-
-export type QueryPreviousTrainingArgs = {
+export type QueryPreviousTrainingsArgs = {
   id: Scalars['ID'];
+  limit: Scalars['Int'];
 };
 
 
@@ -277,6 +319,12 @@ export type QueryTrainingArgs = {
 export type QueryTrainingsArgs = {
   limit?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
+};
+
+
+export type QueryTrainingsStatArgs = {
+  exerciseId: Scalars['ID'];
+  limit: Scalars['Int'];
 };
 
 export type Round = {
@@ -331,7 +379,6 @@ export type User = {
   name: Scalars['String'];
   notes?: Maybe<Array<Note>>;
   password: Scalars['String'];
-  places?: Maybe<Array<Place>>;
   updatedAt: Scalars['DateTime'];
   weight?: Maybe<Scalars['Float']>;
 };
@@ -368,17 +415,7 @@ export type CreateNoteMutationVariables = Exact<{
 }>;
 
 
-export type CreateNoteMutation = { __typename?: 'Mutation', createNote: { __typename?: 'Note', id: string, createdAt: string, trainings?: Array<{ __typename?: 'Training', createdAt: string, id: string, exercise?: { __typename?: 'Exercise', id: string, name: string, parts?: Array<{ __typename?: 'Part', name: string }> | null } | null, rounds?: Array<{ __typename?: 'Round', id: string, weight: number, repetition: number, interval?: number | null, unit: Unit, memo?: { __typename?: 'Memo', content: string, pin?: boolean | null } | null }> | null }> | null, place?: { __typename?: 'Place', name: string } | null } };
-
-export type CreateOrGetNoteIdMutationVariables = Exact<{ [key: string]: never; }>;
-
-
-export type CreateOrGetNoteIdMutation = { __typename?: 'Mutation', createOrGetNoteId: { __typename?: 'Note', id: string } };
-
-export type CreateOrUpdateTodayNoteMutationVariables = Exact<{ [key: string]: never; }>;
-
-
-export type CreateOrUpdateTodayNoteMutation = { __typename?: 'Mutation', createOrUpdateTodayNote: { __typename?: 'Note', id: string, createdAt: string, trainings?: Array<{ __typename?: 'Training', id: string, exercise?: { __typename?: 'Exercise', id: string, name: string, parts?: Array<{ __typename?: 'Part', name: string }> | null } | null, rounds?: Array<{ __typename?: 'Round', id: string, weight: number, repetition: number, interval?: number | null, unit: Unit, memo?: { __typename?: 'Memo', content: string, pin?: boolean | null } | null }> | null }> | null, place?: { __typename?: 'Place', name: string } | null } };
+export type CreateNoteMutation = { __typename?: 'Mutation', createNote: { __typename?: 'Note', id: string, createdAt: string, trainings?: Array<{ __typename?: 'Training', createdAt: string, id: string, exercise?: { __typename?: 'Exercise', id: string, name: string, parts?: Array<{ __typename?: 'Part', name: string }> | null } | null, rounds?: Array<{ __typename?: 'Round', id: string, weight: number, repetition: number, interval?: number | null, unit: Unit, memo?: { __typename?: 'Memo', content: string, pin?: boolean | null } | null }> | null }> | null } };
 
 export type CreateTrainingMutationVariables = Exact<{
   noteId: Scalars['ID'];
@@ -388,6 +425,35 @@ export type CreateTrainingMutationVariables = Exact<{
 
 
 export type CreateTrainingMutation = { __typename?: 'Mutation', createTraining?: { __typename?: 'Training', id: string } | null };
+
+export type DeleteExerciseMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type DeleteExerciseMutation = { __typename?: 'Mutation', deleteExercise: { __typename?: 'Exercise', id: string } };
+
+export type DeleteMemoMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type DeleteMemoMutation = { __typename?: 'Mutation', deleteMemo?: { __typename?: 'Memo', id: string } | null };
+
+export type DeleteMemoAtNoteMutationVariables = Exact<{
+  id: Scalars['ID'];
+  index: Scalars['Int'];
+}>;
+
+
+export type DeleteMemoAtNoteMutation = { __typename?: 'Mutation', deleteMemoAtNote: { __typename?: 'Note', id: string } };
+
+export type DeleteNoteMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type DeleteNoteMutation = { __typename?: 'Mutation', deleteNote: { __typename?: 'Note', id: string } };
 
 export type EditRoundMutationVariables = Exact<{
   input: EditRoundInput;
@@ -410,20 +476,32 @@ export type RemoveTrainingMutationVariables = Exact<{
 
 export type RemoveTrainingMutation = { __typename?: 'Mutation', removeTraining?: { __typename?: 'Training', id: string } | null };
 
+export type RenameExerciseMutationVariables = Exact<{
+  id: Scalars['ID'];
+  name: Scalars['String'];
+}>;
+
+
+export type RenameExerciseMutation = { __typename?: 'Mutation', renameExercise: { __typename?: 'Exercise', id: string } };
+
+export type UpsertMemoAtNoteMutationVariables = Exact<{
+  id: Scalars['ID'];
+  memo: Scalars['String'];
+  index?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type UpsertMemoAtNoteMutation = { __typename?: 'Mutation', upsertMemoAtNote: { __typename?: 'Note', id: string, memos?: Array<string> | null } };
+
 export type GetAllExercisesMaxQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAllExercisesMaxQuery = { __typename?: 'Query', exercises?: Array<{ __typename?: 'Exercise', id: string, name: string, maxWeight?: number | null, maxTotalLoad?: number | null, maxWeightUnit?: Unit | null, updatedAt: string }> | null };
+export type GetAllExercisesMaxQuery = { __typename?: 'Query', exercises?: Array<{ __typename?: 'Exercise', id: string, name: string, updatedAt: string }> | null };
 
 export type GetAllPartsNameQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetAllPartsNameQuery = { __typename?: 'Query', parts?: Array<{ __typename?: 'Part', id: string, name: string }> | null };
-
-export type GetAllPlacesNameQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type GetAllPlacesNameQuery = { __typename?: 'Query', places?: Array<{ __typename?: 'Place', name: string }> | null };
 
 export type GetExerciseQueryVariables = Exact<{
   id: Scalars['ID'];
@@ -437,7 +515,7 @@ export type GetExerciseMaxByPartsQueryVariables = Exact<{
 }>;
 
 
-export type GetExerciseMaxByPartsQuery = { __typename?: 'Query', part?: { __typename?: 'Part', exercises?: Array<{ __typename?: 'Exercise', name: string, maxWeight?: number | null, maxTotalLoad?: number | null, maxWeightUnit?: Unit | null }> | null } | null };
+export type GetExerciseMaxByPartsQuery = { __typename?: 'Query', part?: { __typename?: 'Part', exercises?: Array<{ __typename?: 'Exercise', name: string }> | null } | null };
 
 export type GetExerciseNameByDateQueryVariables = Exact<{
   date: Scalars['DateTime'];
@@ -467,19 +545,33 @@ export type GetMaxWeightQueryVariables = Exact<{
 
 export type GetMaxWeightQuery = { __typename?: 'Query', maxWeight?: { __typename?: 'MaxWeightResult', maxWeight?: number | null, createdAt?: string | null } | null };
 
+export type GetMemosByExercisesQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type GetMemosByExercisesQuery = { __typename?: 'Query', memos?: Array<{ __typename?: 'Memo', id: string, content: string, createdAt: string } | null> | null };
+
 export type GetNoteQueryVariables = Exact<{
   date: Scalars['DateTime'];
 }>;
 
 
-export type GetNoteQuery = { __typename?: 'Query', note?: { __typename?: 'Note', id: string, createdAt: string, trainings?: Array<{ __typename?: 'Training', createdAt: string, id: string, totalLoad?: number | null, exercise?: { __typename?: 'Exercise', id: string, name: string, parts?: Array<{ __typename?: 'Part', name: string }> | null } | null, rounds?: Array<{ __typename?: 'Round', id: string, weight: number, repetition: number, interval?: number | null, unit: Unit, memo?: { __typename?: 'Memo', content: string, pin?: boolean | null } | null }> | null }> | null, place?: { __typename?: 'Place', name: string } | null } | null };
+export type GetNoteQuery = { __typename?: 'Query', note?: { __typename?: 'Note', id: string, createdAt: string, trainings?: Array<{ __typename?: 'Training', createdAt: string, id: string, totalLoad?: number | null, exercise?: { __typename?: 'Exercise', id: string, name: string, parts?: Array<{ __typename?: 'Part', name: string }> | null } | null, rounds?: Array<{ __typename?: 'Round', id: string, weight: number, repetition: number, interval?: number | null, unit: Unit, memo?: { __typename?: 'Memo', content: string, pin?: boolean | null } | null }> | null }> | null } | null };
 
 export type GetNoteByIdQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
 
-export type GetNoteByIdQuery = { __typename?: 'Query', noteById?: { __typename?: 'Note', id: string, createdAt: string, trainings?: Array<{ __typename?: 'Training', id: string, createdAt: string, exercise?: { __typename?: 'Exercise', id: string, name: string, parts?: Array<{ __typename?: 'Part', name: string }> | null } | null, rounds?: Array<{ __typename?: 'Round', id: string, weight: number, repetition: number, interval?: number | null, unit: Unit, memo?: { __typename?: 'Memo', content: string, pin?: boolean | null } | null }> | null }> | null, place?: { __typename?: 'Place', name: string } | null } | null };
+export type GetNoteByIdQuery = { __typename?: 'Query', noteById?: { __typename?: 'Note', id: string, createdAt: string, trainings?: Array<{ __typename?: 'Training', id: string, createdAt: string, exercise?: { __typename?: 'Exercise', id: string, name: string, parts?: Array<{ __typename?: 'Part', name: string }> | null } | null, rounds?: Array<{ __typename?: 'Round', id: string, weight: number, repetition: number, interval?: number | null, unit: Unit, memo?: { __typename?: 'Memo', content: string, pin?: boolean | null } | null }> | null }> | null } | null };
+
+export type GetNoteMemoQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type GetNoteMemoQuery = { __typename?: 'Query', noteById?: { __typename?: 'Note', memos?: Array<string> | null } | null };
 
 export type GetNotesQueryVariables = Exact<{
   since?: InputMaybe<Scalars['DateTime']>;
@@ -487,14 +579,22 @@ export type GetNotesQueryVariables = Exact<{
 }>;
 
 
-export type GetNotesQuery = { __typename?: 'Query', notes?: Array<{ __typename?: 'Note', createdAt: string, trainings?: Array<{ __typename?: 'Training', createdAt: string, exercise?: { __typename?: 'Exercise', name: string, parts?: Array<{ __typename?: 'Part', name: string }> | null } | null, rounds?: Array<{ __typename?: 'Round', id: string, weight: number, repetition: number, interval?: number | null, unit: Unit }> | null }> | null, place?: { __typename?: 'Place', name: string } | null }> | null };
+export type GetNotesQuery = { __typename?: 'Query', notes?: Array<{ __typename?: 'Note', date: string, createdAt: string, trainings?: Array<{ __typename?: 'Training', createdAt: string, exercise?: { __typename?: 'Exercise', name: string, parts?: Array<{ __typename?: 'Part', name: string }> | null } | null, rounds?: Array<{ __typename?: 'Round', id: string, weight: number, repetition: number, interval?: number | null, unit: Unit }> | null }> | null }> | null };
 
-export type GetPreviousTrainingQueryVariables = Exact<{
+export type GetPinnedMemosByExercisesQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
 
-export type GetPreviousTrainingQuery = { __typename?: 'Query', previousTraining?: { __typename?: 'Training', id: string, rounds?: Array<{ __typename?: 'Round', id: string, weight: number, repetition: number, interval?: number | null, unit: Unit }> | null } | null };
+export type GetPinnedMemosByExercisesQuery = { __typename?: 'Query', pinnedMemos?: Array<{ __typename?: 'Memo', id: string, content: string, createdAt: string } | null> | null };
+
+export type GetPreviousTrainingsQueryVariables = Exact<{
+  id: Scalars['ID'];
+  limit: Scalars['Int'];
+}>;
+
+
+export type GetPreviousTrainingsQuery = { __typename?: 'Query', previousTrainings?: Array<{ __typename?: 'Training', id: string, rounds?: Array<{ __typename?: 'Round', id: string, weight: number, repetition: number, interval?: number | null, unit: Unit }> | null, note: { __typename?: 'Note', date: string } } | null> | null };
 
 export type GetRoundByTrainingQueryVariables = Exact<{
   trainingId: Scalars['ID'];
@@ -502,6 +602,14 @@ export type GetRoundByTrainingQueryVariables = Exact<{
 
 
 export type GetRoundByTrainingQuery = { __typename?: 'Query', training?: { __typename?: 'Training', rounds?: Array<{ __typename?: 'Round', id: string, weight: number, repetition: number, interval?: number | null, unit: Unit, memo?: { __typename?: 'Memo', content: string } | null }> | null } | null };
+
+export type GetTrainingStatQueryVariables = Exact<{
+  exerciseId: Scalars['ID'];
+  limit: Scalars['Int'];
+}>;
+
+
+export type GetTrainingStatQuery = { __typename?: 'Query', trainingsStat?: Array<{ __typename?: 'Training', id: string, createdAt: string, totalLoad?: number | null, rounds?: Array<{ __typename?: 'Round', weight: number, repetition: number, interval?: number | null, unit: Unit }> | null, note: { __typename?: 'Note', date: string } } | null> | null };
 
 export type GetUserQueryVariables = Exact<{ [key: string]: never; }>;
 

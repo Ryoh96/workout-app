@@ -1,0 +1,5 @@
+mutation deleteExercise($id: ID!) {
+  deleteExercise(id: $id) {
+    id
+  }
+}

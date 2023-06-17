@@ -1,0 +1,6 @@
+mutation upsertMemoAtNote($id: ID!, $memo: String!, $index: Int) {
+  upsertMemoAtNote(id: $id, memo: $memo, index: $index) {
+    id
+    memos
+  }
+}

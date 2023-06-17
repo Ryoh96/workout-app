@@ -9,8 +9,5 @@ export const Note: Resolvers['Note'] = {
         })
         .trainings()) || []
     )
-  },
-  place: async (parent, args, { prisma, currentUser }) => {
-    return await prisma.note.findUnique({ where: { id: parent.id } }).place()
-  },
+  }
 }

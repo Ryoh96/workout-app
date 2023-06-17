@@ -1,0 +1,12 @@
+query getPreviousTrainings($id: ID!, $limit: Int!) {
+  previousTrainings(id: $id, limit: $limit) {
+    id
+    rounds {
+      ...roundSets
+    }
+    note {
+      date
+    }
+
+  }
+}

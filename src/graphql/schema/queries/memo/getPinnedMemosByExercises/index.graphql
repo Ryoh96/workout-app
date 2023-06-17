@@ -1,0 +1,7 @@
+query getPinnedMemosByExercises($id: ID!) {
+  pinnedMemos(id: $id) {
+    id
+    content
+    createdAt
+  }
+}

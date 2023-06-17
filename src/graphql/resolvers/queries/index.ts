@@ -1,17 +1,11 @@
 import type { Resolvers } from '../../generated/resolvers-types'
-import { exercise } from './exercise'
-import { exerciseByDate } from './exerciseByDate'
-import { exercises } from './exercises'
-import { maxTotalLoad } from './maxTotalLoad'
-import { maxWeight } from './maxWeight'
-import { note } from './note'
-import { noteById } from './noteById'
-import { notes } from './notes'
-import { part } from './part'
-import { parts } from './parts'
-import { previousTraining } from './previousTraining'
-import { round } from './round'
-import { rounds } from './rounds'
+import { exercise, exerciseByDate, exercises } from './exercise'
+import { memos, pinnedMemos } from './memo'
+import { note, noteById, notes } from './note'
+import { part, parts } from './part'
+import { round, rounds } from './round'
+import { maxTotalLoad, maxWeight } from './scalar'
+import { previousTrainings, trainingsStat } from './training'
 
 export const Query: Resolvers['Query'] = {
   parts,
@@ -24,7 +18,10 @@ export const Query: Resolvers['Query'] = {
   note,
   notes,
   noteById,
-  previousTraining,
   maxWeight,
   maxTotalLoad,
+  previousTrainings,
+  memos,
+  pinnedMemos,
+  trainingsStat,
 }

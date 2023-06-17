@@ -7,20 +7,24 @@ type Query {
 
   training(id: ID!): Training
   trainings(offset: Int, limit: Int): [Training!]
-  previousTraining(id: ID!): Training
+  previousTrainings(id: ID!, limit: Int!): [Training]
+  nextTraining(id: ID!): Training
 
   exercise(id: ID!): Exercise
   exercises(offset: Int, limit: Int): [Exercise!]
   exerciseByDate(date: DateTime!): [Exercise]
-
-  place(id: ID!): Place
-  places(offset: Int, limit: Int): [Place!]
 
   part(id: ID!): Part
   parts(offset: Int, limit: Int): [Part!]
 
   round(id: ID!): Round
   rounds(trainingId: ID!): [Round]
+
+  memo(id: ID!): Memo
+  memos(id: ID!): [Memo]
+  pinnedMemos(id: ID!): [Memo]
+
+  trainingsStat(exerciseId: ID!, limit: Int!): [Training]
 
   maxWeight(exerciseId: ID!): MaxWeightResult
   maxTotalLoad(exerciseId: ID!): MaxTotalLoadResult

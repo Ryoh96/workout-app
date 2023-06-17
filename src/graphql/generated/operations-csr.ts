@@ -33,9 +33,6 @@ export type Exercise = {
   articleUrl?: Maybe<Array<Scalars['String']>>;
   createdAt?: Maybe<Scalars['DateTime']>;
   id: Scalars['ID'];
-  maxTotalLoad?: Maybe<Scalars['Float']>;
-  maxWeight?: Maybe<Scalars['Float']>;
-  maxWeightUnit?: Maybe<Unit>;
   memos?: Maybe<Array<Maybe<Memo>>>;
   menus?: Maybe<Array<Menu>>;
   movieUrl?: Maybe<Array<Scalars['String']>>;
@@ -68,6 +65,7 @@ export type MaxWeightResult = {
 export type Memo = {
   __typename?: 'Memo';
   content: Scalars['String'];
+  createdAt: Scalars['DateTime'];
   exercise: Exercise;
   id: Scalars['ID'];
   pin?: Maybe<Scalars['Boolean']>;
@@ -87,12 +85,16 @@ export type Mutation = {
   addRound?: Maybe<Round>;
   createExerciseAtNote?: Maybe<Exercise>;
   createNote: Note;
-  createOrGetNoteId: Note;
-  createOrUpdateTodayNote: Note;
   createTraining?: Maybe<Training>;
+  deleteExercise: Exercise;
+  deleteMemo?: Maybe<Memo>;
+  deleteMemoAtNote: Note;
+  deleteNote: Note;
   editRound?: Maybe<Round>;
   removeRound?: Maybe<Round>;
   removeTraining?: Maybe<Training>;
+  renameExercise: Exercise;
+  upsertMemoAtNote: Note;
 };
 
 
@@ -125,6 +127,27 @@ export type MutationCreateTrainingArgs = {
 };
 
 
+export type MutationDeleteExerciseArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationDeleteMemoArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationDeleteMemoAtNoteArgs = {
+  id: Scalars['ID'];
+  index: Scalars['Int'];
+};
+
+
+export type MutationDeleteNoteArgs = {
+  id: Scalars['ID'];
+};
+
+
 export type MutationEditRoundArgs = {
   input: EditRoundInput;
 };
@@ -139,12 +162,26 @@ export type MutationRemoveTrainingArgs = {
   id: Scalars['ID'];
 };
 
+
+export type MutationRenameExerciseArgs = {
+  id: Scalars['ID'];
+  name: Scalars['String'];
+};
+
+
+export type MutationUpsertMemoAtNoteArgs = {
+  id: Scalars['ID'];
+  index?: InputMaybe<Scalars['Int']>;
+  memo: Scalars['String'];
+};
+
 export type Note = {
   __typename?: 'Note';
   createdAt: Scalars['DateTime'];
+  date: Scalars['DateTime'];
   id: Scalars['ID'];
+  memos?: Maybe<Array<Scalars['String']>>;
   parts?: Maybe<Array<Part>>;
-  place?: Maybe<Place>;
   trainings?: Maybe<Array<Training>>;
   user: User;
 };
@@ -162,14 +199,6 @@ export type Part = {
   name: Scalars['String'];
 };
 
-export type Place = {
-  __typename?: 'Place';
-  id: Scalars['ID'];
-  name: Scalars['String'];
-  notes?: Maybe<Array<Note>>;
-  user: User;
-};
-
 export type Query = {
   __typename?: 'Query';
   exercise?: Maybe<Exercise>;
@@ -177,18 +206,21 @@ export type Query = {
   exercises?: Maybe<Array<Exercise>>;
   maxTotalLoad?: Maybe<MaxTotalLoadResult>;
   maxWeight?: Maybe<MaxWeightResult>;
+  memo?: Maybe<Memo>;
+  memos?: Maybe<Array<Maybe<Memo>>>;
+  nextTraining?: Maybe<Training>;
   note?: Maybe<Note>;
   noteById?: Maybe<Note>;
   notes?: Maybe<Array<Note>>;
   part?: Maybe<Part>;
   parts?: Maybe<Array<Part>>;
-  place?: Maybe<Place>;
-  places?: Maybe<Array<Place>>;
-  previousTraining?: Maybe<Training>;
+  pinnedMemos?: Maybe<Array<Maybe<Memo>>>;
+  previousTrainings?: Maybe<Array<Maybe<Training>>>;
   round?: Maybe<Round>;
   rounds?: Maybe<Array<Maybe<Round>>>;
   training?: Maybe<Training>;
   trainings?: Maybe<Array<Training>>;
+  trainingsStat?: Maybe<Array<Maybe<Training>>>;
   user?: Maybe<User>;
 };
 
@@ -216,6 +248,21 @@ export type QueryMaxTotalLoadArgs = {
 
 export type QueryMaxWeightArgs = {
   exerciseId: Scalars['ID'];
+};
+
+
+export type QueryMemoArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryMemosArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryNextTrainingArgs = {
+  id: Scalars['ID'];
 };
 
 
@@ -247,19 +294,14 @@ export type QueryPartsArgs = {
 };
 
 
-export type QueryPlaceArgs = {
+export type QueryPinnedMemosArgs = {
   id: Scalars['ID'];
 };
 
 
-export type QueryPlacesArgs = {
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-};
-
-
-export type QueryPreviousTrainingArgs = {
+export type QueryPreviousTrainingsArgs = {
   id: Scalars['ID'];
+  limit: Scalars['Int'];
 };
 
 
@@ -281,6 +323,12 @@ export type QueryTrainingArgs = {
 export type QueryTrainingsArgs = {
   limit?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
+};
+
+
+export type QueryTrainingsStatArgs = {
+  exerciseId: Scalars['ID'];
+  limit: Scalars['Int'];
 };
 
 export type Round = {
@@ -335,7 +383,6 @@ export type User = {
   name: Scalars['String'];
   notes?: Maybe<Array<Note>>;
   password: Scalars['String'];
-  places?: Maybe<Array<Place>>;
   updatedAt: Scalars['DateTime'];
   weight?: Maybe<Scalars['Float']>;
 };
@@ -372,17 +419,7 @@ export type CreateNoteMutationVariables = Exact<{
 }>;
 
 
-export type CreateNoteMutation = { __typename?: 'Mutation', createNote: { __typename?: 'Note', id: string, createdAt: string, trainings?: Array<{ __typename?: 'Training', createdAt: string, id: string, exercise?: { __typename?: 'Exercise', id: string, name: string, parts?: Array<{ __typename?: 'Part', name: string }> | null } | null, rounds?: Array<{ __typename?: 'Round', id: string, weight: number, repetition: number, interval?: number | null, unit: Unit, memo?: { __typename?: 'Memo', content: string, pin?: boolean | null } | null }> | null }> | null, place?: { __typename?: 'Place', name: string } | null } };
-
-export type CreateOrGetNoteIdMutationVariables = Exact<{ [key: string]: never; }>;
-
-
-export type CreateOrGetNoteIdMutation = { __typename?: 'Mutation', createOrGetNoteId: { __typename?: 'Note', id: string } };
-
-export type CreateOrUpdateTodayNoteMutationVariables = Exact<{ [key: string]: never; }>;
-
-
-export type CreateOrUpdateTodayNoteMutation = { __typename?: 'Mutation', createOrUpdateTodayNote: { __typename?: 'Note', id: string, createdAt: string, trainings?: Array<{ __typename?: 'Training', id: string, exercise?: { __typename?: 'Exercise', id: string, name: string, parts?: Array<{ __typename?: 'Part', name: string }> | null } | null, rounds?: Array<{ __typename?: 'Round', id: string, weight: number, repetition: number, interval?: number | null, unit: Unit, memo?: { __typename?: 'Memo', content: string, pin?: boolean | null } | null }> | null }> | null, place?: { __typename?: 'Place', name: string } | null } };
+export type CreateNoteMutation = { __typename?: 'Mutation', createNote: { __typename?: 'Note', id: string, createdAt: string, trainings?: Array<{ __typename?: 'Training', createdAt: string, id: string, exercise?: { __typename?: 'Exercise', id: string, name: string, parts?: Array<{ __typename?: 'Part', name: string }> | null } | null, rounds?: Array<{ __typename?: 'Round', id: string, weight: number, repetition: number, interval?: number | null, unit: Unit, memo?: { __typename?: 'Memo', content: string, pin?: boolean | null } | null }> | null }> | null } };
 
 export type CreateTrainingMutationVariables = Exact<{
   noteId: Scalars['ID'];
@@ -392,6 +429,35 @@ export type CreateTrainingMutationVariables = Exact<{
 
 
 export type CreateTrainingMutation = { __typename?: 'Mutation', createTraining?: { __typename?: 'Training', id: string } | null };
+
+export type DeleteExerciseMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type DeleteExerciseMutation = { __typename?: 'Mutation', deleteExercise: { __typename?: 'Exercise', id: string } };
+
+export type DeleteMemoMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type DeleteMemoMutation = { __typename?: 'Mutation', deleteMemo?: { __typename?: 'Memo', id: string } | null };
+
+export type DeleteMemoAtNoteMutationVariables = Exact<{
+  id: Scalars['ID'];
+  index: Scalars['Int'];
+}>;
+
+
+export type DeleteMemoAtNoteMutation = { __typename?: 'Mutation', deleteMemoAtNote: { __typename?: 'Note', id: string } };
+
+export type DeleteNoteMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type DeleteNoteMutation = { __typename?: 'Mutation', deleteNote: { __typename?: 'Note', id: string } };
 
 export type EditRoundMutationVariables = Exact<{
   input: EditRoundInput;
@@ -414,20 +480,32 @@ export type RemoveTrainingMutationVariables = Exact<{
 
 export type RemoveTrainingMutation = { __typename?: 'Mutation', removeTraining?: { __typename?: 'Training', id: string } | null };
 
+export type RenameExerciseMutationVariables = Exact<{
+  id: Scalars['ID'];
+  name: Scalars['String'];
+}>;
+
+
+export type RenameExerciseMutation = { __typename?: 'Mutation', renameExercise: { __typename?: 'Exercise', id: string } };
+
+export type UpsertMemoAtNoteMutationVariables = Exact<{
+  id: Scalars['ID'];
+  memo: Scalars['String'];
+  index?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type UpsertMemoAtNoteMutation = { __typename?: 'Mutation', upsertMemoAtNote: { __typename?: 'Note', id: string, memos?: Array<string> | null } };
+
 export type GetAllExercisesMaxQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAllExercisesMaxQuery = { __typename?: 'Query', exercises?: Array<{ __typename?: 'Exercise', id: string, name: string, maxWeight?: number | null, maxTotalLoad?: number | null, maxWeightUnit?: Unit | null, updatedAt: string }> | null };
+export type GetAllExercisesMaxQuery = { __typename?: 'Query', exercises?: Array<{ __typename?: 'Exercise', id: string, name: string, updatedAt: string }> | null };
 
 export type GetAllPartsNameQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetAllPartsNameQuery = { __typename?: 'Query', parts?: Array<{ __typename?: 'Part', id: string, name: string }> | null };
-
-export type GetAllPlacesNameQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type GetAllPlacesNameQuery = { __typename?: 'Query', places?: Array<{ __typename?: 'Place', name: string }> | null };
 
 export type GetExerciseQueryVariables = Exact<{
   id: Scalars['ID'];
@@ -441,7 +519,7 @@ export type GetExerciseMaxByPartsQueryVariables = Exact<{
 }>;
 
 
-export type GetExerciseMaxByPartsQuery = { __typename?: 'Query', part?: { __typename?: 'Part', exercises?: Array<{ __typename?: 'Exercise', name: string, maxWeight?: number | null, maxTotalLoad?: number | null, maxWeightUnit?: Unit | null }> | null } | null };
+export type GetExerciseMaxByPartsQuery = { __typename?: 'Query', part?: { __typename?: 'Part', exercises?: Array<{ __typename?: 'Exercise', name: string }> | null } | null };
 
 export type GetExerciseNameByDateQueryVariables = Exact<{
   date: Scalars['DateTime'];
@@ -471,19 +549,33 @@ export type GetMaxWeightQueryVariables = Exact<{
 
 export type GetMaxWeightQuery = { __typename?: 'Query', maxWeight?: { __typename?: 'MaxWeightResult', maxWeight?: number | null, createdAt?: string | null } | null };
 
+export type GetMemosByExercisesQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type GetMemosByExercisesQuery = { __typename?: 'Query', memos?: Array<{ __typename?: 'Memo', id: string, content: string, createdAt: string } | null> | null };
+
 export type GetNoteQueryVariables = Exact<{
   date: Scalars['DateTime'];
 }>;
 
 
-export type GetNoteQuery = { __typename?: 'Query', note?: { __typename?: 'Note', id: string, createdAt: string, trainings?: Array<{ __typename?: 'Training', createdAt: string, id: string, totalLoad?: number | null, exercise?: { __typename?: 'Exercise', id: string, name: string, parts?: Array<{ __typename?: 'Part', name: string }> | null } | null, rounds?: Array<{ __typename?: 'Round', id: string, weight: number, repetition: number, interval?: number | null, unit: Unit, memo?: { __typename?: 'Memo', content: string, pin?: boolean | null } | null }> | null }> | null, place?: { __typename?: 'Place', name: string } | null } | null };
+export type GetNoteQuery = { __typename?: 'Query', note?: { __typename?: 'Note', id: string, createdAt: string, trainings?: Array<{ __typename?: 'Training', createdAt: string, id: string, totalLoad?: number | null, exercise?: { __typename?: 'Exercise', id: string, name: string, parts?: Array<{ __typename?: 'Part', name: string }> | null } | null, rounds?: Array<{ __typename?: 'Round', id: string, weight: number, repetition: number, interval?: number | null, unit: Unit, memo?: { __typename?: 'Memo', content: string, pin?: boolean | null } | null }> | null }> | null } | null };
 
 export type GetNoteByIdQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
 
-export type GetNoteByIdQuery = { __typename?: 'Query', noteById?: { __typename?: 'Note', id: string, createdAt: string, trainings?: Array<{ __typename?: 'Training', id: string, createdAt: string, exercise?: { __typename?: 'Exercise', id: string, name: string, parts?: Array<{ __typename?: 'Part', name: string }> | null } | null, rounds?: Array<{ __typename?: 'Round', id: string, weight: number, repetition: number, interval?: number | null, unit: Unit, memo?: { __typename?: 'Memo', content: string, pin?: boolean | null } | null }> | null }> | null, place?: { __typename?: 'Place', name: string } | null } | null };
+export type GetNoteByIdQuery = { __typename?: 'Query', noteById?: { __typename?: 'Note', id: string, createdAt: string, trainings?: Array<{ __typename?: 'Training', id: string, createdAt: string, exercise?: { __typename?: 'Exercise', id: string, name: string, parts?: Array<{ __typename?: 'Part', name: string }> | null } | null, rounds?: Array<{ __typename?: 'Round', id: string, weight: number, repetition: number, interval?: number | null, unit: Unit, memo?: { __typename?: 'Memo', content: string, pin?: boolean | null } | null }> | null }> | null } | null };
+
+export type GetNoteMemoQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type GetNoteMemoQuery = { __typename?: 'Query', noteById?: { __typename?: 'Note', memos?: Array<string> | null } | null };
 
 export type GetNotesQueryVariables = Exact<{
   since?: InputMaybe<Scalars['DateTime']>;
@@ -491,14 +583,22 @@ export type GetNotesQueryVariables = Exact<{
 }>;
 
 
-export type GetNotesQuery = { __typename?: 'Query', notes?: Array<{ __typename?: 'Note', createdAt: string, trainings?: Array<{ __typename?: 'Training', createdAt: string, exercise?: { __typename?: 'Exercise', name: string, parts?: Array<{ __typename?: 'Part', name: string }> | null } | null, rounds?: Array<{ __typename?: 'Round', id: string, weight: number, repetition: number, interval?: number | null, unit: Unit }> | null }> | null, place?: { __typename?: 'Place', name: string } | null }> | null };
+export type GetNotesQuery = { __typename?: 'Query', notes?: Array<{ __typename?: 'Note', date: string, createdAt: string, trainings?: Array<{ __typename?: 'Training', createdAt: string, exercise?: { __typename?: 'Exercise', name: string, parts?: Array<{ __typename?: 'Part', name: string }> | null } | null, rounds?: Array<{ __typename?: 'Round', id: string, weight: number, repetition: number, interval?: number | null, unit: Unit }> | null }> | null }> | null };
 
-export type GetPreviousTrainingQueryVariables = Exact<{
+export type GetPinnedMemosByExercisesQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
 
-export type GetPreviousTrainingQuery = { __typename?: 'Query', previousTraining?: { __typename?: 'Training', id: string, rounds?: Array<{ __typename?: 'Round', id: string, weight: number, repetition: number, interval?: number | null, unit: Unit }> | null } | null };
+export type GetPinnedMemosByExercisesQuery = { __typename?: 'Query', pinnedMemos?: Array<{ __typename?: 'Memo', id: string, content: string, createdAt: string } | null> | null };
+
+export type GetPreviousTrainingsQueryVariables = Exact<{
+  id: Scalars['ID'];
+  limit: Scalars['Int'];
+}>;
+
+
+export type GetPreviousTrainingsQuery = { __typename?: 'Query', previousTrainings?: Array<{ __typename?: 'Training', id: string, rounds?: Array<{ __typename?: 'Round', id: string, weight: number, repetition: number, interval?: number | null, unit: Unit }> | null, note: { __typename?: 'Note', date: string } } | null> | null };
 
 export type GetRoundByTrainingQueryVariables = Exact<{
   trainingId: Scalars['ID'];
@@ -506,6 +606,14 @@ export type GetRoundByTrainingQueryVariables = Exact<{
 
 
 export type GetRoundByTrainingQuery = { __typename?: 'Query', training?: { __typename?: 'Training', rounds?: Array<{ __typename?: 'Round', id: string, weight: number, repetition: number, interval?: number | null, unit: Unit, memo?: { __typename?: 'Memo', content: string } | null }> | null } | null };
+
+export type GetTrainingStatQueryVariables = Exact<{
+  exerciseId: Scalars['ID'];
+  limit: Scalars['Int'];
+}>;
+
+
+export type GetTrainingStatQuery = { __typename?: 'Query', trainingsStat?: Array<{ __typename?: 'Training', id: string, createdAt: string, totalLoad?: number | null, rounds?: Array<{ __typename?: 'Round', weight: number, repetition: number, interval?: number | null, unit: Unit }> | null, note: { __typename?: 'Note', date: string } } | null> | null };
 
 export type GetUserQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -670,9 +778,6 @@ export const CreateNoteDocument = gql`
         }
       }
     }
-    place {
-      name
-    }
     createdAt
   }
 }
@@ -703,91 +808,6 @@ export function useCreateNoteMutation(baseOptions?: Apollo.MutationHookOptions<C
 export type CreateNoteMutationHookResult = ReturnType<typeof useCreateNoteMutation>;
 export type CreateNoteMutationResult = Apollo.MutationResult<CreateNoteMutation>;
 export type CreateNoteMutationOptions = Apollo.BaseMutationOptions<CreateNoteMutation, CreateNoteMutationVariables>;
-export const CreateOrGetNoteIdDocument = gql`
-    mutation createOrGetNoteId {
-  createOrGetNoteId {
-    id
-  }
-}
-    `;
-export type CreateOrGetNoteIdMutationFn = Apollo.MutationFunction<CreateOrGetNoteIdMutation, CreateOrGetNoteIdMutationVariables>;
-
-/**
- * __useCreateOrGetNoteIdMutation__
- *
- * To run a mutation, you first call `useCreateOrGetNoteIdMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreateOrGetNoteIdMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [createOrGetNoteIdMutation, { data, loading, error }] = useCreateOrGetNoteIdMutation({
- *   variables: {
- *   },
- * });
- */
-export function useCreateOrGetNoteIdMutation(baseOptions?: Apollo.MutationHookOptions<CreateOrGetNoteIdMutation, CreateOrGetNoteIdMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateOrGetNoteIdMutation, CreateOrGetNoteIdMutationVariables>(CreateOrGetNoteIdDocument, options);
-      }
-export type CreateOrGetNoteIdMutationHookResult = ReturnType<typeof useCreateOrGetNoteIdMutation>;
-export type CreateOrGetNoteIdMutationResult = Apollo.MutationResult<CreateOrGetNoteIdMutation>;
-export type CreateOrGetNoteIdMutationOptions = Apollo.BaseMutationOptions<CreateOrGetNoteIdMutation, CreateOrGetNoteIdMutationVariables>;
-export const CreateOrUpdateTodayNoteDocument = gql`
-    mutation createOrUpdateTodayNote {
-  createOrUpdateTodayNote {
-    id
-    trainings {
-      id
-      exercise {
-        id
-        name
-        parts {
-          name
-        }
-      }
-      rounds {
-        ...roundSets
-        memo {
-          content
-          pin
-        }
-      }
-    }
-    place {
-      name
-    }
-    createdAt
-  }
-}
-    ${RoundSetsFragmentDoc}`;
-export type CreateOrUpdateTodayNoteMutationFn = Apollo.MutationFunction<CreateOrUpdateTodayNoteMutation, CreateOrUpdateTodayNoteMutationVariables>;
-
-/**
- * __useCreateOrUpdateTodayNoteMutation__
- *
- * To run a mutation, you first call `useCreateOrUpdateTodayNoteMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreateOrUpdateTodayNoteMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [createOrUpdateTodayNoteMutation, { data, loading, error }] = useCreateOrUpdateTodayNoteMutation({
- *   variables: {
- *   },
- * });
- */
-export function useCreateOrUpdateTodayNoteMutation(baseOptions?: Apollo.MutationHookOptions<CreateOrUpdateTodayNoteMutation, CreateOrUpdateTodayNoteMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateOrUpdateTodayNoteMutation, CreateOrUpdateTodayNoteMutationVariables>(CreateOrUpdateTodayNoteDocument, options);
-      }
-export type CreateOrUpdateTodayNoteMutationHookResult = ReturnType<typeof useCreateOrUpdateTodayNoteMutation>;
-export type CreateOrUpdateTodayNoteMutationResult = Apollo.MutationResult<CreateOrUpdateTodayNoteMutation>;
-export type CreateOrUpdateTodayNoteMutationOptions = Apollo.BaseMutationOptions<CreateOrUpdateTodayNoteMutation, CreateOrUpdateTodayNoteMutationVariables>;
 export const CreateTrainingDocument = gql`
     mutation createTraining($noteId: ID!, $exerciseId: ID!, $id: ID!) {
   createTraining(noteId: $noteId, exerciseId: $exerciseId, id: $id) {
@@ -823,6 +843,139 @@ export function useCreateTrainingMutation(baseOptions?: Apollo.MutationHookOptio
 export type CreateTrainingMutationHookResult = ReturnType<typeof useCreateTrainingMutation>;
 export type CreateTrainingMutationResult = Apollo.MutationResult<CreateTrainingMutation>;
 export type CreateTrainingMutationOptions = Apollo.BaseMutationOptions<CreateTrainingMutation, CreateTrainingMutationVariables>;
+export const DeleteExerciseDocument = gql`
+    mutation deleteExercise($id: ID!) {
+  deleteExercise(id: $id) {
+    id
+  }
+}
+    `;
+export type DeleteExerciseMutationFn = Apollo.MutationFunction<DeleteExerciseMutation, DeleteExerciseMutationVariables>;
+
+/**
+ * __useDeleteExerciseMutation__
+ *
+ * To run a mutation, you first call `useDeleteExerciseMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteExerciseMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteExerciseMutation, { data, loading, error }] = useDeleteExerciseMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteExerciseMutation(baseOptions?: Apollo.MutationHookOptions<DeleteExerciseMutation, DeleteExerciseMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteExerciseMutation, DeleteExerciseMutationVariables>(DeleteExerciseDocument, options);
+      }
+export type DeleteExerciseMutationHookResult = ReturnType<typeof useDeleteExerciseMutation>;
+export type DeleteExerciseMutationResult = Apollo.MutationResult<DeleteExerciseMutation>;
+export type DeleteExerciseMutationOptions = Apollo.BaseMutationOptions<DeleteExerciseMutation, DeleteExerciseMutationVariables>;
+export const DeleteMemoDocument = gql`
+    mutation deleteMemo($id: ID!) {
+  deleteMemo(id: $id) {
+    id
+  }
+}
+    `;
+export type DeleteMemoMutationFn = Apollo.MutationFunction<DeleteMemoMutation, DeleteMemoMutationVariables>;
+
+/**
+ * __useDeleteMemoMutation__
+ *
+ * To run a mutation, you first call `useDeleteMemoMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteMemoMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteMemoMutation, { data, loading, error }] = useDeleteMemoMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteMemoMutation(baseOptions?: Apollo.MutationHookOptions<DeleteMemoMutation, DeleteMemoMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteMemoMutation, DeleteMemoMutationVariables>(DeleteMemoDocument, options);
+      }
+export type DeleteMemoMutationHookResult = ReturnType<typeof useDeleteMemoMutation>;
+export type DeleteMemoMutationResult = Apollo.MutationResult<DeleteMemoMutation>;
+export type DeleteMemoMutationOptions = Apollo.BaseMutationOptions<DeleteMemoMutation, DeleteMemoMutationVariables>;
+export const DeleteMemoAtNoteDocument = gql`
+    mutation deleteMemoAtNote($id: ID!, $index: Int!) {
+  deleteMemoAtNote(id: $id, index: $index) {
+    id
+  }
+}
+    `;
+export type DeleteMemoAtNoteMutationFn = Apollo.MutationFunction<DeleteMemoAtNoteMutation, DeleteMemoAtNoteMutationVariables>;
+
+/**
+ * __useDeleteMemoAtNoteMutation__
+ *
+ * To run a mutation, you first call `useDeleteMemoAtNoteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteMemoAtNoteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteMemoAtNoteMutation, { data, loading, error }] = useDeleteMemoAtNoteMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      index: // value for 'index'
+ *   },
+ * });
+ */
+export function useDeleteMemoAtNoteMutation(baseOptions?: Apollo.MutationHookOptions<DeleteMemoAtNoteMutation, DeleteMemoAtNoteMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteMemoAtNoteMutation, DeleteMemoAtNoteMutationVariables>(DeleteMemoAtNoteDocument, options);
+      }
+export type DeleteMemoAtNoteMutationHookResult = ReturnType<typeof useDeleteMemoAtNoteMutation>;
+export type DeleteMemoAtNoteMutationResult = Apollo.MutationResult<DeleteMemoAtNoteMutation>;
+export type DeleteMemoAtNoteMutationOptions = Apollo.BaseMutationOptions<DeleteMemoAtNoteMutation, DeleteMemoAtNoteMutationVariables>;
+export const DeleteNoteDocument = gql`
+    mutation deleteNote($id: ID!) {
+  deleteNote(id: $id) {
+    id
+  }
+}
+    `;
+export type DeleteNoteMutationFn = Apollo.MutationFunction<DeleteNoteMutation, DeleteNoteMutationVariables>;
+
+/**
+ * __useDeleteNoteMutation__
+ *
+ * To run a mutation, you first call `useDeleteNoteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteNoteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteNoteMutation, { data, loading, error }] = useDeleteNoteMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteNoteMutation(baseOptions?: Apollo.MutationHookOptions<DeleteNoteMutation, DeleteNoteMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteNoteMutation, DeleteNoteMutationVariables>(DeleteNoteDocument, options);
+      }
+export type DeleteNoteMutationHookResult = ReturnType<typeof useDeleteNoteMutation>;
+export type DeleteNoteMutationResult = Apollo.MutationResult<DeleteNoteMutation>;
+export type DeleteNoteMutationOptions = Apollo.BaseMutationOptions<DeleteNoteMutation, DeleteNoteMutationVariables>;
 export const EditRoundDocument = gql`
     mutation EditRound($input: EditRoundInput!) {
   editRound(input: $input) {
@@ -931,14 +1084,81 @@ export function useRemoveTrainingMutation(baseOptions?: Apollo.MutationHookOptio
 export type RemoveTrainingMutationHookResult = ReturnType<typeof useRemoveTrainingMutation>;
 export type RemoveTrainingMutationResult = Apollo.MutationResult<RemoveTrainingMutation>;
 export type RemoveTrainingMutationOptions = Apollo.BaseMutationOptions<RemoveTrainingMutation, RemoveTrainingMutationVariables>;
+export const RenameExerciseDocument = gql`
+    mutation renameExercise($id: ID!, $name: String!) {
+  renameExercise(id: $id, name: $name) {
+    id
+  }
+}
+    `;
+export type RenameExerciseMutationFn = Apollo.MutationFunction<RenameExerciseMutation, RenameExerciseMutationVariables>;
+
+/**
+ * __useRenameExerciseMutation__
+ *
+ * To run a mutation, you first call `useRenameExerciseMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRenameExerciseMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [renameExerciseMutation, { data, loading, error }] = useRenameExerciseMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      name: // value for 'name'
+ *   },
+ * });
+ */
+export function useRenameExerciseMutation(baseOptions?: Apollo.MutationHookOptions<RenameExerciseMutation, RenameExerciseMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<RenameExerciseMutation, RenameExerciseMutationVariables>(RenameExerciseDocument, options);
+      }
+export type RenameExerciseMutationHookResult = ReturnType<typeof useRenameExerciseMutation>;
+export type RenameExerciseMutationResult = Apollo.MutationResult<RenameExerciseMutation>;
+export type RenameExerciseMutationOptions = Apollo.BaseMutationOptions<RenameExerciseMutation, RenameExerciseMutationVariables>;
+export const UpsertMemoAtNoteDocument = gql`
+    mutation upsertMemoAtNote($id: ID!, $memo: String!, $index: Int) {
+  upsertMemoAtNote(id: $id, memo: $memo, index: $index) {
+    id
+    memos
+  }
+}
+    `;
+export type UpsertMemoAtNoteMutationFn = Apollo.MutationFunction<UpsertMemoAtNoteMutation, UpsertMemoAtNoteMutationVariables>;
+
+/**
+ * __useUpsertMemoAtNoteMutation__
+ *
+ * To run a mutation, you first call `useUpsertMemoAtNoteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpsertMemoAtNoteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [upsertMemoAtNoteMutation, { data, loading, error }] = useUpsertMemoAtNoteMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      memo: // value for 'memo'
+ *      index: // value for 'index'
+ *   },
+ * });
+ */
+export function useUpsertMemoAtNoteMutation(baseOptions?: Apollo.MutationHookOptions<UpsertMemoAtNoteMutation, UpsertMemoAtNoteMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpsertMemoAtNoteMutation, UpsertMemoAtNoteMutationVariables>(UpsertMemoAtNoteDocument, options);
+      }
+export type UpsertMemoAtNoteMutationHookResult = ReturnType<typeof useUpsertMemoAtNoteMutation>;
+export type UpsertMemoAtNoteMutationResult = Apollo.MutationResult<UpsertMemoAtNoteMutation>;
+export type UpsertMemoAtNoteMutationOptions = Apollo.BaseMutationOptions<UpsertMemoAtNoteMutation, UpsertMemoAtNoteMutationVariables>;
 export const GetAllExercisesMaxDocument = gql`
     query getAllExercisesMax {
   exercises {
     id
     name
-    maxWeight
-    maxTotalLoad
-    maxWeightUnit
     updatedAt
   }
 }
@@ -1005,40 +1225,6 @@ export function useGetAllPartsNameLazyQuery(baseOptions?: Apollo.LazyQueryHookOp
 export type GetAllPartsNameQueryHookResult = ReturnType<typeof useGetAllPartsNameQuery>;
 export type GetAllPartsNameLazyQueryHookResult = ReturnType<typeof useGetAllPartsNameLazyQuery>;
 export type GetAllPartsNameQueryResult = Apollo.QueryResult<GetAllPartsNameQuery, GetAllPartsNameQueryVariables>;
-export const GetAllPlacesNameDocument = gql`
-    query getAllPlacesName {
-  places {
-    name
-  }
-}
-    `;
-
-/**
- * __useGetAllPlacesNameQuery__
- *
- * To run a query within a React component, call `useGetAllPlacesNameQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetAllPlacesNameQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetAllPlacesNameQuery({
- *   variables: {
- *   },
- * });
- */
-export function useGetAllPlacesNameQuery(baseOptions?: Apollo.QueryHookOptions<GetAllPlacesNameQuery, GetAllPlacesNameQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetAllPlacesNameQuery, GetAllPlacesNameQueryVariables>(GetAllPlacesNameDocument, options);
-      }
-export function useGetAllPlacesNameLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllPlacesNameQuery, GetAllPlacesNameQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetAllPlacesNameQuery, GetAllPlacesNameQueryVariables>(GetAllPlacesNameDocument, options);
-        }
-export type GetAllPlacesNameQueryHookResult = ReturnType<typeof useGetAllPlacesNameQuery>;
-export type GetAllPlacesNameLazyQueryHookResult = ReturnType<typeof useGetAllPlacesNameLazyQuery>;
-export type GetAllPlacesNameQueryResult = Apollo.QueryResult<GetAllPlacesNameQuery, GetAllPlacesNameQueryVariables>;
 export const GetExerciseDocument = gql`
     query getExercise($id: ID!) {
   exercise(id: $id) {
@@ -1096,9 +1282,6 @@ export const GetExerciseMaxByPartsDocument = gql`
   part(id: $partId) {
     exercises {
       name
-      maxWeight
-      maxTotalLoad
-      maxWeightUnit
     }
   }
 }
@@ -1278,6 +1461,43 @@ export function useGetMaxWeightLazyQuery(baseOptions?: Apollo.LazyQueryHookOptio
 export type GetMaxWeightQueryHookResult = ReturnType<typeof useGetMaxWeightQuery>;
 export type GetMaxWeightLazyQueryHookResult = ReturnType<typeof useGetMaxWeightLazyQuery>;
 export type GetMaxWeightQueryResult = Apollo.QueryResult<GetMaxWeightQuery, GetMaxWeightQueryVariables>;
+export const GetMemosByExercisesDocument = gql`
+    query getMemosByExercises($id: ID!) {
+  memos(id: $id) {
+    id
+    content
+    createdAt
+  }
+}
+    `;
+
+/**
+ * __useGetMemosByExercisesQuery__
+ *
+ * To run a query within a React component, call `useGetMemosByExercisesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetMemosByExercisesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetMemosByExercisesQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetMemosByExercisesQuery(baseOptions: Apollo.QueryHookOptions<GetMemosByExercisesQuery, GetMemosByExercisesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetMemosByExercisesQuery, GetMemosByExercisesQueryVariables>(GetMemosByExercisesDocument, options);
+      }
+export function useGetMemosByExercisesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetMemosByExercisesQuery, GetMemosByExercisesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetMemosByExercisesQuery, GetMemosByExercisesQueryVariables>(GetMemosByExercisesDocument, options);
+        }
+export type GetMemosByExercisesQueryHookResult = ReturnType<typeof useGetMemosByExercisesQuery>;
+export type GetMemosByExercisesLazyQueryHookResult = ReturnType<typeof useGetMemosByExercisesLazyQuery>;
+export type GetMemosByExercisesQueryResult = Apollo.QueryResult<GetMemosByExercisesQuery, GetMemosByExercisesQueryVariables>;
 export const GetNoteDocument = gql`
     query getNote($date: DateTime!) {
   note(date: $date) {
@@ -1300,9 +1520,6 @@ export const GetNoteDocument = gql`
         }
       }
       totalLoad
-    }
-    place {
-      name
     }
     createdAt
   }
@@ -1358,9 +1575,6 @@ export const GetNoteByIdDocument = gql`
         }
       }
     }
-    place {
-      name
-    }
     createdAt
   }
 }
@@ -1393,9 +1607,45 @@ export function useGetNoteByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOption
 export type GetNoteByIdQueryHookResult = ReturnType<typeof useGetNoteByIdQuery>;
 export type GetNoteByIdLazyQueryHookResult = ReturnType<typeof useGetNoteByIdLazyQuery>;
 export type GetNoteByIdQueryResult = Apollo.QueryResult<GetNoteByIdQuery, GetNoteByIdQueryVariables>;
+export const GetNoteMemoDocument = gql`
+    query getNoteMemo($id: ID!) {
+  noteById(id: $id) {
+    memos
+  }
+}
+    `;
+
+/**
+ * __useGetNoteMemoQuery__
+ *
+ * To run a query within a React component, call `useGetNoteMemoQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetNoteMemoQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetNoteMemoQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetNoteMemoQuery(baseOptions: Apollo.QueryHookOptions<GetNoteMemoQuery, GetNoteMemoQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetNoteMemoQuery, GetNoteMemoQueryVariables>(GetNoteMemoDocument, options);
+      }
+export function useGetNoteMemoLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetNoteMemoQuery, GetNoteMemoQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetNoteMemoQuery, GetNoteMemoQueryVariables>(GetNoteMemoDocument, options);
+        }
+export type GetNoteMemoQueryHookResult = ReturnType<typeof useGetNoteMemoQuery>;
+export type GetNoteMemoLazyQueryHookResult = ReturnType<typeof useGetNoteMemoLazyQuery>;
+export type GetNoteMemoQueryResult = Apollo.QueryResult<GetNoteMemoQuery, GetNoteMemoQueryVariables>;
 export const GetNotesDocument = gql`
     query getNotes($since: DateTime, $until: DateTime) {
   notes(since: $since, until: $until) {
+    date
     trainings {
       createdAt
       exercise {
@@ -1407,9 +1657,6 @@ export const GetNotesDocument = gql`
       rounds {
         ...roundSets
       }
-    }
-    place {
-      name
     }
     createdAt
   }
@@ -1444,44 +1691,85 @@ export function useGetNotesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<G
 export type GetNotesQueryHookResult = ReturnType<typeof useGetNotesQuery>;
 export type GetNotesLazyQueryHookResult = ReturnType<typeof useGetNotesLazyQuery>;
 export type GetNotesQueryResult = Apollo.QueryResult<GetNotesQuery, GetNotesQueryVariables>;
-export const GetPreviousTrainingDocument = gql`
-    query getPreviousTraining($id: ID!) {
-  previousTraining(id: $id) {
+export const GetPinnedMemosByExercisesDocument = gql`
+    query getPinnedMemosByExercises($id: ID!) {
+  pinnedMemos(id: $id) {
+    id
+    content
+    createdAt
+  }
+}
+    `;
+
+/**
+ * __useGetPinnedMemosByExercisesQuery__
+ *
+ * To run a query within a React component, call `useGetPinnedMemosByExercisesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetPinnedMemosByExercisesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetPinnedMemosByExercisesQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetPinnedMemosByExercisesQuery(baseOptions: Apollo.QueryHookOptions<GetPinnedMemosByExercisesQuery, GetPinnedMemosByExercisesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetPinnedMemosByExercisesQuery, GetPinnedMemosByExercisesQueryVariables>(GetPinnedMemosByExercisesDocument, options);
+      }
+export function useGetPinnedMemosByExercisesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetPinnedMemosByExercisesQuery, GetPinnedMemosByExercisesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetPinnedMemosByExercisesQuery, GetPinnedMemosByExercisesQueryVariables>(GetPinnedMemosByExercisesDocument, options);
+        }
+export type GetPinnedMemosByExercisesQueryHookResult = ReturnType<typeof useGetPinnedMemosByExercisesQuery>;
+export type GetPinnedMemosByExercisesLazyQueryHookResult = ReturnType<typeof useGetPinnedMemosByExercisesLazyQuery>;
+export type GetPinnedMemosByExercisesQueryResult = Apollo.QueryResult<GetPinnedMemosByExercisesQuery, GetPinnedMemosByExercisesQueryVariables>;
+export const GetPreviousTrainingsDocument = gql`
+    query getPreviousTrainings($id: ID!, $limit: Int!) {
+  previousTrainings(id: $id, limit: $limit) {
     id
     rounds {
       ...roundSets
+    }
+    note {
+      date
     }
   }
 }
     ${RoundSetsFragmentDoc}`;
 
 /**
- * __useGetPreviousTrainingQuery__
+ * __useGetPreviousTrainingsQuery__
  *
- * To run a query within a React component, call `useGetPreviousTrainingQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetPreviousTrainingQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetPreviousTrainingsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetPreviousTrainingsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetPreviousTrainingQuery({
+ * const { data, loading, error } = useGetPreviousTrainingsQuery({
  *   variables: {
  *      id: // value for 'id'
+ *      limit: // value for 'limit'
  *   },
  * });
  */
-export function useGetPreviousTrainingQuery(baseOptions: Apollo.QueryHookOptions<GetPreviousTrainingQuery, GetPreviousTrainingQueryVariables>) {
+export function useGetPreviousTrainingsQuery(baseOptions: Apollo.QueryHookOptions<GetPreviousTrainingsQuery, GetPreviousTrainingsQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetPreviousTrainingQuery, GetPreviousTrainingQueryVariables>(GetPreviousTrainingDocument, options);
+        return Apollo.useQuery<GetPreviousTrainingsQuery, GetPreviousTrainingsQueryVariables>(GetPreviousTrainingsDocument, options);
       }
-export function useGetPreviousTrainingLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetPreviousTrainingQuery, GetPreviousTrainingQueryVariables>) {
+export function useGetPreviousTrainingsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetPreviousTrainingsQuery, GetPreviousTrainingsQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetPreviousTrainingQuery, GetPreviousTrainingQueryVariables>(GetPreviousTrainingDocument, options);
+          return Apollo.useLazyQuery<GetPreviousTrainingsQuery, GetPreviousTrainingsQueryVariables>(GetPreviousTrainingsDocument, options);
         }
-export type GetPreviousTrainingQueryHookResult = ReturnType<typeof useGetPreviousTrainingQuery>;
-export type GetPreviousTrainingLazyQueryHookResult = ReturnType<typeof useGetPreviousTrainingLazyQuery>;
-export type GetPreviousTrainingQueryResult = Apollo.QueryResult<GetPreviousTrainingQuery, GetPreviousTrainingQueryVariables>;
+export type GetPreviousTrainingsQueryHookResult = ReturnType<typeof useGetPreviousTrainingsQuery>;
+export type GetPreviousTrainingsLazyQueryHookResult = ReturnType<typeof useGetPreviousTrainingsLazyQuery>;
+export type GetPreviousTrainingsQueryResult = Apollo.QueryResult<GetPreviousTrainingsQuery, GetPreviousTrainingsQueryVariables>;
 export const GetRoundByTrainingDocument = gql`
     query getRoundByTraining($trainingId: ID!) {
   training(id: $trainingId) {
@@ -1522,6 +1810,53 @@ export function useGetRoundByTrainingLazyQuery(baseOptions?: Apollo.LazyQueryHoo
 export type GetRoundByTrainingQueryHookResult = ReturnType<typeof useGetRoundByTrainingQuery>;
 export type GetRoundByTrainingLazyQueryHookResult = ReturnType<typeof useGetRoundByTrainingLazyQuery>;
 export type GetRoundByTrainingQueryResult = Apollo.QueryResult<GetRoundByTrainingQuery, GetRoundByTrainingQueryVariables>;
+export const GetTrainingStatDocument = gql`
+    query getTrainingStat($exerciseId: ID!, $limit: Int!) {
+  trainingsStat(exerciseId: $exerciseId, limit: $limit) {
+    id
+    createdAt
+    rounds {
+      weight
+      repetition
+      interval
+      unit
+    }
+    note {
+      date
+    }
+    totalLoad
+  }
+}
+    `;
+
+/**
+ * __useGetTrainingStatQuery__
+ *
+ * To run a query within a React component, call `useGetTrainingStatQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetTrainingStatQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetTrainingStatQuery({
+ *   variables: {
+ *      exerciseId: // value for 'exerciseId'
+ *      limit: // value for 'limit'
+ *   },
+ * });
+ */
+export function useGetTrainingStatQuery(baseOptions: Apollo.QueryHookOptions<GetTrainingStatQuery, GetTrainingStatQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetTrainingStatQuery, GetTrainingStatQueryVariables>(GetTrainingStatDocument, options);
+      }
+export function useGetTrainingStatLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTrainingStatQuery, GetTrainingStatQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetTrainingStatQuery, GetTrainingStatQueryVariables>(GetTrainingStatDocument, options);
+        }
+export type GetTrainingStatQueryHookResult = ReturnType<typeof useGetTrainingStatQuery>;
+export type GetTrainingStatLazyQueryHookResult = ReturnType<typeof useGetTrainingStatLazyQuery>;
+export type GetTrainingStatQueryResult = Apollo.QueryResult<GetTrainingStatQuery, GetTrainingStatQueryVariables>;
 export const GetUserDocument = gql`
     query getUser {
   user {

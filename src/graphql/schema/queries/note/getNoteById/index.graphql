@@ -1,0 +1,24 @@
+query getNoteById($id: ID!) {
+  noteById(id: $id) {
+    id
+    trainings {
+      id
+      createdAt
+      exercise {
+        id
+        name
+        parts {
+          name
+        }
+      }
+      rounds {
+        ...roundSets
+        memo {
+          content
+          pin
+        }
+      }
+    }
+    createdAt
+  }
+}

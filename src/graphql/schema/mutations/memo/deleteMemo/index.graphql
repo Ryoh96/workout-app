@@ -1,0 +1,5 @@
+mutation deleteMemo($id: ID!) {
+  deleteMemo(id: $id) {
+    id
+  }
+}

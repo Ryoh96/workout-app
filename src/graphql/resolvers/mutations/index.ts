@@ -1,19 +1,26 @@
-import { addExerciseByPart } from './addExerciseByPart'
-import { addRound } from './addRound'
-import { createNote } from './createNote'
-import { createOrGetNoteId } from './createOrGetNoteId'
-import { createTraining } from './createTraining'
-import { editRound } from './editRound'
-import { removeRound } from './removeRound'
-import { removeTraining } from './removeTraining'
+import { addExerciseByPart, deleteExercise, renameExercise } from './exercise'
+import { deleteMemo } from './memo'
+import {
+  createNote,
+  deleteMemoAtNote,
+  deleteNote,
+  upsertMemoAtNote,
+} from './note'
+import { addRound, editRound, removeRound } from './round'
+import { createTraining, removeTraining } from './training'
 
 export const Mutation = {
   addExerciseByPart,
+  renameExercise,
+  deleteExercise,
   addRound,
-  createOrGetNoteId,
-  createTraining,
   editRound,
   removeRound,
+  createTraining,
   removeTraining,
   createNote,
+  deleteNote,
+  upsertMemoAtNote,
+  deleteMemoAtNote,
+  deleteMemo,
 }

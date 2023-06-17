@@ -1,0 +1,5 @@
+query getNoteMemo($id: ID!) {
+  noteById(id: $id) {
+    memos
+  }
+}

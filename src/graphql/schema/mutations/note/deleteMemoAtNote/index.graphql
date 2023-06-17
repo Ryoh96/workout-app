@@ -1,0 +1,5 @@
+mutation deleteMemoAtNote($id: ID!, $index: Int!) {
+  deleteMemoAtNote(id: $id, index: $index) {
+    id
+  }
+}

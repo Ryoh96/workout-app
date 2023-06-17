@@ -1,5 +1,0 @@
-query getAllPlacesName {
-  places {
-    name
-  }
-}

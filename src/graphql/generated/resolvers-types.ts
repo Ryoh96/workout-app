@@ -36,9 +36,6 @@ export type Exercise = {
   articleUrl?: Maybe<Array<Scalars['String']>>;
   createdAt?: Maybe<Scalars['DateTime']>;
   id: Scalars['ID'];
-  maxTotalLoad?: Maybe<Scalars['Float']>;
-  maxWeight?: Maybe<Scalars['Float']>;
-  maxWeightUnit?: Maybe<Unit>;
   memos?: Maybe<Array<Maybe<Memo>>>;
   menus?: Maybe<Array<Menu>>;
   movieUrl?: Maybe<Array<Scalars['String']>>;
@@ -71,6 +68,7 @@ export type MaxWeightResult = {
 export type Memo = {
   __typename?: 'Memo';
   content: Scalars['String'];
+  createdAt: Scalars['DateTime'];
   exercise: Exercise;
   id: Scalars['ID'];
   pin?: Maybe<Scalars['Boolean']>;
@@ -90,12 +88,16 @@ export type Mutation = {
   addRound?: Maybe<Round>;
   createExerciseAtNote?: Maybe<Exercise>;
   createNote: Note;
-  createOrGetNoteId: Note;
-  createOrUpdateTodayNote: Note;
   createTraining?: Maybe<Training>;
+  deleteExercise: Exercise;
+  deleteMemo?: Maybe<Memo>;
+  deleteMemoAtNote: Note;
+  deleteNote: Note;
   editRound?: Maybe<Round>;
   removeRound?: Maybe<Round>;
   removeTraining?: Maybe<Training>;
+  renameExercise: Exercise;
+  upsertMemoAtNote: Note;
 };
 
 
@@ -128,6 +130,27 @@ export type MutationCreateTrainingArgs = {
 };
 
 
+export type MutationDeleteExerciseArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationDeleteMemoArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationDeleteMemoAtNoteArgs = {
+  id: Scalars['ID'];
+  index: Scalars['Int'];
+};
+
+
+export type MutationDeleteNoteArgs = {
+  id: Scalars['ID'];
+};
+
+
 export type MutationEditRoundArgs = {
   input: EditRoundInput;
 };
@@ -142,12 +165,26 @@ export type MutationRemoveTrainingArgs = {
   id: Scalars['ID'];
 };
 
+
+export type MutationRenameExerciseArgs = {
+  id: Scalars['ID'];
+  name: Scalars['String'];
+};
+
+
+export type MutationUpsertMemoAtNoteArgs = {
+  id: Scalars['ID'];
+  index?: InputMaybe<Scalars['Int']>;
+  memo: Scalars['String'];
+};
+
 export type Note = {
   __typename?: 'Note';
   createdAt: Scalars['DateTime'];
+  date: Scalars['DateTime'];
   id: Scalars['ID'];
+  memos?: Maybe<Array<Scalars['String']>>;
   parts?: Maybe<Array<Part>>;
-  place?: Maybe<Place>;
   trainings?: Maybe<Array<Training>>;
   user: User;
 };
@@ -165,14 +202,6 @@ export type Part = {
   name: Scalars['String'];
 };
 
-export type Place = {
-  __typename?: 'Place';
-  id: Scalars['ID'];
-  name: Scalars['String'];
-  notes?: Maybe<Array<Note>>;
-  user: User;
-};
-
 export type Query = {
   __typename?: 'Query';
   exercise?: Maybe<Exercise>;
@@ -180,18 +209,21 @@ export type Query = {
   exercises?: Maybe<Array<Exercise>>;
   maxTotalLoad?: Maybe<MaxTotalLoadResult>;
   maxWeight?: Maybe<MaxWeightResult>;
+  memo?: Maybe<Memo>;
+  memos?: Maybe<Array<Maybe<Memo>>>;
+  nextTraining?: Maybe<Training>;
   note?: Maybe<Note>;
   noteById?: Maybe<Note>;
   notes?: Maybe<Array<Note>>;
   part?: Maybe<Part>;
   parts?: Maybe<Array<Part>>;
-  place?: Maybe<Place>;
-  places?: Maybe<Array<Place>>;
-  previousTraining?: Maybe<Training>;
+  pinnedMemos?: Maybe<Array<Maybe<Memo>>>;
+  previousTrainings?: Maybe<Array<Maybe<Training>>>;
   round?: Maybe<Round>;
   rounds?: Maybe<Array<Maybe<Round>>>;
   training?: Maybe<Training>;
   trainings?: Maybe<Array<Training>>;
+  trainingsStat?: Maybe<Array<Maybe<Training>>>;
   user?: Maybe<User>;
 };
 
@@ -219,6 +251,21 @@ export type QueryMaxTotalLoadArgs = {
 
 export type QueryMaxWeightArgs = {
   exerciseId: Scalars['ID'];
+};
+
+
+export type QueryMemoArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryMemosArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryNextTrainingArgs = {
+  id: Scalars['ID'];
 };
 
 
@@ -250,19 +297,14 @@ export type QueryPartsArgs = {
 };
 
 
-export type QueryPlaceArgs = {
+export type QueryPinnedMemosArgs = {
   id: Scalars['ID'];
 };
 
 
-export type QueryPlacesArgs = {
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-};
-
-
-export type QueryPreviousTrainingArgs = {
+export type QueryPreviousTrainingsArgs = {
   id: Scalars['ID'];
+  limit: Scalars['Int'];
 };
 
 
@@ -284,6 +326,12 @@ export type QueryTrainingArgs = {
 export type QueryTrainingsArgs = {
   limit?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
+};
+
+
+export type QueryTrainingsStatArgs = {
+  exerciseId: Scalars['ID'];
+  limit: Scalars['Int'];
 };
 
 export type Round = {
@@ -338,7 +386,6 @@ export type User = {
   name: Scalars['String'];
   notes?: Maybe<Array<Note>>;
   password: Scalars['String'];
-  places?: Maybe<Array<Place>>;
   updatedAt: Scalars['DateTime'];
   weight?: Maybe<Scalars['Float']>;
 };
@@ -431,7 +478,6 @@ export type ResolversTypes = {
   Note: ResolverTypeWrapper<NoteModel>;
   OrderBy: OrderBy;
   Part: ResolverTypeWrapper<PartModel>;
-  Place: ResolverTypeWrapper<PlaceModel>;
   Query: ResolverTypeWrapper<{}>;
   Round: ResolverTypeWrapper<RoundModel>;
   RoundInput: RoundInput;
@@ -458,7 +504,6 @@ export type ResolversParentTypes = {
   Mutation: {};
   Note: NoteModel;
   Part: PartModel;
-  Place: PlaceModel;
   Query: {};
   Round: RoundModel;
   RoundInput: RoundInput;
@@ -475,9 +520,6 @@ export type ExerciseResolvers<ContextType = Context, ParentType extends Resolver
   articleUrl?: Resolver<Maybe<Array<ResolversTypes['String']>>, ParentType, ContextType>;
   createdAt?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  maxTotalLoad?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
-  maxWeight?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
-  maxWeightUnit?: Resolver<Maybe<ResolversTypes['Unit']>, ParentType, ContextType>;
   memos?: Resolver<Maybe<Array<Maybe<ResolversTypes['Memo']>>>, ParentType, ContextType>;
   menus?: Resolver<Maybe<Array<ResolversTypes['Menu']>>, ParentType, ContextType>;
   movieUrl?: Resolver<Maybe<Array<ResolversTypes['String']>>, ParentType, ContextType>;
@@ -503,6 +545,7 @@ export type MaxWeightResultResolvers<ContextType = Context, ParentType extends R
 
 export type MemoResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Memo'] = ResolversParentTypes['Memo']> = {
   content?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   exercise?: Resolver<ResolversTypes['Exercise'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   pin?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
@@ -522,19 +565,24 @@ export type MutationResolvers<ContextType = Context, ParentType extends Resolver
   addRound?: Resolver<Maybe<ResolversTypes['Round']>, ParentType, ContextType, RequireFields<MutationAddRoundArgs, 'input'>>;
   createExerciseAtNote?: Resolver<Maybe<ResolversTypes['Exercise']>, ParentType, ContextType, RequireFields<MutationCreateExerciseAtNoteArgs, 'name'>>;
   createNote?: Resolver<ResolversTypes['Note'], ParentType, ContextType, RequireFields<MutationCreateNoteArgs, 'date'>>;
-  createOrGetNoteId?: Resolver<ResolversTypes['Note'], ParentType, ContextType>;
-  createOrUpdateTodayNote?: Resolver<ResolversTypes['Note'], ParentType, ContextType>;
   createTraining?: Resolver<Maybe<ResolversTypes['Training']>, ParentType, ContextType, RequireFields<MutationCreateTrainingArgs, 'exerciseId' | 'id' | 'noteId'>>;
+  deleteExercise?: Resolver<ResolversTypes['Exercise'], ParentType, ContextType, RequireFields<MutationDeleteExerciseArgs, 'id'>>;
+  deleteMemo?: Resolver<Maybe<ResolversTypes['Memo']>, ParentType, ContextType, RequireFields<MutationDeleteMemoArgs, 'id'>>;
+  deleteMemoAtNote?: Resolver<ResolversTypes['Note'], ParentType, ContextType, RequireFields<MutationDeleteMemoAtNoteArgs, 'id' | 'index'>>;
+  deleteNote?: Resolver<ResolversTypes['Note'], ParentType, ContextType, RequireFields<MutationDeleteNoteArgs, 'id'>>;
   editRound?: Resolver<Maybe<ResolversTypes['Round']>, ParentType, ContextType, RequireFields<MutationEditRoundArgs, 'input'>>;
   removeRound?: Resolver<Maybe<ResolversTypes['Round']>, ParentType, ContextType, RequireFields<MutationRemoveRoundArgs, 'id'>>;
   removeTraining?: Resolver<Maybe<ResolversTypes['Training']>, ParentType, ContextType, RequireFields<MutationRemoveTrainingArgs, 'id'>>;
+  renameExercise?: Resolver<ResolversTypes['Exercise'], ParentType, ContextType, RequireFields<MutationRenameExerciseArgs, 'id' | 'name'>>;
+  upsertMemoAtNote?: Resolver<ResolversTypes['Note'], ParentType, ContextType, RequireFields<MutationUpsertMemoAtNoteArgs, 'id' | 'memo'>>;
 };
 
 export type NoteResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Note'] = ResolversParentTypes['Note']> = {
   createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  date?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  memos?: Resolver<Maybe<Array<ResolversTypes['String']>>, ParentType, ContextType>;
   parts?: Resolver<Maybe<Array<ResolversTypes['Part']>>, ParentType, ContextType>;
-  place?: Resolver<Maybe<ResolversTypes['Place']>, ParentType, ContextType>;
   trainings?: Resolver<Maybe<Array<ResolversTypes['Training']>>, ParentType, ContextType>;
   user?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
@@ -547,32 +595,27 @@ export type PartResolvers<ContextType = Context, ParentType extends ResolversPar
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type PlaceResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Place'] = ResolversParentTypes['Place']> = {
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  notes?: Resolver<Maybe<Array<ResolversTypes['Note']>>, ParentType, ContextType>;
-  user?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
 export type QueryResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   exercise?: Resolver<Maybe<ResolversTypes['Exercise']>, ParentType, ContextType, RequireFields<QueryExerciseArgs, 'id'>>;
   exerciseByDate?: Resolver<Maybe<Array<Maybe<ResolversTypes['Exercise']>>>, ParentType, ContextType, RequireFields<QueryExerciseByDateArgs, 'date'>>;
   exercises?: Resolver<Maybe<Array<ResolversTypes['Exercise']>>, ParentType, ContextType, Partial<QueryExercisesArgs>>;
   maxTotalLoad?: Resolver<Maybe<ResolversTypes['MaxTotalLoadResult']>, ParentType, ContextType, RequireFields<QueryMaxTotalLoadArgs, 'exerciseId'>>;
   maxWeight?: Resolver<Maybe<ResolversTypes['MaxWeightResult']>, ParentType, ContextType, RequireFields<QueryMaxWeightArgs, 'exerciseId'>>;
+  memo?: Resolver<Maybe<ResolversTypes['Memo']>, ParentType, ContextType, RequireFields<QueryMemoArgs, 'id'>>;
+  memos?: Resolver<Maybe<Array<Maybe<ResolversTypes['Memo']>>>, ParentType, ContextType, RequireFields<QueryMemosArgs, 'id'>>;
+  nextTraining?: Resolver<Maybe<ResolversTypes['Training']>, ParentType, ContextType, RequireFields<QueryNextTrainingArgs, 'id'>>;
   note?: Resolver<Maybe<ResolversTypes['Note']>, ParentType, ContextType, RequireFields<QueryNoteArgs, 'date'>>;
   noteById?: Resolver<Maybe<ResolversTypes['Note']>, ParentType, ContextType, Partial<QueryNoteByIdArgs>>;
   notes?: Resolver<Maybe<Array<ResolversTypes['Note']>>, ParentType, ContextType, Partial<QueryNotesArgs>>;
   part?: Resolver<Maybe<ResolversTypes['Part']>, ParentType, ContextType, RequireFields<QueryPartArgs, 'id'>>;
   parts?: Resolver<Maybe<Array<ResolversTypes['Part']>>, ParentType, ContextType, Partial<QueryPartsArgs>>;
-  place?: Resolver<Maybe<ResolversTypes['Place']>, ParentType, ContextType, RequireFields<QueryPlaceArgs, 'id'>>;
-  places?: Resolver<Maybe<Array<ResolversTypes['Place']>>, ParentType, ContextType, Partial<QueryPlacesArgs>>;
-  previousTraining?: Resolver<Maybe<ResolversTypes['Training']>, ParentType, ContextType, RequireFields<QueryPreviousTrainingArgs, 'id'>>;
+  pinnedMemos?: Resolver<Maybe<Array<Maybe<ResolversTypes['Memo']>>>, ParentType, ContextType, RequireFields<QueryPinnedMemosArgs, 'id'>>;
+  previousTrainings?: Resolver<Maybe<Array<Maybe<ResolversTypes['Training']>>>, ParentType, ContextType, RequireFields<QueryPreviousTrainingsArgs, 'id' | 'limit'>>;
   round?: Resolver<Maybe<ResolversTypes['Round']>, ParentType, ContextType, RequireFields<QueryRoundArgs, 'id'>>;
   rounds?: Resolver<Maybe<Array<Maybe<ResolversTypes['Round']>>>, ParentType, ContextType, RequireFields<QueryRoundsArgs, 'trainingId'>>;
   training?: Resolver<Maybe<ResolversTypes['Training']>, ParentType, ContextType, RequireFields<QueryTrainingArgs, 'id'>>;
   trainings?: Resolver<Maybe<Array<ResolversTypes['Training']>>, ParentType, ContextType, Partial<QueryTrainingsArgs>>;
+  trainingsStat?: Resolver<Maybe<Array<Maybe<ResolversTypes['Training']>>>, ParentType, ContextType, RequireFields<QueryTrainingsStatArgs, 'exerciseId' | 'limit'>>;
   user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
 };
 
@@ -614,7 +657,6 @@ export type UserResolvers<ContextType = Context, ParentType extends ResolversPar
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   notes?: Resolver<Maybe<Array<ResolversTypes['Note']>>, ParentType, ContextType>;
   password?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  places?: Resolver<Maybe<Array<ResolversTypes['Place']>>, ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   weight?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
@@ -630,7 +672,6 @@ export type Resolvers<ContextType = Context> = {
   Mutation?: MutationResolvers<ContextType>;
   Note?: NoteResolvers<ContextType>;
   Part?: PartResolvers<ContextType>;
-  Place?: PlaceResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Round?: RoundResolvers<ContextType>;
   Training?: TrainingResolvers<ContextType>;

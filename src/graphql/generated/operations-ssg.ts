@@ -84,44 +84,6 @@ export const CreateNoteDocument = gql`
         }
       }
     }
-    place {
-      name
-    }
-    createdAt
-  }
-}
-    ${RoundSetsFragmentDoc}`;
-export const CreateOrGetNoteIdDocument = gql`
-    mutation createOrGetNoteId {
-  createOrGetNoteId {
-    id
-  }
-}
-    `;
-export const CreateOrUpdateTodayNoteDocument = gql`
-    mutation createOrUpdateTodayNote {
-  createOrUpdateTodayNote {
-    id
-    trainings {
-      id
-      exercise {
-        id
-        name
-        parts {
-          name
-        }
-      }
-      rounds {
-        ...roundSets
-        memo {
-          content
-          pin
-        }
-      }
-    }
-    place {
-      name
-    }
     createdAt
   }
 }
@@ -129,6 +91,34 @@ export const CreateOrUpdateTodayNoteDocument = gql`
 export const CreateTrainingDocument = gql`
     mutation createTraining($noteId: ID!, $exerciseId: ID!, $id: ID!) {
   createTraining(noteId: $noteId, exerciseId: $exerciseId, id: $id) {
+    id
+  }
+}
+    `;
+export const DeleteExerciseDocument = gql`
+    mutation deleteExercise($id: ID!) {
+  deleteExercise(id: $id) {
+    id
+  }
+}
+    `;
+export const DeleteMemoDocument = gql`
+    mutation deleteMemo($id: ID!) {
+  deleteMemo(id: $id) {
+    id
+  }
+}
+    `;
+export const DeleteMemoAtNoteDocument = gql`
+    mutation deleteMemoAtNote($id: ID!, $index: Int!) {
+  deleteMemoAtNote(id: $id, index: $index) {
+    id
+  }
+}
+    `;
+export const DeleteNoteDocument = gql`
+    mutation deleteNote($id: ID!) {
+  deleteNote(id: $id) {
     id
   }
 }
@@ -163,14 +153,26 @@ export const RemoveTrainingDocument = gql`
   }
 }
     `;
+export const RenameExerciseDocument = gql`
+    mutation renameExercise($id: ID!, $name: String!) {
+  renameExercise(id: $id, name: $name) {
+    id
+  }
+}
+    `;
+export const UpsertMemoAtNoteDocument = gql`
+    mutation upsertMemoAtNote($id: ID!, $memo: String!, $index: Int) {
+  upsertMemoAtNote(id: $id, memo: $memo, index: $index) {
+    id
+    memos
+  }
+}
+    `;
 export const GetAllExercisesMaxDocument = gql`
     query getAllExercisesMax {
   exercises {
     id
     name
-    maxWeight
-    maxTotalLoad
-    maxWeightUnit
     updatedAt
   }
 }
@@ -179,13 +181,6 @@ export const GetAllPartsNameDocument = gql`
     query getAllPartsName {
   parts {
     id
-    name
-  }
-}
-    `;
-export const GetAllPlacesNameDocument = gql`
-    query getAllPlacesName {
-  places {
     name
   }
 }
@@ -219,9 +214,6 @@ export const GetExerciseMaxByPartsDocument = gql`
   part(id: $partId) {
     exercises {
       name
-      maxWeight
-      maxTotalLoad
-      maxWeightUnit
     }
   }
 }
@@ -261,6 +253,15 @@ export const GetMaxWeightDocument = gql`
   }
 }
     `;
+export const GetMemosByExercisesDocument = gql`
+    query getMemosByExercises($id: ID!) {
+  memos(id: $id) {
+    id
+    content
+    createdAt
+  }
+}
+    `;
 export const GetNoteDocument = gql`
     query getNote($date: DateTime!) {
   note(date: $date) {
@@ -283,9 +284,6 @@ export const GetNoteDocument = gql`
         }
       }
       totalLoad
-    }
-    place {
-      name
     }
     createdAt
   }
@@ -313,16 +311,21 @@ export const GetNoteByIdDocument = gql`
         }
       }
     }
-    place {
-      name
-    }
     createdAt
   }
 }
     ${RoundSetsFragmentDoc}`;
+export const GetNoteMemoDocument = gql`
+    query getNoteMemo($id: ID!) {
+  noteById(id: $id) {
+    memos
+  }
+}
+    `;
 export const GetNotesDocument = gql`
     query getNotes($since: DateTime, $until: DateTime) {
   notes(since: $since, until: $until) {
+    date
     trainings {
       createdAt
       exercise {
@@ -335,19 +338,28 @@ export const GetNotesDocument = gql`
         ...roundSets
       }
     }
-    place {
-      name
-    }
     createdAt
   }
 }
     ${RoundSetsFragmentDoc}`;
-export const GetPreviousTrainingDocument = gql`
-    query getPreviousTraining($id: ID!) {
-  previousTraining(id: $id) {
+export const GetPinnedMemosByExercisesDocument = gql`
+    query getPinnedMemosByExercises($id: ID!) {
+  pinnedMemos(id: $id) {
+    id
+    content
+    createdAt
+  }
+}
+    `;
+export const GetPreviousTrainingsDocument = gql`
+    query getPreviousTrainings($id: ID!, $limit: Int!) {
+  previousTrainings(id: $id, limit: $limit) {
     id
     rounds {
       ...roundSets
+    }
+    note {
+      date
     }
   }
 }
@@ -364,6 +376,24 @@ export const GetRoundByTrainingDocument = gql`
   }
 }
     ${RoundSetsFragmentDoc}`;
+export const GetTrainingStatDocument = gql`
+    query getTrainingStat($exerciseId: ID!, $limit: Int!) {
+  trainingsStat(exerciseId: $exerciseId, limit: $limit) {
+    id
+    createdAt
+    rounds {
+      weight
+      repetition
+      interval
+      unit
+    }
+    note {
+      date
+    }
+    totalLoad
+  }
+}
+    `;
 export const GetUserDocument = gql`
     query getUser {
   user {
@@ -394,14 +424,20 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     createNote(variables: CreateNoteMutationVariables, requestHeaders?: RequestInit["headers"]): Promise<CreateNoteMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<CreateNoteMutation>(CreateNoteDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'createNote', 'mutation');
     },
-    createOrGetNoteId(variables?: CreateOrGetNoteIdMutationVariables, requestHeaders?: RequestInit["headers"]): Promise<CreateOrGetNoteIdMutation> {
-      return withWrapper((wrappedRequestHeaders) => client.request<CreateOrGetNoteIdMutation>(CreateOrGetNoteIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'createOrGetNoteId', 'mutation');
-    },
-    createOrUpdateTodayNote(variables?: CreateOrUpdateTodayNoteMutationVariables, requestHeaders?: RequestInit["headers"]): Promise<CreateOrUpdateTodayNoteMutation> {
-      return withWrapper((wrappedRequestHeaders) => client.request<CreateOrUpdateTodayNoteMutation>(CreateOrUpdateTodayNoteDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'createOrUpdateTodayNote', 'mutation');
-    },
     createTraining(variables: CreateTrainingMutationVariables, requestHeaders?: RequestInit["headers"]): Promise<CreateTrainingMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<CreateTrainingMutation>(CreateTrainingDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'createTraining', 'mutation');
+    },
+    deleteExercise(variables: DeleteExerciseMutationVariables, requestHeaders?: RequestInit["headers"]): Promise<DeleteExerciseMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<DeleteExerciseMutation>(DeleteExerciseDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'deleteExercise', 'mutation');
+    },
+    deleteMemo(variables: DeleteMemoMutationVariables, requestHeaders?: RequestInit["headers"]): Promise<DeleteMemoMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<DeleteMemoMutation>(DeleteMemoDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'deleteMemo', 'mutation');
+    },
+    deleteMemoAtNote(variables: DeleteMemoAtNoteMutationVariables, requestHeaders?: RequestInit["headers"]): Promise<DeleteMemoAtNoteMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<DeleteMemoAtNoteMutation>(DeleteMemoAtNoteDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'deleteMemoAtNote', 'mutation');
+    },
+    deleteNote(variables: DeleteNoteMutationVariables, requestHeaders?: RequestInit["headers"]): Promise<DeleteNoteMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<DeleteNoteMutation>(DeleteNoteDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'deleteNote', 'mutation');
     },
     EditRound(variables: EditRoundMutationVariables, requestHeaders?: RequestInit["headers"]): Promise<EditRoundMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<EditRoundMutation>(EditRoundDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'EditRound', 'mutation');
@@ -412,14 +448,17 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     removeTraining(variables: RemoveTrainingMutationVariables, requestHeaders?: RequestInit["headers"]): Promise<RemoveTrainingMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<RemoveTrainingMutation>(RemoveTrainingDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'removeTraining', 'mutation');
     },
+    renameExercise(variables: RenameExerciseMutationVariables, requestHeaders?: RequestInit["headers"]): Promise<RenameExerciseMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<RenameExerciseMutation>(RenameExerciseDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'renameExercise', 'mutation');
+    },
+    upsertMemoAtNote(variables: UpsertMemoAtNoteMutationVariables, requestHeaders?: RequestInit["headers"]): Promise<UpsertMemoAtNoteMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<UpsertMemoAtNoteMutation>(UpsertMemoAtNoteDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'upsertMemoAtNote', 'mutation');
+    },
     getAllExercisesMax(variables?: GetAllExercisesMaxQueryVariables, requestHeaders?: RequestInit["headers"]): Promise<GetAllExercisesMaxQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetAllExercisesMaxQuery>(GetAllExercisesMaxDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getAllExercisesMax', 'query');
     },
     getAllPartsName(variables?: GetAllPartsNameQueryVariables, requestHeaders?: RequestInit["headers"]): Promise<GetAllPartsNameQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetAllPartsNameQuery>(GetAllPartsNameDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getAllPartsName', 'query');
-    },
-    getAllPlacesName(variables?: GetAllPlacesNameQueryVariables, requestHeaders?: RequestInit["headers"]): Promise<GetAllPlacesNameQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetAllPlacesNameQuery>(GetAllPlacesNameDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getAllPlacesName', 'query');
     },
     getExercise(variables: GetExerciseQueryVariables, requestHeaders?: RequestInit["headers"]): Promise<GetExerciseQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetExerciseQuery>(GetExerciseDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getExercise', 'query');
@@ -439,20 +478,32 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     getMaxWeight(variables: GetMaxWeightQueryVariables, requestHeaders?: RequestInit["headers"]): Promise<GetMaxWeightQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetMaxWeightQuery>(GetMaxWeightDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getMaxWeight', 'query');
     },
+    getMemosByExercises(variables: GetMemosByExercisesQueryVariables, requestHeaders?: RequestInit["headers"]): Promise<GetMemosByExercisesQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetMemosByExercisesQuery>(GetMemosByExercisesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getMemosByExercises', 'query');
+    },
     getNote(variables: GetNoteQueryVariables, requestHeaders?: RequestInit["headers"]): Promise<GetNoteQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetNoteQuery>(GetNoteDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getNote', 'query');
     },
     getNoteById(variables: GetNoteByIdQueryVariables, requestHeaders?: RequestInit["headers"]): Promise<GetNoteByIdQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetNoteByIdQuery>(GetNoteByIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getNoteById', 'query');
     },
+    getNoteMemo(variables: GetNoteMemoQueryVariables, requestHeaders?: RequestInit["headers"]): Promise<GetNoteMemoQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetNoteMemoQuery>(GetNoteMemoDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getNoteMemo', 'query');
+    },
     getNotes(variables?: GetNotesQueryVariables, requestHeaders?: RequestInit["headers"]): Promise<GetNotesQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetNotesQuery>(GetNotesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getNotes', 'query');
     },
-    getPreviousTraining(variables: GetPreviousTrainingQueryVariables, requestHeaders?: RequestInit["headers"]): Promise<GetPreviousTrainingQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetPreviousTrainingQuery>(GetPreviousTrainingDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getPreviousTraining', 'query');
+    getPinnedMemosByExercises(variables: GetPinnedMemosByExercisesQueryVariables, requestHeaders?: RequestInit["headers"]): Promise<GetPinnedMemosByExercisesQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetPinnedMemosByExercisesQuery>(GetPinnedMemosByExercisesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getPinnedMemosByExercises', 'query');
+    },
+    getPreviousTrainings(variables: GetPreviousTrainingsQueryVariables, requestHeaders?: RequestInit["headers"]): Promise<GetPreviousTrainingsQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetPreviousTrainingsQuery>(GetPreviousTrainingsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getPreviousTrainings', 'query');
     },
     getRoundByTraining(variables: GetRoundByTrainingQueryVariables, requestHeaders?: RequestInit["headers"]): Promise<GetRoundByTrainingQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetRoundByTrainingQuery>(GetRoundByTrainingDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getRoundByTraining', 'query');
+    },
+    getTrainingStat(variables: GetTrainingStatQueryVariables, requestHeaders?: RequestInit["headers"]): Promise<GetTrainingStatQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetTrainingStatQuery>(GetTrainingStatDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getTrainingStat', 'query');
     },
     getUser(variables?: GetUserQueryVariables, requestHeaders?: RequestInit["headers"]): Promise<GetUserQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetUserQuery>(GetUserDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getUser', 'query');
@@ -486,9 +537,6 @@ export type Exercise = {
   articleUrl?: Maybe<Array<Scalars['String']>>;
   createdAt?: Maybe<Scalars['DateTime']>;
   id: Scalars['ID'];
-  maxTotalLoad?: Maybe<Scalars['Float']>;
-  maxWeight?: Maybe<Scalars['Float']>;
-  maxWeightUnit?: Maybe<Unit>;
   memos?: Maybe<Array<Maybe<Memo>>>;
   menus?: Maybe<Array<Menu>>;
   movieUrl?: Maybe<Array<Scalars['String']>>;
@@ -521,6 +569,7 @@ export type MaxWeightResult = {
 export type Memo = {
   __typename?: 'Memo';
   content: Scalars['String'];
+  createdAt: Scalars['DateTime'];
   exercise: Exercise;
   id: Scalars['ID'];
   pin?: Maybe<Scalars['Boolean']>;
@@ -540,12 +589,16 @@ export type Mutation = {
   addRound?: Maybe<Round>;
   createExerciseAtNote?: Maybe<Exercise>;
   createNote: Note;
-  createOrGetNoteId: Note;
-  createOrUpdateTodayNote: Note;
   createTraining?: Maybe<Training>;
+  deleteExercise: Exercise;
+  deleteMemo?: Maybe<Memo>;
+  deleteMemoAtNote: Note;
+  deleteNote: Note;
   editRound?: Maybe<Round>;
   removeRound?: Maybe<Round>;
   removeTraining?: Maybe<Training>;
+  renameExercise: Exercise;
+  upsertMemoAtNote: Note;
 };
 
 
@@ -578,6 +631,27 @@ export type MutationCreateTrainingArgs = {
 };
 
 
+export type MutationDeleteExerciseArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationDeleteMemoArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationDeleteMemoAtNoteArgs = {
+  id: Scalars['ID'];
+  index: Scalars['Int'];
+};
+
+
+export type MutationDeleteNoteArgs = {
+  id: Scalars['ID'];
+};
+
+
 export type MutationEditRoundArgs = {
   input: EditRoundInput;
 };
@@ -592,12 +666,26 @@ export type MutationRemoveTrainingArgs = {
   id: Scalars['ID'];
 };
 
+
+export type MutationRenameExerciseArgs = {
+  id: Scalars['ID'];
+  name: Scalars['String'];
+};
+
+
+export type MutationUpsertMemoAtNoteArgs = {
+  id: Scalars['ID'];
+  index?: InputMaybe<Scalars['Int']>;
+  memo: Scalars['String'];
+};
+
 export type Note = {
   __typename?: 'Note';
   createdAt: Scalars['DateTime'];
+  date: Scalars['DateTime'];
   id: Scalars['ID'];
+  memos?: Maybe<Array<Scalars['String']>>;
   parts?: Maybe<Array<Part>>;
-  place?: Maybe<Place>;
   trainings?: Maybe<Array<Training>>;
   user: User;
 };
@@ -615,14 +703,6 @@ export type Part = {
   name: Scalars['String'];
 };
 
-export type Place = {
-  __typename?: 'Place';
-  id: Scalars['ID'];
-  name: Scalars['String'];
-  notes?: Maybe<Array<Note>>;
-  user: User;
-};
-
 export type Query = {
   __typename?: 'Query';
   exercise?: Maybe<Exercise>;
@@ -630,18 +710,21 @@ export type Query = {
   exercises?: Maybe<Array<Exercise>>;
   maxTotalLoad?: Maybe<MaxTotalLoadResult>;
   maxWeight?: Maybe<MaxWeightResult>;
+  memo?: Maybe<Memo>;
+  memos?: Maybe<Array<Maybe<Memo>>>;
+  nextTraining?: Maybe<Training>;
   note?: Maybe<Note>;
   noteById?: Maybe<Note>;
   notes?: Maybe<Array<Note>>;
   part?: Maybe<Part>;
   parts?: Maybe<Array<Part>>;
-  place?: Maybe<Place>;
-  places?: Maybe<Array<Place>>;
-  previousTraining?: Maybe<Training>;
+  pinnedMemos?: Maybe<Array<Maybe<Memo>>>;
+  previousTrainings?: Maybe<Array<Maybe<Training>>>;
   round?: Maybe<Round>;
   rounds?: Maybe<Array<Maybe<Round>>>;
   training?: Maybe<Training>;
   trainings?: Maybe<Array<Training>>;
+  trainingsStat?: Maybe<Array<Maybe<Training>>>;
   user?: Maybe<User>;
 };
 
@@ -669,6 +752,21 @@ export type QueryMaxTotalLoadArgs = {
 
 export type QueryMaxWeightArgs = {
   exerciseId: Scalars['ID'];
+};
+
+
+export type QueryMemoArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryMemosArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryNextTrainingArgs = {
+  id: Scalars['ID'];
 };
 
 
@@ -700,19 +798,14 @@ export type QueryPartsArgs = {
 };
 
 
-export type QueryPlaceArgs = {
+export type QueryPinnedMemosArgs = {
   id: Scalars['ID'];
 };
 
 
-export type QueryPlacesArgs = {
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-};
-
-
-export type QueryPreviousTrainingArgs = {
+export type QueryPreviousTrainingsArgs = {
   id: Scalars['ID'];
+  limit: Scalars['Int'];
 };
 
 
@@ -734,6 +827,12 @@ export type QueryTrainingArgs = {
 export type QueryTrainingsArgs = {
   limit?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
+};
+
+
+export type QueryTrainingsStatArgs = {
+  exerciseId: Scalars['ID'];
+  limit: Scalars['Int'];
 };
 
 export type Round = {
@@ -788,7 +887,6 @@ export type User = {
   name: Scalars['String'];
   notes?: Maybe<Array<Note>>;
   password: Scalars['String'];
-  places?: Maybe<Array<Place>>;
   updatedAt: Scalars['DateTime'];
   weight?: Maybe<Scalars['Float']>;
 };
@@ -825,17 +923,7 @@ export type CreateNoteMutationVariables = Exact<{
 }>;
 
 
-export type CreateNoteMutation = { __typename?: 'Mutation', createNote: { __typename?: 'Note', id: string, createdAt: string, trainings?: Array<{ __typename?: 'Training', createdAt: string, id: string, exercise?: { __typename?: 'Exercise', id: string, name: string, parts?: Array<{ __typename?: 'Part', name: string }> | null } | null, rounds?: Array<{ __typename?: 'Round', id: string, weight: number, repetition: number, interval?: number | null, unit: Unit, memo?: { __typename?: 'Memo', content: string, pin?: boolean | null } | null }> | null }> | null, place?: { __typename?: 'Place', name: string } | null } };
-
-export type CreateOrGetNoteIdMutationVariables = Exact<{ [key: string]: never; }>;
-
-
-export type CreateOrGetNoteIdMutation = { __typename?: 'Mutation', createOrGetNoteId: { __typename?: 'Note', id: string } };
-
-export type CreateOrUpdateTodayNoteMutationVariables = Exact<{ [key: string]: never; }>;
-
-
-export type CreateOrUpdateTodayNoteMutation = { __typename?: 'Mutation', createOrUpdateTodayNote: { __typename?: 'Note', id: string, createdAt: string, trainings?: Array<{ __typename?: 'Training', id: string, exercise?: { __typename?: 'Exercise', id: string, name: string, parts?: Array<{ __typename?: 'Part', name: string }> | null } | null, rounds?: Array<{ __typename?: 'Round', id: string, weight: number, repetition: number, interval?: number | null, unit: Unit, memo?: { __typename?: 'Memo', content: string, pin?: boolean | null } | null }> | null }> | null, place?: { __typename?: 'Place', name: string } | null } };
+export type CreateNoteMutation = { __typename?: 'Mutation', createNote: { __typename?: 'Note', id: string, createdAt: string, trainings?: Array<{ __typename?: 'Training', createdAt: string, id: string, exercise?: { __typename?: 'Exercise', id: string, name: string, parts?: Array<{ __typename?: 'Part', name: string }> | null } | null, rounds?: Array<{ __typename?: 'Round', id: string, weight: number, repetition: number, interval?: number | null, unit: Unit, memo?: { __typename?: 'Memo', content: string, pin?: boolean | null } | null }> | null }> | null } };
 
 export type CreateTrainingMutationVariables = Exact<{
   noteId: Scalars['ID'];
@@ -845,6 +933,35 @@ export type CreateTrainingMutationVariables = Exact<{
 
 
 export type CreateTrainingMutation = { __typename?: 'Mutation', createTraining?: { __typename?: 'Training', id: string } | null };
+
+export type DeleteExerciseMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type DeleteExerciseMutation = { __typename?: 'Mutation', deleteExercise: { __typename?: 'Exercise', id: string } };
+
+export type DeleteMemoMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type DeleteMemoMutation = { __typename?: 'Mutation', deleteMemo?: { __typename?: 'Memo', id: string } | null };
+
+export type DeleteMemoAtNoteMutationVariables = Exact<{
+  id: Scalars['ID'];
+  index: Scalars['Int'];
+}>;
+
+
+export type DeleteMemoAtNoteMutation = { __typename?: 'Mutation', deleteMemoAtNote: { __typename?: 'Note', id: string } };
+
+export type DeleteNoteMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type DeleteNoteMutation = { __typename?: 'Mutation', deleteNote: { __typename?: 'Note', id: string } };
 
 export type EditRoundMutationVariables = Exact<{
   input: EditRoundInput;
@@ -867,20 +984,32 @@ export type RemoveTrainingMutationVariables = Exact<{
 
 export type RemoveTrainingMutation = { __typename?: 'Mutation', removeTraining?: { __typename?: 'Training', id: string } | null };
 
+export type RenameExerciseMutationVariables = Exact<{
+  id: Scalars['ID'];
+  name: Scalars['String'];
+}>;
+
+
+export type RenameExerciseMutation = { __typename?: 'Mutation', renameExercise: { __typename?: 'Exercise', id: string } };
+
+export type UpsertMemoAtNoteMutationVariables = Exact<{
+  id: Scalars['ID'];
+  memo: Scalars['String'];
+  index?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type UpsertMemoAtNoteMutation = { __typename?: 'Mutation', upsertMemoAtNote: { __typename?: 'Note', id: string, memos?: Array<string> | null } };
+
 export type GetAllExercisesMaxQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAllExercisesMaxQuery = { __typename?: 'Query', exercises?: Array<{ __typename?: 'Exercise', id: string, name: string, maxWeight?: number | null, maxTotalLoad?: number | null, maxWeightUnit?: Unit | null, updatedAt: string }> | null };
+export type GetAllExercisesMaxQuery = { __typename?: 'Query', exercises?: Array<{ __typename?: 'Exercise', id: string, name: string, updatedAt: string }> | null };
 
 export type GetAllPartsNameQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetAllPartsNameQuery = { __typename?: 'Query', parts?: Array<{ __typename?: 'Part', id: string, name: string }> | null };
-
-export type GetAllPlacesNameQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type GetAllPlacesNameQuery = { __typename?: 'Query', places?: Array<{ __typename?: 'Place', name: string }> | null };
 
 export type GetExerciseQueryVariables = Exact<{
   id: Scalars['ID'];
@@ -894,7 +1023,7 @@ export type GetExerciseMaxByPartsQueryVariables = Exact<{
 }>;
 
 
-export type GetExerciseMaxByPartsQuery = { __typename?: 'Query', part?: { __typename?: 'Part', exercises?: Array<{ __typename?: 'Exercise', name: string, maxWeight?: number | null, maxTotalLoad?: number | null, maxWeightUnit?: Unit | null }> | null } | null };
+export type GetExerciseMaxByPartsQuery = { __typename?: 'Query', part?: { __typename?: 'Part', exercises?: Array<{ __typename?: 'Exercise', name: string }> | null } | null };
 
 export type GetExerciseNameByDateQueryVariables = Exact<{
   date: Scalars['DateTime'];
@@ -924,19 +1053,33 @@ export type GetMaxWeightQueryVariables = Exact<{
 
 export type GetMaxWeightQuery = { __typename?: 'Query', maxWeight?: { __typename?: 'MaxWeightResult', maxWeight?: number | null, createdAt?: string | null } | null };
 
+export type GetMemosByExercisesQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type GetMemosByExercisesQuery = { __typename?: 'Query', memos?: Array<{ __typename?: 'Memo', id: string, content: string, createdAt: string } | null> | null };
+
 export type GetNoteQueryVariables = Exact<{
   date: Scalars['DateTime'];
 }>;
 
 
-export type GetNoteQuery = { __typename?: 'Query', note?: { __typename?: 'Note', id: string, createdAt: string, trainings?: Array<{ __typename?: 'Training', createdAt: string, id: string, totalLoad?: number | null, exercise?: { __typename?: 'Exercise', id: string, name: string, parts?: Array<{ __typename?: 'Part', name: string }> | null } | null, rounds?: Array<{ __typename?: 'Round', id: string, weight: number, repetition: number, interval?: number | null, unit: Unit, memo?: { __typename?: 'Memo', content: string, pin?: boolean | null } | null }> | null }> | null, place?: { __typename?: 'Place', name: string } | null } | null };
+export type GetNoteQuery = { __typename?: 'Query', note?: { __typename?: 'Note', id: string, createdAt: string, trainings?: Array<{ __typename?: 'Training', createdAt: string, id: string, totalLoad?: number | null, exercise?: { __typename?: 'Exercise', id: string, name: string, parts?: Array<{ __typename?: 'Part', name: string }> | null } | null, rounds?: Array<{ __typename?: 'Round', id: string, weight: number, repetition: number, interval?: number | null, unit: Unit, memo?: { __typename?: 'Memo', content: string, pin?: boolean | null } | null }> | null }> | null } | null };
 
 export type GetNoteByIdQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
 
-export type GetNoteByIdQuery = { __typename?: 'Query', noteById?: { __typename?: 'Note', id: string, createdAt: string, trainings?: Array<{ __typename?: 'Training', id: string, createdAt: string, exercise?: { __typename?: 'Exercise', id: string, name: string, parts?: Array<{ __typename?: 'Part', name: string }> | null } | null, rounds?: Array<{ __typename?: 'Round', id: string, weight: number, repetition: number, interval?: number | null, unit: Unit, memo?: { __typename?: 'Memo', content: string, pin?: boolean | null } | null }> | null }> | null, place?: { __typename?: 'Place', name: string } | null } | null };
+export type GetNoteByIdQuery = { __typename?: 'Query', noteById?: { __typename?: 'Note', id: string, createdAt: string, trainings?: Array<{ __typename?: 'Training', id: string, createdAt: string, exercise?: { __typename?: 'Exercise', id: string, name: string, parts?: Array<{ __typename?: 'Part', name: string }> | null } | null, rounds?: Array<{ __typename?: 'Round', id: string, weight: number, repetition: number, interval?: number | null, unit: Unit, memo?: { __typename?: 'Memo', content: string, pin?: boolean | null } | null }> | null }> | null } | null };
+
+export type GetNoteMemoQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type GetNoteMemoQuery = { __typename?: 'Query', noteById?: { __typename?: 'Note', memos?: Array<string> | null } | null };
 
 export type GetNotesQueryVariables = Exact<{
   since?: InputMaybe<Scalars['DateTime']>;
@@ -944,14 +1087,22 @@ export type GetNotesQueryVariables = Exact<{
 }>;
 
 
-export type GetNotesQuery = { __typename?: 'Query', notes?: Array<{ __typename?: 'Note', createdAt: string, trainings?: Array<{ __typename?: 'Training', createdAt: string, exercise?: { __typename?: 'Exercise', name: string, parts?: Array<{ __typename?: 'Part', name: string }> | null } | null, rounds?: Array<{ __typename?: 'Round', id: string, weight: number, repetition: number, interval?: number | null, unit: Unit }> | null }> | null, place?: { __typename?: 'Place', name: string } | null }> | null };
+export type GetNotesQuery = { __typename?: 'Query', notes?: Array<{ __typename?: 'Note', date: string, createdAt: string, trainings?: Array<{ __typename?: 'Training', createdAt: string, exercise?: { __typename?: 'Exercise', name: string, parts?: Array<{ __typename?: 'Part', name: string }> | null } | null, rounds?: Array<{ __typename?: 'Round', id: string, weight: number, repetition: number, interval?: number | null, unit: Unit }> | null }> | null }> | null };
 
-export type GetPreviousTrainingQueryVariables = Exact<{
+export type GetPinnedMemosByExercisesQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
 
-export type GetPreviousTrainingQuery = { __typename?: 'Query', previousTraining?: { __typename?: 'Training', id: string, rounds?: Array<{ __typename?: 'Round', id: string, weight: number, repetition: number, interval?: number | null, unit: Unit }> | null } | null };
+export type GetPinnedMemosByExercisesQuery = { __typename?: 'Query', pinnedMemos?: Array<{ __typename?: 'Memo', id: string, content: string, createdAt: string } | null> | null };
+
+export type GetPreviousTrainingsQueryVariables = Exact<{
+  id: Scalars['ID'];
+  limit: Scalars['Int'];
+}>;
+
+
+export type GetPreviousTrainingsQuery = { __typename?: 'Query', previousTrainings?: Array<{ __typename?: 'Training', id: string, rounds?: Array<{ __typename?: 'Round', id: string, weight: number, repetition: number, interval?: number | null, unit: Unit }> | null, note: { __typename?: 'Note', date: string } } | null> | null };
 
 export type GetRoundByTrainingQueryVariables = Exact<{
   trainingId: Scalars['ID'];
@@ -959,6 +1110,14 @@ export type GetRoundByTrainingQueryVariables = Exact<{
 
 
 export type GetRoundByTrainingQuery = { __typename?: 'Query', training?: { __typename?: 'Training', rounds?: Array<{ __typename?: 'Round', id: string, weight: number, repetition: number, interval?: number | null, unit: Unit, memo?: { __typename?: 'Memo', content: string } | null }> | null } | null };
+
+export type GetTrainingStatQueryVariables = Exact<{
+  exerciseId: Scalars['ID'];
+  limit: Scalars['Int'];
+}>;
+
+
+export type GetTrainingStatQuery = { __typename?: 'Query', trainingsStat?: Array<{ __typename?: 'Training', id: string, createdAt: string, totalLoad?: number | null, rounds?: Array<{ __typename?: 'Round', weight: number, repetition: number, interval?: number | null, unit: Unit }> | null, note: { __typename?: 'Note', date: string } } | null> | null };
 
 export type GetUserQueryVariables = Exact<{ [key: string]: never; }>;
 

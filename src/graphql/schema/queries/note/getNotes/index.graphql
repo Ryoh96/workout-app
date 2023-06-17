@@ -1,0 +1,18 @@
+query getNotes($since: DateTime, $until: DateTime) {
+  notes(since: $since, until: $until) {
+    date
+    trainings {
+      createdAt
+      exercise {
+        name
+        parts {
+          name
+        }
+      }
+      rounds {
+        ...roundSets
+      }
+    }
+    createdAt
+  }
+}

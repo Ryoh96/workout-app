@@ -1,0 +1,16 @@
+query getTrainingStat($exerciseId: ID!, $limit: Int!) {
+  trainingsStat(exerciseId: $exerciseId, limit: $limit) {
+    id
+    createdAt
+    rounds {
+      weight
+      repetition
+      interval
+      unit
+    }
+    note {
+      date
+    }
+    totalLoad 
+  }
+}

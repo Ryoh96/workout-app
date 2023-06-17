@@ -1,0 +1,5 @@
+mutation deleteNote($id: ID!) {
+  deleteNote(id: $id) {
+    id
+  }
+}
