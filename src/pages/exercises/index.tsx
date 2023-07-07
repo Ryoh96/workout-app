@@ -21,15 +21,17 @@ import TitleWithIcon from '@/components/molecules/TitleWithIcon'
 import DropDownWithButton from '@/components/organisms/DropDownWithButton'
 import ExerciseSummary from '@/components/templates/exercises/ExerciseSummary'
 import AddExerciseModal from '@/components/templates/modal/AddExerciseModal'
-import { useGetExerciseNamesByPartLazyQuery } from '@/graphql/generated/operations-csr'
-import { getSdk } from '@/graphql/generated/operations-ssg'
+import { useGetAllPartsNameQuery, useGetExerciseNamesByPartLazyQuery } from '@/graphql/generated/operations-csr'
 import type { ComboBoxOption } from '@/types'
 
 type Props = {
-  partsOptions: ComboBoxOption[]
 }
 
-const Exercises: NextPage<Props> = ({ partsOptions }) => {
+const Exercises: NextPage<Props> = ({}) => {
+  const {data: partsData} = useGetAllPartsNameQuery()
+
+   const partsOptions = partsData?.parts ?? [] as ComboBoxOption[]
+
   const [parts, setParts] = useState<ComboBoxOption>(partsOptions[0])
 
   const [getExerciseName, { data: getExerciseNameData, loading, refetch }] =
@@ -180,24 +182,3 @@ const Exercises: NextPage<Props> = ({ partsOptions }) => {
 
 export default Exercises
 
-export const getServerSideProps: GetServerSideProps<Props> = async () => {
-  if (!process.env.NEXT_PUBLIC_END_POINT) {
-    throw new Error('End point not defined.')
-  }
-
-  const graphQLClient = new GraphQLClient(process.env.NEXT_PUBLIC_END_POINT)
-  const client = getSdk(graphQLClient)
-  const partsName = await client.getAllPartsName()
-
-  if (!partsName.parts) {
-    throw new Error('Parts name not found.')
-  }
-
-  const partsOptions = partsName.parts
-
-  return {
-    props: {
-      partsOptions,
-    },
-  }
-}
