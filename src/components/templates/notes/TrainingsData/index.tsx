@@ -32,7 +32,7 @@ const TrainingsData = ({ className, datetime, noteData }: Props) => {
       </Section>
       <Section>
         <TitleWithIcon
-          icon={<FontAwesomeIcon icon={faDumbbell} className='w-6 h-6 mt-1'/>}
+          icon={<FontAwesomeIcon icon={faDumbbell} className="w-6 h-6 mt-1" />}
           as="h3"
           className=""
         >
@@ -45,10 +45,26 @@ const TrainingsData = ({ className, datetime, noteData }: Props) => {
                 <HorizontalTable
                   title={summary.part}
                   data={makeNoteSummary([
-            {heading: "種目数", content: summary.totalTrainings, unit: "個"},
-            {heading: "総負荷量", content: summary.totalLoad, unit: "kg"},
-            {heading: "総セット数", content: summary.totalSet, unit:"回"},
-            {heading: "総レップ数", content: summary.totalReps, unit:"回"}
+                    {
+                      heading: '種目数',
+                      content: summary.totalTrainings,
+                      unit: '個',
+                    },
+                    {
+                      heading: '総負荷量',
+                      content: summary.totalLoad,
+                      unit: 'kg',
+                    },
+                    {
+                      heading: '総セット数',
+                      content: summary.totalSet,
+                      unit: '回',
+                    },
+                    {
+                      heading: '総レップ数',
+                      content: summary.totalReps,
+                      unit: '回',
+                    },
                   ])}
                 />
               </div>

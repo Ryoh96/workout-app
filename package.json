@@ -20,7 +20,8 @@
     "prepare": "husky install",
     "prisma:reset": "prisma migrate reset --force",
     "prisma:studio": "npx prisma studio",
-    "prisma:migrate": "prisma migrate dev"
+    "prisma:migrate": "prisma migrate dev",
+    "vercel-build": "yarn build"
   },
   "dependencies": {
     "@apollo/client": "^3.7.14",
@@ -121,6 +122,8 @@
     "npm-run-all": "^4.1.5",
     "prettier": "^2.8.8",
     "prisma": "^4.14.0",
+    "safe-compare": "^1.1.4",
+    "static-auth": "^2.1.2",
     "storybook": "^7.0.7",
     "text-encoding": "^0.7.0",
     "ts-node": "^10.9.1",

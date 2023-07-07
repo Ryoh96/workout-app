@@ -25,7 +25,7 @@ const TrainingResults = ({ training, id }: Props) => {
           <div className="flex items-center w-full justify-between">
             <th className="pl-2 pr-2 text-blue-900 py-2 xs:w-1/5">
               {index + 1}
-              <span className='text-sm'>set</span>
+              <span className="text-sm">set</span>
             </th>
             <td className="pl-1 py-2 xs:w-3/5 text-center whitespace-nowrap">
               <span>

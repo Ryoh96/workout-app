@@ -9,7 +9,7 @@ const user = userEvent.setup()
 const data = [
   {
     title: 'accordion1',
-    titleIcon: <BookOpenIcon/>,
+    titleIcon: <BookOpenIcon />,
     content: (
       <ul>
         <li>content1-1</li>
@@ -19,7 +19,7 @@ const data = [
   },
   {
     title: 'accordion2',
-    titleIcon: <BookOpenIcon/>,
+    titleIcon: <BookOpenIcon />,
     content: (
       <ul>
         <li>content2-1</li>

@@ -1,6 +1,6 @@
 /* eslint-disable */
 import { GraphQLResolveInfo, GraphQLScalarType, GraphQLScalarTypeConfig } from 'graphql';
-import { User as UserModel, Exercise as ExerciseModel, Part as PartModel, Round as RoundModel, Note as NoteModel, Training as TrainingModel, Place as PlaceModel, Memo as MemoModel, Unit as UnitModel } from '@prisma/client';
+import { User as UserModel, Exercise as ExerciseModel, Part as PartModel, Round as RoundModel, Note as NoteModel, Training as TrainingModel, Memo as MemoModel, Unit as UnitModel } from '@prisma/client';
 import { Context } from '@/graphql/context';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;

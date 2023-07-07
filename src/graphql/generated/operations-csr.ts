@@ -584,17 +584,17 @@ export type GetTotalLoadByNoteQueryVariables = Exact<{
 
 export type GetTotalLoadByNoteQuery = { __typename?: 'Query', notes?: Array<{ __typename?: 'Note', date: string, trainings?: Array<{ __typename?: 'Training', id: string, totalLoad?: number | null, exercise?: { __typename?: 'Exercise', id: string, parts?: Array<{ __typename?: 'Part', id: string, name: string }> | null } | null }> | null }> | null };
 
-export type GetAllPartsNameQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type GetAllPartsNameQuery = { __typename?: 'Query', parts?: Array<{ __typename?: 'Part', id: string, name: string }> | null };
-
 export type GetPartNameQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
 
 export type GetPartNameQuery = { __typename?: 'Query', part?: { __typename?: 'Part', id: string, name: string } | null };
+
+export type GetAllPartsNameQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllPartsNameQuery = { __typename?: 'Query', parts?: Array<{ __typename?: 'Part', id: string, name: string }> | null };
 
 export type GetMaxTotalLoadQueryVariables = Exact<{
   exerciseId: Scalars['ID'];
@@ -1599,41 +1599,6 @@ export function useGetTotalLoadByNoteLazyQuery(baseOptions?: Apollo.LazyQueryHoo
 export type GetTotalLoadByNoteQueryHookResult = ReturnType<typeof useGetTotalLoadByNoteQuery>;
 export type GetTotalLoadByNoteLazyQueryHookResult = ReturnType<typeof useGetTotalLoadByNoteLazyQuery>;
 export type GetTotalLoadByNoteQueryResult = Apollo.QueryResult<GetTotalLoadByNoteQuery, GetTotalLoadByNoteQueryVariables>;
-export const GetAllPartsNameDocument = gql`
-    query getAllPartsName {
-  parts {
-    id
-    name
-  }
-}
-    `;
-
-/**
- * __useGetAllPartsNameQuery__
- *
- * To run a query within a React component, call `useGetAllPartsNameQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetAllPartsNameQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetAllPartsNameQuery({
- *   variables: {
- *   },
- * });
- */
-export function useGetAllPartsNameQuery(baseOptions?: Apollo.QueryHookOptions<GetAllPartsNameQuery, GetAllPartsNameQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetAllPartsNameQuery, GetAllPartsNameQueryVariables>(GetAllPartsNameDocument, options);
-      }
-export function useGetAllPartsNameLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllPartsNameQuery, GetAllPartsNameQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetAllPartsNameQuery, GetAllPartsNameQueryVariables>(GetAllPartsNameDocument, options);
-        }
-export type GetAllPartsNameQueryHookResult = ReturnType<typeof useGetAllPartsNameQuery>;
-export type GetAllPartsNameLazyQueryHookResult = ReturnType<typeof useGetAllPartsNameLazyQuery>;
-export type GetAllPartsNameQueryResult = Apollo.QueryResult<GetAllPartsNameQuery, GetAllPartsNameQueryVariables>;
 export const GetPartNameDocument = gql`
     query getPartName($id: ID!) {
   part(id: $id) {
@@ -1670,6 +1635,41 @@ export function useGetPartNameLazyQuery(baseOptions?: Apollo.LazyQueryHookOption
 export type GetPartNameQueryHookResult = ReturnType<typeof useGetPartNameQuery>;
 export type GetPartNameLazyQueryHookResult = ReturnType<typeof useGetPartNameLazyQuery>;
 export type GetPartNameQueryResult = Apollo.QueryResult<GetPartNameQuery, GetPartNameQueryVariables>;
+export const GetAllPartsNameDocument = gql`
+    query getAllPartsName {
+  parts {
+    id
+    name
+  }
+}
+    `;
+
+/**
+ * __useGetAllPartsNameQuery__
+ *
+ * To run a query within a React component, call `useGetAllPartsNameQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllPartsNameQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllPartsNameQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetAllPartsNameQuery(baseOptions?: Apollo.QueryHookOptions<GetAllPartsNameQuery, GetAllPartsNameQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAllPartsNameQuery, GetAllPartsNameQueryVariables>(GetAllPartsNameDocument, options);
+      }
+export function useGetAllPartsNameLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllPartsNameQuery, GetAllPartsNameQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAllPartsNameQuery, GetAllPartsNameQueryVariables>(GetAllPartsNameDocument, options);
+        }
+export type GetAllPartsNameQueryHookResult = ReturnType<typeof useGetAllPartsNameQuery>;
+export type GetAllPartsNameLazyQueryHookResult = ReturnType<typeof useGetAllPartsNameLazyQuery>;
+export type GetAllPartsNameQueryResult = Apollo.QueryResult<GetAllPartsNameQuery, GetAllPartsNameQueryVariables>;
 export const GetMaxTotalLoadDocument = gql`
     query getMaxTotalLoad($exerciseId: ID!) {
   maxTotalLoad(exerciseId: $exerciseId) {

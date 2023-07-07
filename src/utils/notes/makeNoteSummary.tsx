@@ -1,4 +1,6 @@
-const makeNoteSummary = (array: { heading: string; content: number, unit: string }[]) => {
+const makeNoteSummary = (
+  array: { heading: string; content: number; unit: string }[]
+) => {
   return array.map(({ heading, content, unit }) => ({
     heading,
     content: (

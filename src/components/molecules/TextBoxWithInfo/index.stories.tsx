@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react'
 
 import EmphasizedText from '@/components/atoms/EmphasizedText'
-import { PCStory, SPStory } from '@/tests/storybook'
+import { SPStory } from '@/tests/storybook'
 
 import TextBoxWithInfo from '.'
 

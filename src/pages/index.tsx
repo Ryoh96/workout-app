@@ -93,7 +93,9 @@ const Home: NextPage = () => {
             </TitleWithIcon>
             {!data?.notes?.[0]?.date ||
               (!hasNote(data?.notes?.[0].date) && (
-                <p className="pb-2 text-sm">今日はまだノートを作成していません。</p>
+                <p className="pb-2 text-sm">
+                  今日はまだノートを作成していません。
+                </p>
               ))}
             <div className="flex gap-2 justify-center mt-3">
               <Link href={`/notes/${format(new Date(), 'yyyy-MM-dd')}`}>

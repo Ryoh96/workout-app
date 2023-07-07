@@ -317,17 +317,17 @@ export const GetTotalLoadByNoteDocument = gql`
   }
 }
     `;
-export const GetAllPartsNameDocument = gql`
-    query getAllPartsName {
-  parts {
+export const GetPartNameDocument = gql`
+    query getPartName($id: ID!) {
+  part(id: $id) {
     id
     name
   }
 }
     `;
-export const GetPartNameDocument = gql`
-    query getPartName($id: ID!) {
-  part(id: $id) {
+export const GetAllPartsNameDocument = gql`
+    query getAllPartsName {
+  parts {
     id
     name
   }
@@ -486,11 +486,11 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     getTotalLoadByNote(variables?: GetTotalLoadByNoteQueryVariables, requestHeaders?: RequestInit["headers"]): Promise<GetTotalLoadByNoteQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetTotalLoadByNoteQuery>(GetTotalLoadByNoteDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getTotalLoadByNote', 'query');
     },
-    getAllPartsName(variables?: GetAllPartsNameQueryVariables, requestHeaders?: RequestInit["headers"]): Promise<GetAllPartsNameQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetAllPartsNameQuery>(GetAllPartsNameDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getAllPartsName', 'query');
-    },
     getPartName(variables: GetPartNameQueryVariables, requestHeaders?: RequestInit["headers"]): Promise<GetPartNameQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetPartNameQuery>(GetPartNameDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getPartName', 'query');
+    },
+    getAllPartsName(variables?: GetAllPartsNameQueryVariables, requestHeaders?: RequestInit["headers"]): Promise<GetAllPartsNameQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetAllPartsNameQuery>(GetAllPartsNameDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getAllPartsName', 'query');
     },
     getMaxTotalLoad(variables: GetMaxTotalLoadQueryVariables, requestHeaders?: RequestInit["headers"]): Promise<GetMaxTotalLoadQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetMaxTotalLoadQuery>(GetMaxTotalLoadDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getMaxTotalLoad', 'query');
@@ -1090,17 +1090,17 @@ export type GetTotalLoadByNoteQueryVariables = Exact<{
 
 export type GetTotalLoadByNoteQuery = { __typename?: 'Query', notes?: Array<{ __typename?: 'Note', date: string, trainings?: Array<{ __typename?: 'Training', id: string, totalLoad?: number | null, exercise?: { __typename?: 'Exercise', id: string, parts?: Array<{ __typename?: 'Part', id: string, name: string }> | null } | null }> | null }> | null };
 
-export type GetAllPartsNameQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type GetAllPartsNameQuery = { __typename?: 'Query', parts?: Array<{ __typename?: 'Part', id: string, name: string }> | null };
-
 export type GetPartNameQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
 
 export type GetPartNameQuery = { __typename?: 'Query', part?: { __typename?: 'Part', id: string, name: string } | null };
+
+export type GetAllPartsNameQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllPartsNameQuery = { __typename?: 'Query', parts?: Array<{ __typename?: 'Part', id: string, name: string }> | null };
 
 export type GetMaxTotalLoadQueryVariables = Exact<{
   exerciseId: Scalars['ID'];

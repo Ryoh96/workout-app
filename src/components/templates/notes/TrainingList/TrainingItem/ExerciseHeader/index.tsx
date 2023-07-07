@@ -146,9 +146,7 @@ export const Presentational = ({
             className=""
             onClick={() => setIsOpenRenameExerciseModal(true)}
           >
-            <h3 className="relative text-lg font-bold text-red-600">
-              {name}
-            </h3>
+            <h3 className="relative text-lg font-bold text-red-600">{name}</h3>
           </button>
         </div>
         <div className="flex items-center relative w-full justify-center mb-1">

@@ -11,7 +11,7 @@ import { client } from '@/pages/_app'
 import { SPStory } from '@/tests/storybook'
 import { dateFormat, datetimeFormat } from '@/utils/dateFormat'
 
-import  Section  from '.'
+import Section from '.'
 
 const noteData = note
 
@@ -19,30 +19,25 @@ export default {
   component: Section,
   args: {
     noteData,
-    datetime: datetimeFormat(new Date())
+    datetime: datetimeFormat(new Date()),
   },
-    decorators: [
+  decorators: [
     (story) => (
       <RecoilRoot>
         <ApolloProvider client={client}>{story()}</ApolloProvider>
       </RecoilRoot>
     ),
   ],
-    parameters: {
+  parameters: {
     msw: {
-      handlers: [
-        handleGetNoteMemo(),
-      ],
+      handlers: [handleGetNoteMemo()],
     },
     ...SPStory,
   },
-
 } as Meta<typeof Section>
-
 
 type Story = StoryObj<typeof Section>
 
 export const Default: Story = {
-    ...SPStory,
+  ...SPStory,
 }
-

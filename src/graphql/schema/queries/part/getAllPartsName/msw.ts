@@ -14,4 +14,3 @@ export const handleGetAllPartName = (args?: { status?: number }) => {
     return res(ctx.data(allPartsName))
   })
 }
-

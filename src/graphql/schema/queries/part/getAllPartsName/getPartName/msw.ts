@@ -14,4 +14,3 @@ export const handleGetPartName = (args?: { status?: number }) => {
     return res(ctx.data(partName))
   })
 }
-

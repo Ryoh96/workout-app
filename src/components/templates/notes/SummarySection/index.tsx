@@ -38,23 +38,26 @@ const SummarySection = ({ noteData, className, datetime }: Props) => {
               作成時刻: {datetime}
             </p>
             {summaries?.map((summary, index) => (
-              <div key={index} className="text-sm flex items-center gap-2 justify-between">
+              <div
+                key={index}
+                className="text-sm flex items-center gap-2 justify-between"
+              >
                 <Tag>{summary.part}</Tag>
-                <div className='whitespace-nowrap flex gap-2 items-baseline'>
-                <p>
-                  種目数:{' '}
-                  <span className="text-base font-bold">
-                    {summary.totalTrainings}
-                  </span>
-                </p>{' '}
-                /
-                <p>
-                  総負荷量:{' '}
-                  <span className="text-base font-bold">
-                    {summary.totalLoad}
-                  </span>{' '}
-                  kg
-                </p>
+                <div className="whitespace-nowrap flex gap-2 items-baseline">
+                  <p>
+                    種目数:{' '}
+                    <span className="text-base font-bold">
+                      {summary.totalTrainings}
+                    </span>
+                  </p>{' '}
+                  /
+                  <p>
+                    総負荷量:{' '}
+                    <span className="text-base font-bold">
+                      {summary.totalLoad}
+                    </span>{' '}
+                    kg
+                  </p>
                 </div>
               </div>
             ))}

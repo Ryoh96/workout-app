@@ -580,17 +580,17 @@ export type GetTotalLoadByNoteQueryVariables = Exact<{
 
 export type GetTotalLoadByNoteQuery = { __typename?: 'Query', notes?: Array<{ __typename?: 'Note', date: string, trainings?: Array<{ __typename?: 'Training', id: string, totalLoad?: number | null, exercise?: { __typename?: 'Exercise', id: string, parts?: Array<{ __typename?: 'Part', id: string, name: string }> | null } | null }> | null }> | null };
 
-export type GetAllPartsNameQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type GetAllPartsNameQuery = { __typename?: 'Query', parts?: Array<{ __typename?: 'Part', id: string, name: string }> | null };
-
 export type GetPartNameQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
 
 export type GetPartNameQuery = { __typename?: 'Query', part?: { __typename?: 'Part', id: string, name: string } | null };
+
+export type GetAllPartsNameQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllPartsNameQuery = { __typename?: 'Query', parts?: Array<{ __typename?: 'Part', id: string, name: string }> | null };
 
 export type GetMaxTotalLoadQueryVariables = Exact<{
   exerciseId: Scalars['ID'];

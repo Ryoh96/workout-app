@@ -1,4 +1,7 @@
-import { AdjustmentsHorizontalIcon, ChartBarIcon } from '@heroicons/react/24/solid'
+import {
+  AdjustmentsHorizontalIcon,
+  ChartBarIcon,
+} from '@heroicons/react/24/solid'
 import { subDays } from 'date-fns'
 import { useMemo, useState } from 'react'
 import { toast } from 'react-toastify'
@@ -21,12 +24,12 @@ type Props = {
 
 const TotalLoadSection = ({ parts, className }: Props) => {
   const today = useMemo(() => new Date(), [])
-const [span, setSpan] = useState(30)
+  const [span, setSpan] = useState(30)
 
   const { data: totalLoadData, loading: totalLoadLoading } =
     useGetTotalLoadByNoteQuery({
       variables: {
-    since: span < 0 ? undefined : subDays(today, span).toISOString(),
+        since: span < 0 ? undefined : subDays(today, span).toISOString(),
         until: today.toISOString(),
       },
       onError: (error) => toast.error(error.message),
@@ -102,33 +105,36 @@ const [span, setSpan] = useState(30)
   const labels = dataArray
     .map((data) => dateFormat(new Date(data[0])))
     .reverse()
-const [isOpenModal, setIsOpenModal] = useState(false)
+  const [isOpenModal, setIsOpenModal] = useState(false)
 
   return (
     <>
-    <Section className={className}>
-      <div className='relative'>
-      <TitleWithIcon as="h2" icon={<ChartBarIcon />}>
-        {parts.name}の総負荷量の推移
-      </TitleWithIcon>
-      <button className='absolute top-0 right-1' onClick={() => setIsOpenModal(true)}>
-        <AdjustmentsHorizontalIcon className='w-6 h-6 text-indigo-800'/>
-      </button>
-      </div>
-      {totalLoadLoading ? (
-        <Spinner />
-      ) : labels.length !== 0 ? (
-        <LineChart datasets={datasets} labels={labels} />
-      ) : (
-        <p className="text-sm">データがありません</p>
-      )}
-    </Section>
-        <ExerciseFilterModal
-      isOpen={isOpenModal}
-      setIsOpen={setIsOpenModal}
-      setSpan={setSpan}
-      span={span}
-    />
+      <Section className={className}>
+        <div className="relative">
+          <TitleWithIcon as="h2" icon={<ChartBarIcon />}>
+            {parts.name}の総負荷量の推移
+          </TitleWithIcon>
+          <button
+            className="absolute top-0 right-1"
+            onClick={() => setIsOpenModal(true)}
+          >
+            <AdjustmentsHorizontalIcon className="w-6 h-6 text-indigo-800" />
+          </button>
+        </div>
+        {totalLoadLoading ? (
+          <Spinner />
+        ) : labels.length !== 0 ? (
+          <LineChart datasets={datasets} labels={labels} />
+        ) : (
+          <p className="text-sm">データがありません</p>
+        )}
+      </Section>
+      <ExerciseFilterModal
+        isOpen={isOpenModal}
+        setIsOpen={setIsOpenModal}
+        setSpan={setSpan}
+        span={span}
+      />
     </>
   )
 }

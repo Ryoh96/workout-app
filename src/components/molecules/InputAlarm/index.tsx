@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 import type { FieldErrors, FieldValues, UseFormRegister } from 'react-hook-form'
 
-import type { SetAlarmInput } from '@/libs/schema/setAlarm'
+import type { SetAlarmInput } from '@/libs/schema/setAlarms'
 
 import TextBoxWithInfo from '../TextBoxWithInfo'
 

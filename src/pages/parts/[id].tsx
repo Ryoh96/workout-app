@@ -101,7 +101,7 @@ const Parts: NextPage<Props> = ({ parts }) => {
             </div>
           </div>
         ) : (
-          <p className='text-sm'>種目が登録されていません</p>
+          <p className="text-sm">種目が登録されていません</p>
         )}
       </Section>
       <AddExerciseModal
@@ -128,7 +128,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
   const graphQLClient = new GraphQLClient(process.env.NEXT_PUBLIC_END_POINT)
   const client = getSdk(graphQLClient)
   const partsName = await client.getPartName({ id })
-console.log(partsName)
+  console.log(partsName)
   const parts = partsName.part as ComboBoxOption
 
   return {

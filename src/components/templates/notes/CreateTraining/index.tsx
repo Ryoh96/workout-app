@@ -23,7 +23,7 @@ type Props = {
   existingTrainings: Set<string | undefined>
 }
 
- const CreateTraining = ({
+const CreateTraining = ({
   partsOptions,
   onCompleted,
   existingTrainings,
@@ -35,7 +35,7 @@ type Props = {
     getExerciseName,
     exerciseNameLoading,
     refetchExerciseNames,
-  } = useExerciseName(partsOptions[0].id as string)
+  } = useExerciseName(partsOptions[0]?.id as string)
 
   const [isOpenAddExerciseModal, setIsOpenAddExerciseModal] = useState(false)
   const noteId = useRecoilValue(noteIdState)
@@ -83,7 +83,7 @@ type Props = {
     <>
       <Section>
         <TitleWithIcon
-          icon={<FontAwesomeIcon icon={faDumbbell} className='w-6 h-6 mt-1'/>}
+          icon={<FontAwesomeIcon icon={faDumbbell} className="w-6 h-6 mt-1" />}
           as="h2"
           className="flex items-center gap-2"
         >

@@ -10,7 +10,7 @@ import { allPartsName } from '@/graphql/schema/queries/part/getAllPartsName/fixt
 import { client } from '@/pages/_app'
 import { SPStory } from '@/tests/storybook'
 
-import  CreateTraining  from '.'
+import CreateTraining from '.'
 
 const partsOptions = allPartsName.parts
 const noteData = note
@@ -18,32 +18,29 @@ const noteData = note
 export default {
   component: CreateTraining,
   args: {
-    onCompleted: () => console.log("completed"),
+    onCompleted: () => console.log('completed'),
     partsOptions,
-    existingTrainings: new Set(noteData.note?.trainings?.map(training => training.exercise?.id))
+    existingTrainings: new Set(
+      noteData.note?.trainings?.map((training) => training.exercise?.id)
+    ),
   },
-    decorators: [
+  decorators: [
     (story) => (
       <RecoilRoot>
         <ApolloProvider client={client}>{story()}</ApolloProvider>
-        <Toast/>
+        <Toast />
       </RecoilRoot>
     ),
   ],
   parameters: {
     msw: {
-      handlers: [
-        handleAddExercisesByPart(),
-        handleCreateTraining()
-      ],
+      handlers: [handleAddExercisesByPart(), handleCreateTraining()],
     },
   },
 } as Meta<typeof CreateTraining>
 
-
 type Story = StoryObj<typeof CreateTraining>
 
 export const Default: Story = {
-    ...SPStory,
+  ...SPStory,
 }
-

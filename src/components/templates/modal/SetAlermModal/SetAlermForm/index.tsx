@@ -8,8 +8,8 @@ import { useForm } from 'react-hook-form'
 
 import Button from '@/components/atoms/Button'
 import InputAlarm from '@/components/molecules/InputAlarm'
-import type { SetAlarmInput } from '@/libs/schema/SetAlarm'
-import { setAlarmSchema } from '@/libs/schema/setAlarm'
+import type { SetAlarmInput } from '@/libs/schema/setAlarms'
+import { setAlarmSchema } from '@/libs/schema/setAlarms'
 
 type Props<T extends FieldValues = SetAlarmInput> = {
   defaultValues?: Partial<T>

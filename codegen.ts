@@ -31,7 +31,6 @@ const codegenConfig: CodegenConfig = {
           Round: '@prisma/client#Round',
           Note: '@prisma/client#Note',
           Training: '@prisma/client#Training',
-          Place: '@prisma/client#Place',
           Memo: '@prisma/client#Memo',
           Unit: '@prisma/client#Unit',
         },

@@ -61,7 +61,7 @@ export const spanOptions: SelectOption[] = [
   },
   {
     name: '全期間',
-    value: "-1"
+    value: '-1',
   },
 ]
 

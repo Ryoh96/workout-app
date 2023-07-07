@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react'
 
-import { PCStory, SPStory } from '@/tests/storybook'
+import { SPStory, TABStory } from '@/tests/storybook'
 
 import Layout from '.'
 
@@ -13,4 +13,4 @@ type Story = StoryObj<typeof Layout>
 
 export const Default: Story = { ...SPStory }
 
-export const PC: Story = { ...PCStory }
+export const PC: Story = { ...TABStory }

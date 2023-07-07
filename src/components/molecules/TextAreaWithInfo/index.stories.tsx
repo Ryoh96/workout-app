@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form'
 
 import EmphasizedText from '@/components/atoms/EmphasizedText'
 import InputCounter from '@/components/atoms/InputCounter'
-import { PCStory, SPStory } from '@/tests/storybook'
+import { SPStory } from '@/tests/storybook'
 
 import TextAreaWithInfo from '.'
 

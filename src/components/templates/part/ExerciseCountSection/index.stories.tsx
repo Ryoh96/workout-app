@@ -7,54 +7,46 @@ import { allPartsName } from '@/graphql/schema/queries/part/getAllPartsName/fixt
 import { client } from '@/pages/_app'
 import { SPStory } from '@/tests/storybook'
 
-import  Section  from '.'
+import Section from '.'
 
 const parts = allPartsName.parts
 
 export default {
   component: Section,
   args: {
-    parts: parts?.[0]
+    parts: parts?.[0],
   },
-    decorators: [
+  decorators: [
     (story) => (
       <RecoilRoot>
         <ApolloProvider client={client}>{story()}</ApolloProvider>
       </RecoilRoot>
     ),
   ],
-    parameters: {
+  parameters: {
     msw: {
-      handlers: [
-        handleExerciseNameByNote(),
-      ],
+      handlers: [handleExerciseNameByNote()],
     },
-    ...SPStory
+    ...SPStory,
   },
 } as Meta<typeof Section>
-
 
 type Story = StoryObj<typeof Section>
 
 export const Default: Story = {
-    ...SPStory,
+  ...SPStory,
 }
 export const Loading: Story = {
-    parameters: {
+  parameters: {
     msw: {
-      handlers: [
-        handleExerciseNameByNote({status: 200}),
-      ],
+      handlers: [handleExerciseNameByNote({ status: 200 })],
     },
   },
 }
 export const Error: Story = {
-    parameters: {
+  parameters: {
     msw: {
-      handlers: [
-        handleExerciseNameByNote({status: 500}),
-      ],
+      handlers: [handleExerciseNameByNote({ status: 500 })],
     },
   },
 }
-

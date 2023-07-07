@@ -1,7 +1,6 @@
 import type { ReactNode } from 'react'
 import type { FieldErrors, FieldValues, UseFormRegister } from 'react-hook-form'
 
-import type { SetAlarmInput } from '@/libs/schema/SetAlarm'
 import type { UpsertRoundInput } from '@/libs/schema/upsertRound'
 
 import TextBoxWithInfo from '../TextBoxWithInfo'

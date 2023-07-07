@@ -6,8 +6,6 @@ import Layout from '.'
 
 const title = APP_TITLE as string
 
-
-
 describe('Layout', () => {
   test('should render the header', () => {
     render(<Layout>content</Layout>)

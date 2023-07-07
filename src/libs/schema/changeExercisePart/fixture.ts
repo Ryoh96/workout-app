@@ -1,8 +1,8 @@
-import type { CreateExerciseInput } from './index'
+// import type { ChangeExercisePartInput } from './index'
 
-export const createExerciseInputFixture: CreateExerciseInput[] = [
-  {
-    part: '胸',
-    exercise: 'デクラインダンベルベンチプレス',
-  },
-]
+// export const createExerciseInputFixture: ChangeExercisePartInput[] = [
+//   {
+//     part: '胸',
+//     exercise: 'デクラインダンベルベンチプレス',
+//   },
+// ]

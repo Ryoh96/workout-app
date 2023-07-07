@@ -27,7 +27,7 @@ describe('HorizontalTable', () => {
   test('should render all of tuple elements', () => {
     const props = {
       title: 'title',
-      data: [{ heading: 'content1', content: 'content2', others: "content3" }],
+      data: [{ heading: 'content1', content: 'content2', others: 'content3' }],
     }
     render(<HorizontalTable {...props} />)
     expect(screen.getByRole('rowgroup')).toBeInTheDocument()

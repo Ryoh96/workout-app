@@ -9,7 +9,7 @@ import { allPartsName } from '@/graphql/schema/queries/part/getAllPartsName/fixt
 import { client } from '@/pages/_app'
 import { SPStory } from '@/tests/storybook'
 
-import  TrainingList  from '.'
+import TrainingList from '.'
 
 const partsOptions = allPartsName.parts
 const noteData = note
@@ -17,10 +17,10 @@ const noteData = note
 export default {
   component: TrainingList,
   args: {
-    onCompleted: () => console.log("completed"),
-    noteData
+    onCompleted: () => console.log('completed'),
+    noteData,
   },
-    decorators: [
+  decorators: [
     (story) => (
       <RecoilRoot>
         <ApolloProvider client={client}>{story()}</ApolloProvider>
@@ -29,17 +29,13 @@ export default {
   ],
   parameters: {
     msw: {
-      handlers: [
-        handleAddExercisesByPart(),
-      ],
+      handlers: [handleAddExercisesByPart()],
     },
   },
 } as Meta<typeof TrainingList>
 
-
 type Story = StoryObj<typeof TrainingList>
 
 export const Default: Story = {
-    ...SPStory,
+  ...SPStory,
 }
-
