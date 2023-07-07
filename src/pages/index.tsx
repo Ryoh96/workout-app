@@ -37,7 +37,7 @@ const Home: NextPage = () => {
       since: thirtyDaysAgo.toISOString(),
       until: today.toISOString(),
     },
-    onError: (error) => toast.error(error.message),
+    onError: (error) => console.error(error.message),
   })
 
   const normalizedData = data?.notes?.map((note) => {
