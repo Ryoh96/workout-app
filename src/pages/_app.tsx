@@ -10,13 +10,8 @@ import { RecoilRoot } from 'recoil'
 
 import Layout from '@/components/layouts'
 
-const NEXT_PUBLIC_END_POINT = process.env.NEXT_PUBLIC_END_POINT
-if (!NEXT_PUBLIC_END_POINT) {
-  throw new Error('NEXT_PUBLIC_END_POINT is not defined')
-}
-
 export const client = new ApolloClient({
-  uri: NEXT_PUBLIC_END_POINT,
+  uri: "/api/graphql",
   cache: new InMemoryCache(),
 })
 
