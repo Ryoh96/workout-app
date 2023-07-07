@@ -21,7 +21,6 @@
     "prisma:reset": "prisma migrate reset --force",
     "prisma:studio": "npx prisma studio",
     "prisma:migrate": "prisma migrate dev",
-    "vercel-build": "yarn build"
   },
   "dependencies": {
     "@apollo/client": "^3.7.14",
