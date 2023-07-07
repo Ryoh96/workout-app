@@ -73,7 +73,7 @@ export const createNote:
 
   const newNote = await prisma.note.create({
     data: {
-      user: { connect: { id: currentUser.id } },
+      userId: currentUser.id,
       date: day,
     },
   })

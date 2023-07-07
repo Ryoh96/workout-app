@@ -1,0 +1,6 @@
+query getPartName($id: ID!) {
+  part(id: $id) {
+    id
+    name
+  }
+}

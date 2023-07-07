@@ -75,9 +75,13 @@ export const editRound:
       })
     if (memo && memos !== null && memos.length >= 10) {
       const oldestMemo = memos[0]
-      await prisma.memo.delete({
+      await prisma.memo.update({
         where: {
           id: oldestMemo.id,
+        },
+        data: {
+          content: memo,
+          pin: false,
         },
       })
       // throw new Error(

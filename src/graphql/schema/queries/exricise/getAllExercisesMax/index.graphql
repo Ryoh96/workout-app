@@ -1,7 +1,0 @@
-query getAllExercisesMax {
-  exercises {
-    id
-    name
-    updatedAt
-  }
-}

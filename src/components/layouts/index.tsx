@@ -1,18 +1,42 @@
+import Link from 'next/link'
+import { signIn, useSession } from 'next-auth/react'
 import type { ReactNode } from 'react'
 
+import Spinner from '../atoms/Spinner'
 import Footer from './Footer'
 import Header from './Header'
+import Section from './Section'
 
 type Props = {
   children: ReactNode
 }
 
 const Layout = ({ children }: Props) => {
+  const { data: session, status } = useSession()
   return (
     <div className=" bg-dark min-h-screen flex flex-col justify-between">
       <div>
         <Header />
-        <main className="p-4 h-full">{children}</main>
+        {status === 'loading' ? (
+          <div className="fixed h-screen w-screen grid items-center">
+            <Spinner />
+          </div>
+        ) : (
+          <main className="py-4 px-1 h-full max-w-[1125px] mx-auto w-full">
+            {status === 'authenticated' || status === 'unauthenticated' ? (
+              <>{children}</>
+            ) : (
+              <Section>
+                <button
+                  onClick={() => signIn()}
+                  className="underline text-blue-700 underline-offset-2 cursor-pointer"
+                >
+                  ログインしてください
+                </button>
+              </Section>
+            )}
+          </main>
+        )}
       </div>
       <Footer />
     </div>

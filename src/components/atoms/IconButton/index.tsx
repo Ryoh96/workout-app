@@ -1,18 +1,18 @@
 import type { ReactNode } from 'react'
 
 type Props = {
-  children: ReactNode
+  icon: ReactNode
   text?: string
 } & React.ComponentPropsWithoutRef<'button'>
 
-const IconButton = ({ children, text, ...props }: Props) => {
+const IconButton = ({ icon, text, ...props }: Props) => {
   return (
     <button
-      className="text-orange-600 flex items-center hover:text-orange-400"
+      className="text-orange-600 flex items-center hover:text-orange-400 gap-0.5"
       {...props}
     >
-      <div>{children}</div>
-      <span className="text-sm font-bold">{text && text}</span>
+      <div>{icon}</div>
+      <span className="text-sm font-bold ">{text}</span>
     </button>
   )
 }

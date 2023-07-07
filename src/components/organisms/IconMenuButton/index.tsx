@@ -1,5 +1,18 @@
+import { faDumbbell } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Menu, Transition } from '@headlessui/react'
+import {
+  ArrowLeftCircleIcon,
+  ArrowLeftOnRectangleIcon,
+  ArrowRightOnRectangleIcon,
+  BookOpenIcon,
+  Square3Stack3DIcon,
+  UserIcon,
+} from '@heroicons/react/24/solid'
+import { format } from 'date-fns'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { signOut } from 'next-auth/react'
 import type { ReactNode } from 'react'
 import React from 'react'
 
@@ -10,22 +23,32 @@ type Props = {
   src?: string
 }
 
-const menuItems = [
-  {
-    name: '登録種目一覧',
-    link: '/exercises',
-  },
-  {
-    name: 'Settings2',
-    link: '/',
-  },
-  {
-    name: 'Settings3',
-    link: '/',
-  },
-]
-
 const IconMenuButton = (props: Props) => {
+  const router = useRouter()
+  const menuItems = [
+    {
+      name: 'ノート',
+      onClick: () => router.push(`/notes/${format(new Date(), 'yyyy-MM-dd')}`),
+      icon: <BookOpenIcon />,
+    },
+    {
+      name: '登録種目一覧',
+      onClick: () => router.push('/exercises'),
+      icon: <FontAwesomeIcon icon={faDumbbell} className="w-6 h-6" />,
+    },
+
+    {
+      name: 'マイページ',
+      link: '/',
+      icon: <UserIcon />,
+    },
+    {
+      name: 'ログアウト',
+      icon: <ArrowLeftOnRectangleIcon />,
+      onClick: () => signOut(),
+    },
+  ]
+
   return (
     <Menu as="div" className="relative mt-1">
       <Menu.Button>
@@ -40,18 +63,23 @@ const IconMenuButton = (props: Props) => {
         leaveFrom="transform opacity-100 scale-100"
         leaveTo="transform opacity-0 scale-90"
       >
-        <Menu.Items className="absolute right-0 mt-2 w-56 bg-white text-black divide-y flex flex-col origin-top-right rounded-md ring-1 ring-black ring-opacity-5 focus:outline-none">
+        <Menu.Items className="absolute right-0 mt-2 w-56 bg-white text-black divide-y flex flex-col origin-top-right rounded-md ring-1 ring-black ring-opacity-5 focus:outline-none z-[9999]">
           {menuItems.map((item, index) => (
             <Menu.Item key={index}>
               {({ active }) => (
-                <Link
-                  href={`${item.link}`}
+                <div
                   className={`${
                     active && 'bg-orange-500 text-white'
                   } group flex w-full items-center rounded-md px-2 py-2 text-sm ring-1 ring-black ring-opacity-5 focus:outline-none`}
+                  onClick={() => item.onClick?.()}
                 >
-                  {item.name}
-                </Link>
+                  {
+                    <div className="flex items-center gap-2 w-full h-full">
+                      <div className="h-6 w-6 text-indigo-700">{item.icon}</div>
+                      <span>{item.name}</span>
+                    </div>
+                  }
+                </div>
               )}
             </Menu.Item>
           ))}

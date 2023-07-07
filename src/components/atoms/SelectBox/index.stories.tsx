@@ -1,7 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
 
-import { PCStory, SPStory } from '@/tests/storybook'
-
 import SelectBox from '.'
 
 export default {
@@ -28,10 +26,10 @@ export const Default: Story = {
   },
 }
 
-export const Selected: Story = {
+export const Middle: Story = {
   args: {
     options,
-    selected: 'LB',
+    variant: 'middle',
   },
 }
 

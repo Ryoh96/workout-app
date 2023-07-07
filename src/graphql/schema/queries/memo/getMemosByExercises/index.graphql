@@ -1,7 +1,0 @@
-query getMemosByExercises($id: ID!) {
-  memos(id: $id) {
-    id
-    content
-    createdAt
-  }
-}

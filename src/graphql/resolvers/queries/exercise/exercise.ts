@@ -30,7 +30,7 @@ export const exercise:
     .user()
 
   if (!user || user?.id !== currentUser.id) {
-    return null
+    throw new Error('アクセス権限がありません')
   }
 
   return prisma.exercise.findUnique({

@@ -1,0 +1,15 @@
+query getExerciseNameByNote($since: DateTime, $until: DateTime) {
+  notes(since: $since, until: $until) {
+    trainings {
+      id
+      exercise {
+        name
+        id
+        parts {
+          name
+          id
+        }
+      }
+    }
+  }
+}

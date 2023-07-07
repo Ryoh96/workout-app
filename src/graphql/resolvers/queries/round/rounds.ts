@@ -43,8 +43,8 @@ export const rounds:
       trainingId,
     },
     orderBy: {
-      createdAt: "asc"
-    }
+      createdAt: 'asc',
+    },
   })
   return rounds
 }

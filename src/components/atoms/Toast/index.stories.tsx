@@ -4,8 +4,6 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { toast } from 'react-toastify'
 import type { ToastProps } from 'react-toastify/dist/types'
 
-import { PCStory, SPStory } from '@/tests/storybook'
-
 import Button from '../Button'
 import Toast from '.'
 

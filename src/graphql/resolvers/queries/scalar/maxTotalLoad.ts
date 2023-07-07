@@ -7,6 +7,7 @@ import type {
   Resolver,
   ResolverTypeWrapper,
 } from '@/graphql/generated/resolvers-types'
+import calcTotalLoad from '@/utils/calcTotalLoad'
 
 export const maxTotalLoad:
   | Resolver<
@@ -15,7 +16,11 @@ export const maxTotalLoad:
       Context,
       RequireFields<QueryMaxTotalLoadArgs, 'exerciseId'>
     >
-  | undefined = async (_, { exerciseId }, { prisma }) => {
+  | undefined = async (_, { exerciseId }, { prisma, currentUser }) => {
+  if (!currentUser) {
+    throw new Error('ユーザーがログインしていません。')
+  }
+
   const exercise = await prisma.exercise.findUnique({
     where: { id: exerciseId },
     include: {
@@ -26,25 +31,28 @@ export const maxTotalLoad:
   })
 
   if (!exercise) {
-    throw new Error('Exercise not found')
+    throw new Error('種目が存在しません')
+  }
+
+  const userId = await exercise.userId
+
+  if (userId !== currentUser.id) {
+    throw new Error('アクセス権限がありません')
   }
 
   let maxTotalLoad = 0
   let noteId: string | undefined = undefined
 
   for (const training of exercise.trainings) {
-    const totalLoad = training.rounds.reduce((acc, round) => {
-      const weight = Math.round(
-        round.weight * (round.unit === 'LB' ? 2.2046 : 1)
-      )
-      const repetition = round.repetition
-      return acc + weight * repetition
-    }, 0)
-
+    const totalLoad = calcTotalLoad(training.rounds)
     if (totalLoad > maxTotalLoad) {
       maxTotalLoad = totalLoad
       noteId = training.noteId
     }
+  }
+
+  if (!noteId) {
+    return null
   }
 
   const note = await prisma.note.findUnique({

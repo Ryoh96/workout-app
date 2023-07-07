@@ -5,7 +5,7 @@ type Props = {
     name: string | number
     value: string
   }[]
-  variant?: 'default' | 'large'
+  variant?: 'default' | 'large' | 'middle'
   handleChange?: (id: string) => void
 } & React.ComponentPropsWithoutRef<'select'>
 
@@ -15,12 +15,16 @@ const SelectBox = forwardRef<HTMLSelectElement, Props>(function SelectBox(
 ) {
   return (
     <div
-      className={`relative w-14  shadow-md ${variant === 'large' && 'w-full'}`}
+      className={`relative w-14  shadow-md ${variant === 'large' && 'w-full'} ${
+        variant === 'middle' && 'w-24'
+      }`}
     >
       <select
         {...props}
         ref={ref}
-        className={`border p-1 w-full appearance-none rounded text-xs h-full py-2 pl-3 `}
+        className={`border p-1 w-full appearance-none rounded text-xs h-full py-2 pl-3 ${
+          variant === 'middle' && 'pt-1 pb-1'
+        }`}
         onChange={(e) => handleChange?.(e.target.value)}
       >
         {options.map((option, index) => (

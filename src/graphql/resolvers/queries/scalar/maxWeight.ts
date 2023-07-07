@@ -19,6 +19,19 @@ export const maxWeight:
   if (!currentUser) {
     throw new Error('ユーザーがログインしていません。')
   }
+
+  const user = await prisma.exercise
+    .findUnique({
+      where: {
+        id: exerciseId,
+      },
+    })
+    .user()
+
+  if (!user || user.id !== currentUser.id) {
+    throw new Error('アクセス権限がありません')
+  }
+
   const trainings = await prisma.training.findMany({
     where: {
       exerciseId,

@@ -24,7 +24,7 @@ type Query {
   memos(id: ID!): [Memo]
   pinnedMemos(id: ID!): [Memo]
 
-  trainingsStat(exerciseId: ID!, limit: Int!): [Training]
+  trainingsStat(exerciseId: ID!, limit: Int): [Training]
 
   maxWeight(exerciseId: ID!): MaxWeightResult
   maxTotalLoad(exerciseId: ID!): MaxTotalLoadResult

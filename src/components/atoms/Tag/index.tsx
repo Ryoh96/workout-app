@@ -1,10 +1,17 @@
+import clsx from 'clsx'
+
 type Props = {
   children: string
-}
+} & React.ComponentPropsWithoutRef<'span'>
 
-const Tag = ({ children }: Props) => {
+const Tag = ({ children, className }: Props) => {
   return (
-    <span className="py-0.5 px-2 bg-orange-900 text-white rounded text-sm whitespace-nowrap">
+    <span
+      className={clsx(
+        'py-0.5 px-2 bg-rose-800 text-white rounded text-sm whitespace-nowrap',
+        className
+      )}
+    >
       {children}
     </span>
   )

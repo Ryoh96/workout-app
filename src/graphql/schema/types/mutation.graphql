@@ -3,18 +3,20 @@ type Mutation {
   addExerciseByPart(name: String!, partId: ID!): Exercise
   renameExercise(id: ID!, name: String!): Exercise!
   deleteExercise(id: ID!): Exercise!
-  
+  changeExercisePart(exerciseId: ID!, partId: ID!): Exercise!
+
   createTraining(noteId: ID!, exerciseId: ID!, id: ID!): Training
   removeTraining(id: ID!): Training
 
   addRound(input: AddRoundInput!): Round
   editRound(input: EditRoundInput!): Round
   removeRound(id: ID!): Round
-  
+
   createNote(date: DateTime!): Note!
   deleteNote(id: ID!): Note!
 
   deleteMemo(id: ID!): Memo
+  pinOutMemo(id: ID!): Memo
 
   upsertMemoAtNote(id: ID!, memo: String!, index: Int): Note!
   deleteMemoAtNote(id: ID!, index: Int!): Note!

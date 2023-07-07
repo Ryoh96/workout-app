@@ -2,28 +2,25 @@ import type { Meta, StoryObj } from '@storybook/react'
 import type { DeepPartial } from 'react-hook-form'
 
 import type { Round } from '@/graphql/generated/resolvers-types'
-import { PCStory, SPStory } from '@/tests/storybook'
+import { SPStory } from '@/tests/storybook'
 import makeRoundsSummary from '@/utils/makeRoundsSummary'
 
 import HorizontalTable from '.'
 
 const rounds = [
   {
-    setCount: 1,
     weight: 30,
     repetition: 10,
     interval: 90,
     unit: 'KG',
   },
   {
-    setCount: 2,
     weight: 30,
     repetition: 9,
     interval: 90,
     unit: 'KG',
   },
   {
-    setCount: 3,
     weight: 25,
     repetition: 8,
     unit: 'LB',
@@ -32,7 +29,6 @@ const rounds = [
 
 const roundsWithMemo = [
   {
-    setCount: 1,
     weight: 30,
     repetition: 10,
     interval: 90,
@@ -42,14 +38,12 @@ const roundsWithMemo = [
     },
   },
   {
-    setCount: 2,
     weight: 30,
     repetition: 9,
     interval: 90,
     unit: 'KG',
   },
   {
-    setCount: 3,
     weight: 25,
     repetition: 8,
     interval: 90,
@@ -65,7 +59,7 @@ const summaryWithMemo = makeRoundsSummary(roundsWithMemo)
 
 export default {
   component: HorizontalTable,
-  args: { rounds: summary },
+  args: { data: summary },
 } as Meta<typeof HorizontalTable>
 
 type Story = StoryObj<typeof HorizontalTable>
@@ -73,12 +67,10 @@ type Story = StoryObj<typeof HorizontalTable>
 export const Default: Story = { ...SPStory }
 
 export const WithTitle: Story = {
-  args: { title: 'タイトル', rounds: summary },
+  args: { title: 'タイトル', data: summary },
   ...SPStory,
 }
 export const WithMemo: Story = {
-  args: { title: 'タイトル', rounds: summaryWithMemo },
+  args: { title: 'タイトル', data: summaryWithMemo },
   ...SPStory,
 }
-
-export const PC: Story = { ...PCStory }

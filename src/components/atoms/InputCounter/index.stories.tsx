@@ -2,7 +2,6 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { useForm } from 'react-hook-form'
 
 import TextAreaWithInfo from '@/components/molecules/TextAreaWithInfo'
-import { PCStory, SPStory } from '@/tests/storybook'
 
 import InputCounter from '.'
 

@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react'
 
+import { SPStory } from '@/tests/storybook'
+
 import DropDownWithButton from '.'
 
 export default {
@@ -40,6 +42,7 @@ export default {
       },
     ],
   },
+  ...SPStory,
 } as Meta<typeof DropDownWithButton>
 
 type Story = StoryObj<typeof DropDownWithButton>

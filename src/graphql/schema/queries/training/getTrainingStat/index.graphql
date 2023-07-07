@@ -1,4 +1,4 @@
-query getTrainingStat($exerciseId: ID!, $limit: Int!) {
+query getTrainingStat($exerciseId: ID!, $limit: Int) {
   trainingsStat(exerciseId: $exerciseId, limit: $limit) {
     id
     createdAt
@@ -11,6 +11,6 @@ query getTrainingStat($exerciseId: ID!, $limit: Int!) {
     note {
       date
     }
-    totalLoad 
+    totalLoad
   }
 }

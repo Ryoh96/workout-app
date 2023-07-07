@@ -1,0 +1,5 @@
+mutation pinOutMemo($id: ID!) {
+  pinOutMemo(id: $id) {
+    id
+  }
+}

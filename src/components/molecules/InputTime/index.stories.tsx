@@ -3,7 +3,7 @@ import type { ReactNode } from 'react'
 import { useForm } from 'react-hook-form'
 
 import type { UpsertRoundInput } from '@/libs/schema/upsertRound'
-import { PCStory, SPStory } from '@/tests/storybook'
+import { SPStory } from '@/tests/storybook'
 
 import InputTime from '.'
 
@@ -31,6 +31,7 @@ export const Default: Story = {
   args: {
     label: 'インターバル',
   },
+  ...SPStory,
 }
 
 export const HasInfo: Story = {
@@ -38,4 +39,5 @@ export const HasInfo: Story = {
     label: 'インターバル',
     info: <p>1:30</p>,
   },
+  ...SPStory,
 }

@@ -1,0 +1,16 @@
+query getTotalLoadByNote($since: DateTime, $until: DateTime) {
+  notes(since: $since, until: $until) {
+    date
+    trainings {
+      id
+      exercise {
+        id
+        parts {
+          id
+          name
+        }
+      }
+      totalLoad
+    }
+  }
+}

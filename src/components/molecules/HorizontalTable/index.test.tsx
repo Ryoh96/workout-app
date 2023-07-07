@@ -6,7 +6,7 @@ describe('HorizontalTable', () => {
   test('should render the title', () => {
     const props = {
       title: 'title',
-      rounds: [{ set: 'content1', summary: 'content2' }],
+      data: [{ heading: 'content1', content: 'content2' }],
     }
     render(<HorizontalTable {...props} />)
     expect(screen.getByText(props.title)).toBeInTheDocument()
@@ -14,7 +14,7 @@ describe('HorizontalTable', () => {
   test('should render tr, th, and td element', () => {
     const props = {
       title: 'title',
-      rounds: [{ set: 'content1', summary: 'content2' }],
+      data: [{ heading: 'content1', content: 'content2' }],
     }
     render(<HorizontalTable {...props} />)
     expect(screen.getByRole('rowgroup')).toBeInTheDocument()
@@ -27,7 +27,7 @@ describe('HorizontalTable', () => {
   test('should render all of tuple elements', () => {
     const props = {
       title: 'title',
-      rounds: [{ set: 'content1', summary: 'content2', memo: 'content3' }],
+      data: [{ heading: 'content1', content: 'content2', others: "content3" }],
     }
     render(<HorizontalTable {...props} />)
     expect(screen.getByRole('rowgroup')).toBeInTheDocument()

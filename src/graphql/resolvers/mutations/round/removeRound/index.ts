@@ -9,8 +9,6 @@ import type {
   ResolverTypeWrapper,
 } from '@/graphql/generated/resolvers-types'
 
-import { updateTotalLoad } from '../../utils/updateTotalLoad'
-
 export const removeRound:
   | Resolver<
       Maybe<ResolverTypeWrapper<Round>>,

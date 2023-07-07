@@ -1,4 +1,5 @@
 import { Disclosure, Transition } from '@headlessui/react'
+import { ChevronDownIcon } from '@heroicons/react/24/solid'
 import type { ReactNode } from 'react'
 import { forwardRef, useRef, useState } from 'react'
 
@@ -6,13 +7,14 @@ import Tag from '@/components/atoms/Tag'
 
 type Props = {
   title: String
+  titleIcon?: ReactNode
   children: ReactNode
   defaultOpen?: boolean
   tags?: string[]
 } & React.ComponentPropsWithRef<'button'>
 
 const Accordion = forwardRef<HTMLButtonElement, Props>(function Accordion(
-  { title, children, tags, defaultOpen = true },
+  { title, children, tags, titleIcon, defaultOpen = true },
   ref
 ) {
   return (
@@ -21,12 +23,15 @@ const Accordion = forwardRef<HTMLButtonElement, Props>(function Accordion(
         <>
           <Disclosure.Button
             ref={ref}
-            className={`bg-orange-300 w-full text-orange-800 py-2 flex items-center justify-between px-4 rounded-t-md hover:bg-orange-300  shadow-md ${
+            className={`bg-slate-200  w-full  py-3 flex items-center justify-between px-4 rounded-md shadow-md hover:bg-slate-300 ${
               open && 'shadow-none'
             }`}
           >
-            <div className="flex items-center gap-4">
-              <span>{title}</span>
+            <div className="flex items-center gap-4 justify-center">
+              <div className="flex gap-2 items-center justify-center">
+                <span className="text-gray-900">{titleIcon}</span>
+                <span className="font-bold text-black">{title}</span>
+              </div>
               {tags && (
                 <div className="flex gap-1">
                   {tags.map((tag, index) => (
@@ -35,23 +40,11 @@ const Accordion = forwardRef<HTMLButtonElement, Props>(function Accordion(
                 </div>
               )}
             </div>
-
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
+            <ChevronDownIcon
               className={`${
                 open ? 'rotate-180 transform' : ''
               } w-5 h-5 transition duration-100 ease-out`}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M19.5 8.25l-7.5 7.5-7.5-7.5"
-              />
-            </svg>
+            />
           </Disclosure.Button>
           <Transition
             show={open}

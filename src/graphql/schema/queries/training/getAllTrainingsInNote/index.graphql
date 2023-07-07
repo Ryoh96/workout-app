@@ -1,0 +1,10 @@
+query getAllTrainingsInNote {
+  notes {
+    trainings {
+      exercise {
+        id
+      }
+    }
+    date
+  }
+}

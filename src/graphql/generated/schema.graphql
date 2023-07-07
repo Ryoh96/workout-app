@@ -59,6 +59,7 @@ type Menu {
 type Mutation {
   addExerciseByPart(name: String!, partId: ID!): Exercise
   addRound(input: AddRoundInput!): Round
+  changeExercisePart(exerciseId: ID!, partId: ID!): Exercise!
   createExerciseAtNote(name: String!, parts: [String!]): Exercise
   createNote(date: DateTime!): Note!
   createTraining(exerciseId: ID!, id: ID!, noteId: ID!): Training
@@ -67,6 +68,7 @@ type Mutation {
   deleteMemoAtNote(id: ID!, index: Int!): Note!
   deleteNote(id: ID!): Note!
   editRound(input: EditRoundInput!): Round
+  pinOutMemo(id: ID!): Memo
   removeRound(id: ID!): Round
   removeTraining(id: ID!): Training
   renameExercise(id: ID!, name: String!): Exercise!
@@ -114,7 +116,7 @@ type Query {
   rounds(trainingId: ID!): [Round]
   training(id: ID!): Training
   trainings(limit: Int, offset: Int): [Training!]
-  trainingsStat(exerciseId: ID!, limit: Int!): [Training]
+  trainingsStat(exerciseId: ID!, limit: Int): [Training]
   user: User
 }
 

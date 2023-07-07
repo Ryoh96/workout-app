@@ -29,7 +29,15 @@ export const previousTrainings:
     throw new Error(`種目が存在しません。`)
   }
 
-  if (data.note.userId !== currentUser.id) {
+  const user = await prisma.exercise
+    .findUnique({
+      where: {
+        id: data.exerciseId,
+      },
+    })
+    .user()
+
+  if (data.note.userId !== currentUser.id || user?.id !== currentUser.id) {
     throw new Error('アクセス権限がありません。')
   }
 

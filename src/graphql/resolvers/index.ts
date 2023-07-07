@@ -13,5 +13,66 @@ export const resolvers: Resolvers = {
   Training,
   Round,
   Query,
-  Mutation,
+  Mutation: {
+    changeExercisePart: async (
+      _,
+      { partId, exerciseId },
+      { currentUser, prisma }
+    ) => {
+      if (!currentUser) {
+        throw new Error('ユーザがログインしていません')
+      }
+
+      const user = await prisma.exercise
+        .findUnique({
+          where: {
+            id: exerciseId,
+          },
+        })
+        .user()
+
+      if (user?.id !== currentUser.id) {
+        throw new Error('アクセス権限がありません')
+      }
+
+      return prisma.exercise.update({
+        where: {
+          id: exerciseId,
+        },
+        data: {
+          parts: {
+            set: [{ id: partId }],
+          },
+        },
+      })
+    },
+    pinOutMemo: async (_, { id }, { currentUser, prisma }) => {
+      if (!currentUser) {
+        throw new Error('ユーザがログインしていません')
+      }
+
+      const user = await prisma.memo
+        .findUnique({
+          where: {
+            id,
+          },
+        })
+        .exercise()
+        .user()
+
+      if (user.id !== currentUser.id) {
+        throw new Error('アクセス権限がありません')
+      }
+
+      return prisma.memo.update({
+        where: {
+          id,
+        },
+        data: {
+          pin: false,
+        },
+      })
+    },
+    ...Mutation,
+  },
 }

@@ -1,7 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
 
-import { PCStory, SPStory } from '@/tests/storybook'
-
 import SelectBox from '.'
 
 export default {

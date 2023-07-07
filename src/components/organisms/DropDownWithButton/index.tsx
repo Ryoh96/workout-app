@@ -26,7 +26,7 @@ const DropDownWithButton = ({ icon, menuItems }: Props) => {
         leaveFrom="transform opacity-100 scale-100"
         leaveTo="transform opacity-0 scale-90"
       >
-        <Menu.Items className="absolute right-0 mt-2 w-56 bg-white text-black divide-y flex flex-col origin-top-right rounded-md ring-1 ring-black ring-opacity-5 focus:outline-none z-40">
+        <Menu.Items className="absolute right-0   mt-2 w-56 bg-white text-black divide-y flex flex-col origin-top-right rounded-md ring-1 ring-black ring-opacity-5 focus:outline-none cursor-pointer">
           {menuItems.map((item, index) => (
             <Menu.Item key={index}>
               {({ active, close }) => (
@@ -35,8 +35,8 @@ const DropDownWithButton = ({ icon, menuItems }: Props) => {
                     <Link
                       href={`${item.link}`}
                       className={`${
-                        active && 'bg-orange-500 text-white'
-                      } group flex w-full items-center rounded-md px-2 py-2 text-sm ring-1 ring-black ring-opacity-5 focus:outline-none`}
+                        active && ' hover:bg-sky-100 text-white'
+                      } group flex w-full items-center rounded-md px-2 py-2 text-sm ring-1 ring-black ring-opacity-5 focus:outline-none cursor-pointer `}
                     >
                       {item.icon && <span className="mr-2">{item.icon}</span>}
                       <span>{item.name}</span>
@@ -44,8 +44,8 @@ const DropDownWithButton = ({ icon, menuItems }: Props) => {
                   ) : (
                     <p
                       className={`${
-                        active && 'bg-orange-500 text-white'
-                      } group flex w-full items-center rounded-md px-2 py-2 text-sm ring-1 ring-black ring-opacity-5 focus:outline-none`}
+                        active && 'bg-sky-500 text-white'
+                      } group flex w-full items-center rounded-md px-2 py-2 text-sm ring-1 ring-black ring-opacity-5 focus:outline-none cursor-pointer hover:bg-sky-100`}
                       onClick={() => {
                         item.handleClick?.()
                         close()

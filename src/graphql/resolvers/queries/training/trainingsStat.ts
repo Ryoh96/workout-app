@@ -14,7 +14,7 @@ export const trainingsStat:
       Maybe<Maybe<ResolverTypeWrapper<Training>>[]>,
       {},
       Context,
-      RequireFields<QueryTrainingsStatArgs, 'exerciseId' | 'limit'>
+      RequireFields<QueryTrainingsStatArgs, 'exerciseId'>
     >
   | undefined = async (_, { exerciseId, limit }, { prisma, currentUser }) => {
   if (!currentUser) {
@@ -40,7 +40,7 @@ export const trainingsStat:
       },
     })
     .trainings({
-      take: limit,
+      take: limit ?? undefined,
       include: {
         rounds: true,
         note: {

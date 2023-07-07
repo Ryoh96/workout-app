@@ -86,6 +86,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   addExerciseByPart?: Maybe<Exercise>;
   addRound?: Maybe<Round>;
+  changeExercisePart: Exercise;
   createExerciseAtNote?: Maybe<Exercise>;
   createNote: Note;
   createTraining?: Maybe<Training>;
@@ -94,6 +95,7 @@ export type Mutation = {
   deleteMemoAtNote: Note;
   deleteNote: Note;
   editRound?: Maybe<Round>;
+  pinOutMemo?: Maybe<Memo>;
   removeRound?: Maybe<Round>;
   removeTraining?: Maybe<Training>;
   renameExercise: Exercise;
@@ -109,6 +111,12 @@ export type MutationAddExerciseByPartArgs = {
 
 export type MutationAddRoundArgs = {
   input: AddRoundInput;
+};
+
+
+export type MutationChangeExercisePartArgs = {
+  exerciseId: Scalars['ID'];
+  partId: Scalars['ID'];
 };
 
 
@@ -153,6 +161,11 @@ export type MutationDeleteNoteArgs = {
 
 export type MutationEditRoundArgs = {
   input: EditRoundInput;
+};
+
+
+export type MutationPinOutMemoArgs = {
+  id: Scalars['ID'];
 };
 
 
@@ -331,7 +344,7 @@ export type QueryTrainingsArgs = {
 
 export type QueryTrainingsStatArgs = {
   exerciseId: Scalars['ID'];
-  limit: Scalars['Int'];
+  limit?: InputMaybe<Scalars['Int']>;
 };
 
 export type Round = {
@@ -563,6 +576,7 @@ export type MenuResolvers<ContextType = Context, ParentType extends ResolversPar
 export type MutationResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   addExerciseByPart?: Resolver<Maybe<ResolversTypes['Exercise']>, ParentType, ContextType, RequireFields<MutationAddExerciseByPartArgs, 'name' | 'partId'>>;
   addRound?: Resolver<Maybe<ResolversTypes['Round']>, ParentType, ContextType, RequireFields<MutationAddRoundArgs, 'input'>>;
+  changeExercisePart?: Resolver<ResolversTypes['Exercise'], ParentType, ContextType, RequireFields<MutationChangeExercisePartArgs, 'exerciseId' | 'partId'>>;
   createExerciseAtNote?: Resolver<Maybe<ResolversTypes['Exercise']>, ParentType, ContextType, RequireFields<MutationCreateExerciseAtNoteArgs, 'name'>>;
   createNote?: Resolver<ResolversTypes['Note'], ParentType, ContextType, RequireFields<MutationCreateNoteArgs, 'date'>>;
   createTraining?: Resolver<Maybe<ResolversTypes['Training']>, ParentType, ContextType, RequireFields<MutationCreateTrainingArgs, 'exerciseId' | 'id' | 'noteId'>>;
@@ -571,6 +585,7 @@ export type MutationResolvers<ContextType = Context, ParentType extends Resolver
   deleteMemoAtNote?: Resolver<ResolversTypes['Note'], ParentType, ContextType, RequireFields<MutationDeleteMemoAtNoteArgs, 'id' | 'index'>>;
   deleteNote?: Resolver<ResolversTypes['Note'], ParentType, ContextType, RequireFields<MutationDeleteNoteArgs, 'id'>>;
   editRound?: Resolver<Maybe<ResolversTypes['Round']>, ParentType, ContextType, RequireFields<MutationEditRoundArgs, 'input'>>;
+  pinOutMemo?: Resolver<Maybe<ResolversTypes['Memo']>, ParentType, ContextType, RequireFields<MutationPinOutMemoArgs, 'id'>>;
   removeRound?: Resolver<Maybe<ResolversTypes['Round']>, ParentType, ContextType, RequireFields<MutationRemoveRoundArgs, 'id'>>;
   removeTraining?: Resolver<Maybe<ResolversTypes['Training']>, ParentType, ContextType, RequireFields<MutationRemoveTrainingArgs, 'id'>>;
   renameExercise?: Resolver<ResolversTypes['Exercise'], ParentType, ContextType, RequireFields<MutationRenameExerciseArgs, 'id' | 'name'>>;
@@ -615,7 +630,7 @@ export type QueryResolvers<ContextType = Context, ParentType extends ResolversPa
   rounds?: Resolver<Maybe<Array<Maybe<ResolversTypes['Round']>>>, ParentType, ContextType, RequireFields<QueryRoundsArgs, 'trainingId'>>;
   training?: Resolver<Maybe<ResolversTypes['Training']>, ParentType, ContextType, RequireFields<QueryTrainingArgs, 'id'>>;
   trainings?: Resolver<Maybe<Array<ResolversTypes['Training']>>, ParentType, ContextType, Partial<QueryTrainingsArgs>>;
-  trainingsStat?: Resolver<Maybe<Array<Maybe<ResolversTypes['Training']>>>, ParentType, ContextType, RequireFields<QueryTrainingsStatArgs, 'exerciseId' | 'limit'>>;
+  trainingsStat?: Resolver<Maybe<Array<Maybe<ResolversTypes['Training']>>>, ParentType, ContextType, RequireFields<QueryTrainingsStatArgs, 'exerciseId'>>;
   user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
 };
 

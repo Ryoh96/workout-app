@@ -1,0 +1,5 @@
+mutation changeExercisePart($exerciseId: ID!, $partId: ID!) {
+  changeExercisePart(exerciseId: $exerciseId, partId: $partId) {
+    id
+  }
+}

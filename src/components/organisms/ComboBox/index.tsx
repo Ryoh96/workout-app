@@ -5,7 +5,7 @@ import type { ComboBoxOption } from '@/types'
 
 type Props = {
   options: ComboBoxOption[]
-  selected: ComboBoxOption
+  selected?: ComboBoxOption
   variant?: 'small' | 'default'
   placeholder?: string
   setSelected: React.Dispatch<React.SetStateAction<ComboBoxOption>>
@@ -31,7 +31,7 @@ const ComboBox = ({
         )
 
   return (
-    <div className={`w-full max-w-lg ${variant === 'small' && 'w-36'}`}>
+    <div className={`w-full  ${variant === 'small' && 'w-36'}`}>
       <Combobox value={selected} onChange={setSelected}>
         <div className="relative mt-1">
           <div className="relative w-full cursor-default overflow-hidden rounded-lg bg-white text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">

@@ -18,7 +18,7 @@ export const round:
     >
   | undefined = async (_, { id }, { prisma, currentUser }) => {
   if (!currentUser) {
-    throw new Error('ユーザーがログインしていません。')
+    throw new Error('ユーザーがログインしていません')
   }
   const round = await prisma.round.findUnique({
     where: {
@@ -34,7 +34,7 @@ export const round:
   })
 
   if (!round) {
-    throw new Error('セットがありません。')
+    throw new Error('セットがありません')
   }
 
   if (round.training.note.userId !== currentUser.id) {

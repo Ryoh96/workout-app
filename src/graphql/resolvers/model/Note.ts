@@ -9,5 +9,5 @@ export const Note: Resolvers['Note'] = {
         })
         .trainings()) || []
     )
-  }
+  },
 }

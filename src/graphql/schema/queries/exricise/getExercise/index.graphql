@@ -2,6 +2,7 @@ query getExercise($id: ID!) {
   exercise(id: $id) {
     name
     parts {
+      id
       name
     }
     trainings {

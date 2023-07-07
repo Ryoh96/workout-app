@@ -17,7 +17,6 @@ export const part:
       RequireFields<QueryPartArgs, 'id'>
     >
   | undefined = async (_, { id }, { prisma, currentUser }) => {
-
   const part = await prisma.part.findUnique({
     where: {
       id,

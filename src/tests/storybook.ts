@@ -1,15 +1,3 @@
-import { INITIAL_VIEWPORTS } from '@storybook/addon-viewport'
-
-const myViewports = {
-  iPhoneSE: {
-    name: 'iPhone SE',
-    styles: {
-      width: '375px',
-      height: '667px',
-    },
-  },
-}
-
 export const SPStory = {
   parameters: {
     viewport: {
@@ -24,25 +12,22 @@ export const SPStory = {
       },
       defaultViewport: 'iPhoneSE',
     },
-    screenshot: {
-      viewport: {
-        width: 375,
-        height: 667,
-        deviceScaleFactor: 1,
-      },
-      fullPage: false,
-    },
   },
 }
 
-export const PCStory = {
+export const TABStory = {
   parameters: {
-    screenshot: {
-      viewport: {
-        width: 1280,
-        height: 800,
+    viewport: {
+      viewports: {
+        iPhoneSE: {
+          name: 'SP',
+          styles: {
+            width: '768px',
+            height: '680px',
+          },
+        },
       },
-      fullPage: false,
+      defaultViewport: 'iPhoneSE',
     },
   },
 }

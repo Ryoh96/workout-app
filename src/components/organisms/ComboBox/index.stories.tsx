@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { useState } from 'react'
 
+import { SPStory } from '@/tests/storybook'
 import type { ComboBoxOption } from '@/types'
 
 import ComboBox from '.'
@@ -36,6 +37,7 @@ const TestComponent = ({ options, variant }: Props) => {
 
 export default {
   component: TestComponent,
+  ...SPStory,
 } as Meta<typeof TestComponent>
 
 type Story = StoryObj<typeof TestComponent>

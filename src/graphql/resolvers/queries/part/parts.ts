@@ -16,7 +16,6 @@ export const parts:
       Partial<QueryPartsArgs>
     >
   | undefined = async (_, __, { prisma, currentUser }) => {
-
   const parts = await prisma.part.findMany()
   return parts
 }

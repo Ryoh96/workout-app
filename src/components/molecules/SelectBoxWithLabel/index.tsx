@@ -1,17 +1,14 @@
 import { forwardRef, useId } from 'react'
 
 import SelectBox from '@/components/atoms/SelectBox'
+import type { SelectOption } from '@/types'
 
 type Props = {
   label: string
   labelPosition?: 'default' | 'top'
   labelVisible?: boolean
-  options: {
-    name: string | number
-    value: string
-    selected?: boolean
-  }[]
-  variant?: 'default' | 'large'
+  options: SelectOption[]
+  variant?: 'default' | 'large' | 'middle'
   handleChange?: (id: string) => void
 } & React.ComponentPropsWithoutRef<typeof SelectBox>
 
@@ -31,13 +28,13 @@ const SelectBoxWithLabel = forwardRef<HTMLSelectElement, Props>(
     const id = useId()
     return (
       <div
-        className={`flex items-center mb-2 w-full ${
+        className={`flex items-center  ${
           labelPosition === 'top' && 'flex-col items-baseline gap-1'
-        }`}
+        } ${variant === 'large' && 'w-full'}`}
       >
         <label
           htmlFor={id}
-          className={`text-sm mr-2 text-sky-800 font-bold ${
+          className={`text-sm mr-2 text-indigo-800 font-bold ${
             !labelVisible && 'sr-only'
           } 
           ${labelPosition === 'top' && 'pl-1'}

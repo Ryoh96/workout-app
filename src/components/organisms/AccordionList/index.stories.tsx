@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react'
 
+import { SPStory, TABStory } from '@/tests/storybook'
+
 import AccordionList from '.'
 
 const data = [
@@ -21,6 +23,24 @@ const data = [
       </ul>
     ),
   },
+  {
+    title: 'accordion3',
+    content: (
+      <ul>
+        <li>content2-1</li>
+        <li>content2-2</li>
+      </ul>
+    ),
+  },
+  {
+    title: 'accordion4',
+    content: (
+      <ul>
+        <li>content2-1</li>
+        <li>content2-2</li>
+      </ul>
+    ),
+  },
 ]
 
 export default {
@@ -32,8 +52,15 @@ export default {
 
 type Story = StoryObj<typeof AccordionList>
 
-export const Default: Story = {}
+export const Default: Story = {
+  ...SPStory,
+}
+
+export const Tablet: Story = {
+  ...TABStory,
+}
 
 export const NoData: Story = {
   args: { items: [] },
+  ...SPStory,
 }

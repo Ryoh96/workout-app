@@ -1,9 +1,12 @@
 import '@/styles/globals.css'
 import 'react-toastify/dist/ReactToastify.css'
+import 'react-loading-skeleton/dist/skeleton.css'
 
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client'
 import type { AppProps } from 'next/app'
-import { SessionProvider } from 'next-auth/react'
+import { SessionProvider, useSession } from 'next-auth/react'
+import { SkeletonTheme } from 'react-loading-skeleton'
+import { RecoilRoot } from 'recoil'
 
 import Layout from '@/components/layouts'
 
@@ -19,12 +22,16 @@ export const client = new ApolloClient({
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <SessionProvider session={pageProps.session}>
-      <ApolloProvider client={client}>
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
-      </ApolloProvider>
-    </SessionProvider>
+    <RecoilRoot>
+      <SessionProvider session={pageProps.session}>
+        <ApolloProvider client={client}>
+          <SkeletonTheme baseColor="#2020202" highlightColor="#444">
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
+          </SkeletonTheme>
+        </ApolloProvider>
+      </SessionProvider>
+    </RecoilRoot>
   )
 }
