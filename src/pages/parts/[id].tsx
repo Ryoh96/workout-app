@@ -10,6 +10,7 @@ import type { GetServerSideProps, NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 
+import Spinner from '@/components/atoms/Spinner'
 import Title from '@/components/atoms/Title'
 import Toast from '@/components/atoms/Toast'
 import Section from '@/components/layouts/Section'
@@ -20,19 +21,21 @@ import ExerciseSummary from '@/components/templates/exercises/ExerciseSummary'
 import AddExerciseModal from '@/components/templates/modal/AddExerciseModal'
 import ExerciseCountSection from '@/components/templates/part/ExerciseCountSection'
 import TotalLoadSection from '@/components/templates/part/TotalLoadSection'
-import { useGetExerciseNamesByPartQuery } from '@/graphql/generated/operations-csr'
+import { useGetExerciseNamesByPartLazyQuery, useGetExerciseNamesByPartQuery, useGetPartNameQuery } from '@/graphql/generated/operations-csr'
 import { getSdk } from '@/graphql/generated/operations-ssg'
 import type { ComboBoxOption } from '@/types'
 
 type Props = {
-  parts: ComboBoxOption
+  id: string
 }
 
-const Parts: NextPage<Props> = ({ parts }) => {
+const Parts: NextPage<Props> = ({ id }) => {
+  const [getExerciseNames, { data: getExerciseNameData, refetch }] = useGetExerciseNamesByPartLazyQuery()
+  const {data, loading} = useGetPartNameQuery({variables: {id}, onCompleted: result => {
+
+getExerciseNames({variables: {partIds: result.part?.id as string}})
+  }})
   const [isOpenAddExerciseModal, setIsOpenAddExerciseModal] = useState(false)
-  const { data: getExerciseNameData, refetch } = useGetExerciseNamesByPartQuery(
-    { variables: { partIds: `${parts.id}` } }
-  )
   const router = useRouter()
   return (
     <>
@@ -50,6 +53,7 @@ const Parts: NextPage<Props> = ({ parts }) => {
           />
         </div>
       </div>
+      {loading ? <Spinner variant='small'/> :
       <div className="md:flex gap-3">
         <div className="md:w-2/5">
           <Section className="w-full">
@@ -59,14 +63,14 @@ const Parts: NextPage<Props> = ({ parts }) => {
                   icon={faChild}
                   className="w-6 h-6 text-indigo-700"
                 />
-                <p className="whitespace-nowrap">{parts.name}のデータ</p>
+                <p className="whitespace-nowrap">{data?.part?.name}のデータ</p>
               </div>
             </div>
           </Section>
-          <ExerciseCountSection parts={parts} />
+          <ExerciseCountSection parts={data?.part as ComboBoxOption} />
         </div>
-        <TotalLoadSection parts={parts} className="md:w-3/5" />
-      </div>
+        <TotalLoadSection parts={data?.part as ComboBoxOption} className="md:w-3/5" />
+      </div>}
       <Section>
         <div className="mb-4 relative">
           <TitleWithIcon
@@ -94,23 +98,24 @@ const Parts: NextPage<Props> = ({ parts }) => {
                   <ExerciseSummary
                     exercise={exercise}
                     index={index}
-                    onCompleted={() => refetch({ partIds: `${parts.id}` })}
+                    onCompleted={() => refetch({ partIds: `${data?.part?.id}` })}
                   />
                 </div>
               ))}
             </div>
           </div>
         ) : (
-          <p className="text-sm">種目が登録されていません</p>
+          <p className='text-sm'>種目が登録されていません</p>
         )}
       </Section>
+      {data &&
       <AddExerciseModal
         isOpen={isOpenAddExerciseModal}
         setIsOpen={setIsOpenAddExerciseModal}
-        partsOptions={[parts]}
-        parts={parts}
-        onCompleted={() => refetch({ partIds: parts.id as string })}
-      />
+        partsOptions={[data.part] as ComboBoxOption[]}
+        parts={data.part as ComboBoxOption}
+        onCompleted={() => refetch({ partIds: data.part?.id as string })}
+      />}
       <Toast />
     </>
   )
@@ -122,18 +127,11 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
   context
 ) => {
   const id = context.query.id as string
-  if (!process.env.NEXT_PUBLIC_END_POINT) {
-    throw new Error('End point not defined.')
-  }
-  const graphQLClient = new GraphQLClient(process.env.NEXT_PUBLIC_END_POINT)
-  const client = getSdk(graphQLClient)
-  const partsName = await client.getPartName({ id })
-  console.log(partsName)
-  const parts = partsName.part as ComboBoxOption
+
 
   return {
     props: {
-      parts,
+      id,
     },
   }
 }

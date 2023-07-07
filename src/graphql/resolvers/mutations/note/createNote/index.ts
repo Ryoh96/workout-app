@@ -16,6 +16,7 @@ export const createNote:
       RequireFields<MutationCreateNoteArgs, 'date'>
     >
   | undefined = async (_, { date }, { prisma, currentUser }) => {
+    console.log(101010, currentUser)
   if (!currentUser) {
     throw new Error('ユーザーがログインしていません。')
   }
