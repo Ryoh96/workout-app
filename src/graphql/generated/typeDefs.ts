@@ -1,0 +1,177 @@
+import { gql } from "@apollo/client";
+
+export const typeDefs = gql`
+input AddRoundInput {
+  exerciseId: ID!
+  roundInput: RoundInput!
+  trainingId: ID!
+}
+
+scalar DateTime
+
+input EditRoundInput {
+  id: ID!
+  roundInput: RoundInput!
+}
+
+type Exercise {
+  articleUrl: [String!]
+  createdAt: DateTime
+  id: ID!
+  memos: [Memo]
+  menus: [Menu!]
+  movieUrl: [String!]
+  name: String!
+  parts: [Part!]
+  trainings: [Training!]
+  updatedAt: DateTime!
+  user: User!
+}
+
+enum Gender {
+  FEMALE
+  MALE
+  OTHER
+}
+
+type MaxTotalLoadResult {
+  createdAt: DateTime
+  maxTotalLoad: Float
+}
+
+type MaxWeightResult {
+  createdAt: DateTime
+  maxWeight: Float
+}
+
+type Memo {
+  content: String!
+  createdAt: DateTime!
+  exercise: Exercise!
+  id: ID!
+  pin: Boolean
+  round: Round!
+}
+
+type Menu {
+  exercises: [Exercise!]!
+  id: ID!
+  user: User!
+}
+
+type Mutation {
+  addExerciseByPart(name: String!, partId: ID!): Exercise
+  addRound(input: AddRoundInput!): Round
+  changeExercisePart(exerciseId: ID!, partId: ID!): Exercise!
+  createExerciseAtNote(name: String!, parts: [String!]): Exercise
+  createNote(date: DateTime!): Note!
+  createTraining(exerciseId: ID!, id: ID!, noteId: ID!): Training
+  deleteExercise(id: ID!): Exercise!
+  deleteMemo(id: ID!): Memo
+  deleteMemoAtNote(id: ID!, index: Int!): Note!
+  deleteNote(id: ID!): Note!
+  editRound(input: EditRoundInput!): Round
+  pinOutMemo(id: ID!): Memo
+  removeRound(id: ID!): Round
+  removeTraining(id: ID!): Training
+  renameExercise(id: ID!, name: String!): Exercise!
+  upsertMemoAtNote(id: ID!, index: Int, memo: String!): Note!
+}
+
+type Note {
+  createdAt: DateTime!
+  date: DateTime!
+  id: ID!
+  memos: [String!]
+  parts: [Part!]
+  trainings: [Training!]
+  user: User!
+}
+
+enum OrderBy {
+  ASC
+  DESC
+}
+
+type Part {
+  exercises: [Exercise!]
+  id: ID!
+  name: String!
+}
+
+type Query {
+  exercise(id: ID!): Exercise
+  exerciseByDate(date: DateTime!): [Exercise]
+  exercises(limit: Int, offset: Int): [Exercise!]
+  maxTotalLoad(exerciseId: ID!): MaxTotalLoadResult
+  maxWeight(exerciseId: ID!): MaxWeightResult
+  memo(id: ID!): Memo
+  memos(id: ID!): [Memo]
+  nextTraining(id: ID!): Training
+  note(date: DateTime!): Note
+  noteById(id: ID): Note
+  notes(orderBy: OrderBy, since: DateTime, until: DateTime): [Note!]
+  part(id: ID!): Part
+  parts(limit: Int, offset: Int): [Part!]
+  pinnedMemos(id: ID!): [Memo]
+  previousTrainings(id: ID!, limit: Int!): [Training]
+  round(id: ID!): Round
+  rounds(trainingId: ID!): [Round]
+  training(id: ID!): Training
+  trainings(limit: Int, offset: Int): [Training!]
+  trainingsStat(exerciseId: ID!, limit: Int): [Training]
+  user: User
+}
+
+type Round {
+  createdAt: DateTime!
+  id: ID!
+  interval: Int
+  memo: Memo
+  repetition: Int!
+  training: Training!
+  unit: Unit!
+  weight: Float!
+}
+
+input RoundInput {
+  interval: Int
+  isPinned: Boolean
+  memo: String
+  repetition: Int!
+  unit: Unit!
+  weight: Float!
+}
+
+type Training {
+  createdAt: DateTime!
+  exercise: Exercise
+  id: ID!
+  memo: String
+  note: Note!
+  rounds: [Round!]
+  totalLoad: Float
+  updatedAt: DateTime
+}
+
+enum Unit {
+  KG
+  LB
+}
+
+type User {
+  createdAt: DateTime!
+  email: String
+  exercises: [Exercise!]
+  gender: Gender
+  height: Float
+  id: ID!
+  image: String
+  menus: [Menu!]
+  name: String!
+  notes: [Note!]
+  password: String!
+  updatedAt: DateTime!
+  weight: Float
+}
+`
