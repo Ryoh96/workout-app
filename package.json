@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "prisma generate && next build",
     "start": "next start",
     "lint": "run-p -l -c --aggregate-output lint:*",
     "lint:eslint": "next lint",
@@ -20,7 +20,8 @@
     "prepare": "husky install",
     "prisma:reset": "prisma migrate reset --force",
     "prisma:studio": "npx prisma studio",
-    "prisma:migrate": "prisma migrate dev"
+    "prisma:migrate": "prisma migrate dev",
+     "postinstall": "prisma generate"
   },
   "dependencies": {
     "@apollo/client": "^3.7.14",
