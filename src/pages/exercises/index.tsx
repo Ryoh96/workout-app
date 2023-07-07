@@ -28,16 +28,22 @@ type Props = {
 }
 
 const Exercises: NextPage<Props> = ({}) => {
-  const {data: partsData} = useGetAllPartsNameQuery()
-
-   const partsOptions = partsData?.parts ?? [] as ComboBoxOption[]
-
-  const [parts, setParts] = useState<ComboBoxOption>(partsOptions[0])
-
-  const [getExerciseName, { data: getExerciseNameData, loading, refetch }] =
+    const [getExerciseName, { data: getExerciseNameData, loading, refetch }] =
     useGetExerciseNamesByPartLazyQuery({
       onError: (error) => toast.error(error.message),
     })
+  const [parts, setParts] = useState<ComboBoxOption| undefined>(undefined)
+
+  const {data: partsData} = useGetAllPartsNameQuery({
+    onCompleted: result => { 
+      getExerciseName({variables: { partIds: `${result.parts?.[0].id}`}})
+    setParts(result.parts?.[0])
+    }
+  })
+
+   const partsOptions = partsData?.parts ?? [] as ComboBoxOption[]
+
+
 
   const handleChange = async (id: string) => {
     try {
@@ -55,13 +61,7 @@ const Exercises: NextPage<Props> = ({}) => {
     }
   }
   const [isOpenAddExerciseModal, setIsOpenAddExerciseModal] = useState(false)
-  useEffect(() => {
-    getExerciseName({
-      variables: {
-        partIds: `${parts.id}`,
-      },
-    })
-  }, [])
+
   const router = useRouter()
   return (
     <>
@@ -80,6 +80,7 @@ const Exercises: NextPage<Props> = ({}) => {
         </div>
       </div>
       <div className="md:flex gap-3">
+        {!parts ? <Spinner/> :
         <Section className="w-full ">
           <div className="flex items-center gap-5 relative">
             <div className="flex items-center gap-1">
@@ -125,7 +126,7 @@ const Exercises: NextPage<Props> = ({}) => {
               />
             </div>
           </div>
-        </Section>
+        </Section>}
       </div>
       <Section>
         <div className="mb-4 relative">
@@ -136,11 +137,7 @@ const Exercises: NextPage<Props> = ({}) => {
             種目一覧
           </TitleWithIcon>
         </div>
-        {loading ? (
-          <Spinner />
-        ) : (
-          <>
-            {getExerciseNameData?.part?.exercises?.length !== 0 ? (
+            {!parts ? <Spinner/> : (getExerciseNameData?.part?.exercises?.length !== 0) ? (
               <div>
                 <p className="mb-3 text-sm ml-2">
                   種目一覧(全{getExerciseNameData?.part?.exercises?.length}件)
@@ -165,16 +162,15 @@ const Exercises: NextPage<Props> = ({}) => {
             ) : (
               <p>種目が登録されていません</p>
             )}
-          </>
-        )}
       </Section>
+      {parts &&
       <AddExerciseModal
         isOpen={isOpenAddExerciseModal}
         setIsOpen={setIsOpenAddExerciseModal}
         partsOptions={partsOptions}
         parts={parts}
         onCompleted={() => refetch({ partIds: parts.id as string })}
-      />
+      />}
       <Toast />
     </>
   )

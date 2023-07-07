@@ -107,9 +107,7 @@ const Note: NextPage<Props> = ({ date: dateString }) => {
       <TrainingHeader />
       <div className="grid md:grid-cols-2 gap-x-2 md:h-screen">
         <div className="md:overflow-y-auto">
-          {noteDataLoading ? (
-            <Spinner />
-          ) : (
+          {
             noteData?.note && (
               <SummarySection
                 noteData={noteData}
@@ -120,7 +118,7 @@ const Note: NextPage<Props> = ({ date: dateString }) => {
                 )}
               />
             )
-          )}
+          }
           {!noteId ? (
             <div className="flex justify-center">
               <Button
