@@ -28,7 +28,7 @@ import TrainingHeader from '@/components/templates/notes/TrainingHeader'
 import TrainingList from '@/components/templates/notes/TrainingList'
 import TrainingsDataSection from '@/components/templates/notes/TrainingsDataSection'
 import TrainingsMemoSection from '@/components/templates/notes/TrainingsMemoSection'
-import { useGetNoteQuery } from '@/graphql/generated/operations-csr'
+import { useGetAllPartsNameQuery, useGetNoteQuery } from '@/graphql/generated/operations-csr'
 import { getSdk } from '@/graphql/generated/operations-ssg'
 import useCurrentDate from '@/hooks/common/useCurrentDate'
 import { useCreateNote } from '@/hooks/pages/editNote/useCreateNote'
@@ -43,9 +43,11 @@ type Props = {
   partsOptions: ComboBoxOption[]
 }
 
-const Note: NextPage<Props> = ({ date: dateString, partsOptions }) => {
+const Note: NextPage<Props> = ({ date: dateString }) => {
   const date = useMemo(() => new Date(dateString), [dateString])
   useCurrentDate(date)
+
+  const {data: partsData, loading: partsLoading} = useGetAllPartsNameQuery()
 
   const [noteId, setNoteId] = useRecoilState(noteIdState)
   const lastTrainingId = useRecoilValue(lastTrainingIdState)
@@ -158,10 +160,10 @@ const Note: NextPage<Props> = ({ date: dateString, partsOptions }) => {
           )}
           {(lastTrainingId === null ||
             noteData?.note?.trainings?.length === 0) &&
-            noteId && (
+            noteId && !partsLoading &&(
               <CreateTraining
                 onCompleted={() => refetch({ date: date.toISOString() })}
-                partsOptions={partsOptions ?? []}
+                partsOptions={partsData?.parts ?? []}
                 existingTrainings={
                   new Set(
                     noteData?.note?.trainings?.map(
@@ -213,23 +215,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     }
   }
 
-  if (!process.env.NEXT_PUBLIC_END_POINT) {
-    throw new Error('End point not defined.')
-  }
-
-  const graphQLClient = new GraphQLClient(process.env.NEXT_PUBLIC_END_POINT)
-  const client = getSdk(graphQLClient)
-  const partsName = await client.getAllPartsName()
-
-  if (!partsName.parts) {
-    throw new Error('Parts name not found.')
-  }
-  const partsOptions = partsName.parts
-
   return {
     props: {
       date,
-      partsOptions,
     },
   }
 }
