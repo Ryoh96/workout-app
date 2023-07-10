@@ -9,7 +9,7 @@ import { format, isSameDay, subDays } from 'date-fns'
 import type { NextPage } from 'next'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { toast } from 'react-toastify'
 import { useRecoilState } from 'recoil'
 
@@ -39,6 +39,7 @@ const Home: NextPage = () => {
     },
     onError: (error) => console.error(error.message),
   })
+
 
   const normalizedData = data?.notes?.map((note) => {
     return {
