@@ -134,7 +134,8 @@ const Note: NextPage<Props> = ({ date: dateString, partsOptions }) => {
                             return `${data.message}`
                           },
                         },
-                        success: 'ノートを作成しました',
+                        success: 'ノート作成完了',
+                        pending: "ノート作成中",
                       },
                       {
                         autoClose: 3000,

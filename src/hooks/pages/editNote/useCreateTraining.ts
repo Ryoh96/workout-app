@@ -1,11 +1,8 @@
-import type { ApolloQueryResult } from '@apollo/client/core/types'
 import { toast } from 'react-toastify'
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
+import { useSetRecoilState } from 'recoil'
 import { v4 as uuid } from 'uuid'
 
 import { useCreateTrainingMutation } from '@/graphql/generated/operations-csr'
-import type { Exact, GetNoteQuery } from '@/graphql/generated/operations-type'
-import { currentDateState } from '@/recoil/currentDate'
 import { isEditingState } from '@/recoil/Note/isEditing'
 import { editedTrainingIdState } from '@/recoil/Training/editedTrainingId'
 import { lastTrainingIdState } from '@/recoil/Training/lastTrainingId'
@@ -17,7 +14,6 @@ const useCreateTraining = (
   existingTrainings: Set<string | number | undefined>,
   exercise?: ComboBoxOption
 ) => {
-  const date = useRecoilValue(currentDateState)
   const [createTrainingMutation, { loading: createTrainingMutationLoading }] =
     useCreateTrainingMutation({
       onCompleted,
@@ -59,6 +55,7 @@ const useCreateTraining = (
             },
           },
           success: 'トレーニング登録完了',
+          pending: "トレーニング作成中"
         },
         {
           autoClose: 3000,

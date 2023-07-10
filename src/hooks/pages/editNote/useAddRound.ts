@@ -10,7 +10,7 @@ import { isEditingState } from '@/recoil/Note/isEditing'
 const useAddRound = (onCompleted: () => void) => {
   const [addRoundMutation, { loading: addRoundMutationLoading }] =
     useAddRoundMutation({
-      onCompleted: (result) => console.log(444, result),
+      onCompleted,
     })
   const setIsEditing = useSetRecoilState(isEditingState)
 
@@ -59,6 +59,7 @@ const useAddRound = (onCompleted: () => void) => {
               },
             },
             success: '登録完了',
+            pending: "登録中"
           },
           {
             autoClose: 3000,
