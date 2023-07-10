@@ -25,6 +25,7 @@ const InputTime = ({ label, register, errors, info }: Props) => {
         <div className="flex items-center gap-1">
           <div className="flex-auto">
             <TextBoxWithInfo
+          inputMode='numeric'
               label="分"
               labelVisible={false}
               placeholder="分"
@@ -36,6 +37,7 @@ const InputTime = ({ label, register, errors, info }: Props) => {
           <span className="text-lg">:</span>
           <div className="flex-auto">
             <TextBoxWithInfo
+          inputMode='numeric'
               label="秒"
               placeholder="秒"
               labelVisible={false}

@@ -50,6 +50,7 @@ const RoundForm = ({ id, previousData, previousLoading, ...props }: Props) => {
       >
         <div>
           <TextBoxWithInfo
+          inputMode='numeric'
             label="重量"
             {...register('weight', { valueAsNumber: true })}
             error={errors.weight?.message}
@@ -75,6 +76,7 @@ const RoundForm = ({ id, previousData, previousLoading, ...props }: Props) => {
         </div>
         <div>
           <TextBoxWithInfo
+          inputMode='numeric'
             label="回数"
             placeholder="-- 回"
             {...register('repetition', { valueAsNumber: true })}
