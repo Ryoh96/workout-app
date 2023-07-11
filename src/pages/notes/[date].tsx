@@ -36,6 +36,7 @@ import { noteIdState } from '@/recoil/Note/noteId'
 import { lastTrainingIdState } from '@/recoil/Training/lastTrainingId'
 import type { ComboBoxOption } from '@/types'
 import { datetimeFormat } from '@/utils/dateFormat'
+import { ManipulationError } from '@/utils/errors'
 
 type Props = {
   date: string
@@ -61,6 +62,13 @@ const Note: NextPage<Props> = ({ date: dateString, partsOptions }) => {
     onCompleted: (data) => {
       setNoteId(data.note?.id ?? null)
     },
+    onError: error => {
+      if (error instanceof ManipulationError) {
+        toast.error(error.message)
+        return
+      }
+      console.error(error)
+    }
   })
 
   const handleCreateNote = useCreateNote(setNoteId, () =>
