@@ -67,12 +67,11 @@ const Note: NextPage<Props> = ({ date: dateString, partsOptions }) => {
         toast.error(error.message)
         return
       }
-
       console.error(error)
     },
   })
 
-  const handleCreateNote = useCreateNote(setNoteId, () =>
+  const { handleCreateNote, createNoteLoading } = useCreateNote(setNoteId, () =>
     refetch({ date: date.toISOString() })
   )
   const router = useRouter()
@@ -149,7 +148,7 @@ const Note: NextPage<Props> = ({ date: dateString, partsOptions }) => {
                     console.error(error)
                   }
                 }}
-                loading={noteDataLoading}
+                loading={noteDataLoading || createNoteLoading}
               >
                 ノートを作成
               </Button>

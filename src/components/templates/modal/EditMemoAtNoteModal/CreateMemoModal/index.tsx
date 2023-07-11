@@ -26,7 +26,7 @@ export const CreateMemoModal = ({
   index,
   onCompleted,
 }: Props) => {
-  const [createMemoAtNote] = useUpsertMemoAtNoteMutation({
+  const [createMemoAtNote, { loading }] = useUpsertMemoAtNoteMutation({
     onCompleted,
   })
 
@@ -38,6 +38,7 @@ export const CreateMemoModal = ({
       titleIcon={<BookOpenIcon />}
       content={
         <CreateMemoForm
+          loading={loading}
           defaultValues={defaultValue}
           onValid={async (data) => {
             if (!id) throw new Error('ノートがありません')
@@ -58,6 +59,7 @@ export const CreateMemoModal = ({
                     },
                   },
                   success: '登録完了',
+                  pending: '登録中',
                 },
                 {
                   autoClose: 3000,

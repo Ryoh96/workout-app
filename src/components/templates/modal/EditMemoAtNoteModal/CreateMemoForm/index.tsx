@@ -17,6 +17,7 @@ type Props<T extends FieldValues = CreateMemoInput> = {
   onValid: SubmitHandler<T>
   onInvalid?: SubmitErrorHandler<T>
   handleCancel?: () => void
+  loading: boolean
 }
 
 const CreateMemoForm = ({
@@ -24,6 +25,7 @@ const CreateMemoForm = ({
   onValid,
   onInvalid,
   handleCancel,
+  loading,
 }: Props) => {
   const {
     register,
@@ -50,7 +52,9 @@ const CreateMemoForm = ({
         />
       </div>
       <div className="flex justify-center gap-5">
-        <Button type="submit">保存</Button>
+        <Button type="submit" loading={loading}>
+          保存
+        </Button>
         <Button type="reset" onClick={handleCancel}>
           キャンセル
         </Button>
