@@ -20,31 +20,32 @@ import TitleWithIcon from '@/components/molecules/TitleWithIcon'
 import DropDownWithButton from '@/components/organisms/DropDownWithButton'
 import ExerciseSummary from '@/components/templates/exercises/ExerciseSummary'
 import AddExerciseModal from '@/components/templates/modal/AddExerciseModal'
-import { useGetAllPartsNameQuery, useGetExerciseNamesByPartLazyQuery } from '@/graphql/generated/operations-csr'
+import {
+  useGetAllPartsNameQuery,
+  useGetExerciseNamesByPartLazyQuery,
+} from '@/graphql/generated/operations-csr'
 import type { ComboBoxOption } from '@/types'
 import { ManipulationError } from '@/utils/errors'
 
-type Props = {
-}
+type Props = {}
 
 const Exercises: NextPage<Props> = ({}) => {
-    const [getExerciseName, { data: getExerciseNameData, loading, refetch }] =
+  const [getExerciseName, { data: getExerciseNameData, loading, refetch }] =
     useGetExerciseNamesByPartLazyQuery({
-      onError: (error) =>  {
-      if (error instanceof ManipulationError) toast.error(error.message)
-    },
+      onError: (error) => {
+        if (error instanceof ManipulationError) toast.error(error.message)
+      },
     })
-  const [parts, setParts] = useState<ComboBoxOption| undefined>(undefined)
+  const [parts, setParts] = useState<ComboBoxOption | undefined>(undefined)
 
-  const {data: partsData} = useGetAllPartsNameQuery({
-    onCompleted: result => { 
-      getExerciseName({variables: { partIds: `${result.parts?.[0].id}`}})
-    setParts(result.parts?.[0])
-    }
+  const { data: partsData } = useGetAllPartsNameQuery({
+    onCompleted: (result) => {
+      getExerciseName({ variables: { partIds: `${result.parts?.[0].id}` } })
+      setParts(result.parts?.[0])
+    },
   })
 
-   const partsOptions = partsData?.parts ?? [] as ComboBoxOption[]
-
+  const partsOptions = partsData?.parts ?? ([] as ComboBoxOption[])
 
   const handleChange = async (id: string) => {
     try {
@@ -81,53 +82,56 @@ const Exercises: NextPage<Props> = ({}) => {
         </div>
       </div>
       <div className="md:flex gap-3">
-        {!parts ? <Spinner/> :
-        <Section className="w-full ">
-          <div className="flex items-center gap-5 relative">
-            <div className="flex items-center gap-1">
-              <FontAwesomeIcon
-                icon={faChild}
-                className="w-6 h-6 text-indigo-700"
-              />
-              <p className="whitespace-nowrap">部位を選択:</p>
+        {!parts ? (
+          <Spinner />
+        ) : (
+          <Section className="w-full ">
+            <div className="flex items-center gap-5 relative">
+              <div className="flex items-center gap-1">
+                <FontAwesomeIcon
+                  icon={faChild}
+                  className="w-6 h-6 text-indigo-700"
+                />
+                <p className="whitespace-nowrap">部位を選択:</p>
+              </div>
+              <div className="w-full flex items-center gap-2">
+                <SelectBoxWithLabel
+                  label="部位"
+                  options={partsOptions.map((option) => ({
+                    name: option.name,
+                    value: `${option.id}`,
+                  }))}
+                  variant="large"
+                  labelVisible={false}
+                  defaultValue={parts.name}
+                  value={parts.id}
+                  handleChange={(id) => handleChange(id)}
+                />
+              </div>
+              <div className="z-50">
+                <DropDownWithButton
+                  icon={
+                    <EllipsisHorizontalIcon className="text-indigo-800 w-6 h-6" />
+                  }
+                  menuItems={[
+                    {
+                      icon: (
+                        <MagnifyingGlassIcon className="text-indigo-800 w-6 h-6" />
+                      ),
+                      name: 'この部位のデータ',
+                      handleClick: () => router.push(`/parts/${parts.id}`),
+                    },
+                    {
+                      icon: <PlusIcon className="text-indigo-800 w-6 h-6" />,
+                      name: '種目の追加',
+                      handleClick: () => setIsOpenAddExerciseModal(true),
+                    },
+                  ]}
+                />
+              </div>
             </div>
-            <div className="w-full flex items-center gap-2">
-              <SelectBoxWithLabel
-                label="部位"
-                options={partsOptions.map((option) => ({
-                  name: option.name,
-                  value: `${option.id}`,
-                }))}
-                variant="large"
-                labelVisible={false}
-                defaultValue={parts.name}
-                value={parts.id}
-                handleChange={(id) => handleChange(id)}
-              />
-            </div>
-            <div className="z-50">
-              <DropDownWithButton
-                icon={
-                  <EllipsisHorizontalIcon className="text-indigo-800 w-6 h-6" />
-                }
-                menuItems={[
-                  {
-                    icon: (
-                      <MagnifyingGlassIcon className="text-indigo-800 w-6 h-6" />
-                    ),
-                    name: 'この部位のデータ',
-                    handleClick: () => router.push(`/parts/${parts.id}`),
-                  },
-                  {
-                    icon: <PlusIcon className="text-indigo-800 w-6 h-6" />,
-                    name: '種目の追加',
-                    handleClick: () => setIsOpenAddExerciseModal(true),
-                  },
-                ]}
-              />
-            </div>
-          </div>
-        </Section>}
+          </Section>
+        )}
       </div>
       <Section>
         <div className="mb-4 relative">
@@ -138,44 +142,42 @@ const Exercises: NextPage<Props> = ({}) => {
             種目一覧
           </TitleWithIcon>
         </div>
-            {!parts ? <Spinner/> : (getExerciseNameData?.part?.exercises?.length !== 0) ? (
-              <div>
-                <p className="mb-3 text-sm ml-2">
-                  種目一覧(全{getExerciseNameData?.part?.exercises?.length}件)
-                </p>
+        {!parts ? (
+          <Spinner />
+        ) : getExerciseNameData?.part?.exercises?.length !== 0 ? (
+          <div>
+            <p className="mb-3 text-sm ml-2">
+              種目一覧(全{getExerciseNameData?.part?.exercises?.length}件)
+            </p>
 
-                <div className="grid gap-x-6  sm:grid-cols-2 lg:grid-cols-3">
-                  {getExerciseNameData?.part?.exercises?.map(
-                    (exercise, index) => (
-                      <div style={{ zIndex: 100 - index }} key={exercise.id}>
-                        <ExerciseSummary
-                          exercise={exercise}
-                          index={index}
-                          onCompleted={() =>
-                            refetch({ partIds: `${parts.id}` })
-                          }
-                        />
-                      </div>
-                    )
-                  )}
+            <div className="grid gap-x-6  sm:grid-cols-2 lg:grid-cols-3">
+              {getExerciseNameData?.part?.exercises?.map((exercise, index) => (
+                <div style={{ zIndex: 100 - index }} key={exercise.id}>
+                  <ExerciseSummary
+                    exercise={exercise}
+                    index={index}
+                    onCompleted={() => refetch({ partIds: `${parts.id}` })}
+                  />
                 </div>
-              </div>
-            ) : (
-              <p>種目が登録されていません</p>
-            )}
+              ))}
+            </div>
+          </div>
+        ) : (
+          <p>種目が登録されていません</p>
+        )}
       </Section>
-      {parts &&
-      <AddExerciseModal
-        isOpen={isOpenAddExerciseModal}
-        setIsOpen={setIsOpenAddExerciseModal}
-        partsOptions={partsOptions}
-        parts={parts}
-        onCompleted={() => refetch({ partIds: parts.id as string })}
-      />}
+      {parts && (
+        <AddExerciseModal
+          isOpen={isOpenAddExerciseModal}
+          setIsOpen={setIsOpenAddExerciseModal}
+          partsOptions={partsOptions}
+          parts={parts}
+          onCompleted={() => refetch({ partIds: parts.id as string })}
+        />
+      )}
       <Toast />
     </>
   )
 }
 
 export default Exercises
-

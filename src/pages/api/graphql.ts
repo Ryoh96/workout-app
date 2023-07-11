@@ -14,7 +14,6 @@ const cors = Cors()
 //   loaders: [new GraphQLFileLoader()],
 // })
 
-
 const apolloServer = new ApolloServer({
   typeDefs,
   resolvers,

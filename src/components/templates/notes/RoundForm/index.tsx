@@ -31,7 +31,13 @@ type Props<T extends FieldValues = UpsertRoundInput> = {
   loading: boolean
 }
 
-const RoundForm = ({ id, previousData, previousLoading, loading, ...props }: Props) => {
+const RoundForm = ({
+  id,
+  previousData,
+  previousLoading,
+  loading,
+  ...props
+}: Props) => {
   const {
     register,
     handleSubmit,
@@ -50,7 +56,7 @@ const RoundForm = ({ id, previousData, previousLoading, loading, ...props }: Pro
       >
         <div>
           <TextBoxWithInfo
-          inputMode='numeric'
+            inputMode="numeric"
             label="重量"
             {...register('weight', { valueAsNumber: true })}
             error={errors.weight?.message}
@@ -76,7 +82,7 @@ const RoundForm = ({ id, previousData, previousLoading, loading, ...props }: Pro
         </div>
         <div>
           <TextBoxWithInfo
-          inputMode='numeric'
+            inputMode="numeric"
             label="回数"
             placeholder="-- 回"
             {...register('repetition', { valueAsNumber: true })}
@@ -132,7 +138,9 @@ const RoundForm = ({ id, previousData, previousLoading, loading, ...props }: Pro
           />
         </div>
         <div className="flex justify-center gap-5">
-          <Button type="submit" loading={loading}>完了</Button>
+          <Button type="submit" loading={loading}>
+            完了
+          </Button>
           <Button type="reset" onClick={props.handleCancel}>
             キャンセル
           </Button>

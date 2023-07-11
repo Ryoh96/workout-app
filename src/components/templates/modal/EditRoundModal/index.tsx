@@ -17,7 +17,7 @@ type Props = {
 }
 
 const EditRoundModal = ({ onCompleted }: Props) => {
-  const [editRoundMutation, {loading}] = useEditRoundMutation({
+  const [editRoundMutation, { loading }] = useEditRoundMutation({
     onCompleted,
   })
 
@@ -112,7 +112,7 @@ const EditRoundModal = ({ onCompleted }: Props) => {
             setIsOpenEditRoundModal(false)
           }}
           handleCancel={() => setIsOpenEditRoundModal(false)}
-            loading={loading}
+          loading={loading}
         />
       }
       isOpen={isOpenEditRoundModal}

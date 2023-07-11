@@ -40,15 +40,12 @@ const Home: NextPage = () => {
     onError: (error) => console.error(error.message),
   })
 
-
-
   const [isOpenCalenderModal, setIsOpenCalenderModal] = useState(false)
 
   const [currentDate, setCurrentDate] = useRecoilState(currentDateState)
   const router = useRouter()
 
-
-  if (loading) return <Spinner/>
+  if (loading) return <Spinner />
   return (
     <>
       <>{console.log(data?.notes)}</>

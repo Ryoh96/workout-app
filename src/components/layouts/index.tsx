@@ -19,9 +19,9 @@ const Layout = ({ children }: Props) => {
         <Header />
         {status === 'loading' ? (
           <div className="fixed h-screen w-screen mt-20 grid justify-center">
-            <div className=''>
-            <p className='text-white text-center mb-10'>ログイン中...</p>
-            <Spinner />
+            <div className="">
+              <p className="text-white text-center mb-10">ログイン中...</p>
+              <Spinner />
             </div>
           </div>
         ) : (

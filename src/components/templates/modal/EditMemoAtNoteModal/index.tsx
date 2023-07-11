@@ -22,12 +22,12 @@ const EditMemoAtNoteModal = ({ isOpen, setIsOpen }: Props) => {
   const [getNoteMemo, { data, loading, error, refetch }] =
     useGetNoteMemoLazyQuery({
       onError: (error) => {
-      if (error instanceof ManipulationError) {
-        toast.error(error.message)
-        return
-      }
-      console.error(error)
-    },
+        if (error instanceof ManipulationError) {
+          toast.error(error.message)
+          return
+        }
+        console.error(error)
+      },
     })
   const [defaultMemoValue, setDefaultMemoValue] = useState<string | undefined>(
     undefined
@@ -79,7 +79,8 @@ const EditMemoAtNoteModal = ({ isOpen, setIsOpen }: Props) => {
                 setDefaultMemoValue(undefined)
                 setIsOpenCreateMemoModal(true)
               } catch (error) {
-                if (error instanceof ManipulationError) toast.error(error.message)
+                if (error instanceof ManipulationError)
+                  toast.error(error.message)
               } finally {
                 setIsOpen(false)
               }

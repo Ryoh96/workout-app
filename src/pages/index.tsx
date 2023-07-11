@@ -40,7 +40,6 @@ const Home: NextPage = () => {
     onError: (error) => console.error(error.message),
   })
 
-
   const normalizedData = data?.notes?.map((note) => {
     return {
       title: dateFormat(new Date(note.date)) as string,
@@ -93,7 +92,7 @@ const Home: NextPage = () => {
               ノート管理
             </TitleWithIcon>
             <p className="pb-2 text-sm">今までの記録とノート新規作成</p>
-    
+
             <div className="flex gap-2 justify-center mt-3">
               <Link href={`/notes/${format(new Date(), 'yyyy-MM-dd')}`}>
                 <Button variant="important">ノートの追加</Button>

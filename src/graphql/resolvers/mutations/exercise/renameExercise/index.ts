@@ -7,7 +7,7 @@ import type {
   Resolver,
   ResolverTypeWrapper,
 } from '@/graphql/generated/resolvers-types'
-import { ManipulationError } from '@/utils/errors';
+import { ManipulationError } from '@/utils/errors'
 
 export const renameExercise:
   | Resolver<

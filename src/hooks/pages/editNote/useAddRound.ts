@@ -59,7 +59,7 @@ const useAddRound = (onCompleted: () => void) => {
               },
             },
             success: '登録完了',
-            pending: "登録中"
+            pending: '登録中',
           },
           {
             autoClose: 3000,

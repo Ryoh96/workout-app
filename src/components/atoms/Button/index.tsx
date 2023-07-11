@@ -25,13 +25,16 @@ const Button = ({
           className={clsx(
             'p-1 rounded-md bg-gradient-to-r from-orange-400 to-fuchsia-500 text-sm  min-w-[90px] disabled:from-orange-800 disabled:to-fuchsia-800',
             className
-          )
-        }
+          )}
           {...props}
           disabled={loading}
         >
-          <span className={`block px-3 py-2.5 rounded bg-black text-white hover:bg-gray-500 ${loading && "disabled"}`}>
-            {loading ? <Spinner variant='small' color="white"/> : children}
+          <span
+            className={`block px-3 py-2.5 rounded bg-black text-white hover:bg-gray-500 ${
+              loading && 'disabled'
+            }`}
+          >
+            {loading ? <Spinner variant="small" color="white" /> : children}
           </span>
         </button>
       ) : (
@@ -43,8 +46,7 @@ const Button = ({
           {...props}
           disabled={loading}
         >
-                      {loading ? <Spinner variant='small' color="white"/> : children}
-
+          {loading ? <Spinner variant="small" color="white" /> : children}
         </button>
       )}
     </>

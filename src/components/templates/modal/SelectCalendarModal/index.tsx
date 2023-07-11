@@ -33,7 +33,8 @@ const SelectCalendarModal = ({
                 setIsOpen(false)
                 await handleChange?.(date)
               } catch (error) {
-                if (error instanceof ManipulationError) toast.error(error.message)
+                if (error instanceof ManipulationError)
+                  toast.error(error.message)
               }
             }
           }}

@@ -13,9 +13,7 @@ import { useSetRecoilState } from 'recoil'
 
 import DropDownWithButton from '@/components/organisms/DropDownWithButton'
 import DeleteExerciseModal from '@/components/templates/modal/DeleteModal/DeleteExerciseModal'
-import {
-  useGetTrainingStatQuery,
-} from '@/graphql/generated/operations-csr'
+import { useGetTrainingStatQuery } from '@/graphql/generated/operations-csr'
 import { deleteExerciseModalState } from '@/recoil/Modal/DeleteExerciseModal'
 import { dateFormat } from '@/utils/dateFormat'
 import { ManipulationError } from '@/utils/errors'
@@ -31,7 +29,6 @@ type ContainerProps = {
 }
 
 const ExerciseSummaryContainer = (props: ContainerProps) => {
-
   const { data: statData, loading: statLoading } = useGetTrainingStatQuery({
     variables: {
       exerciseId: props.exercise.id,

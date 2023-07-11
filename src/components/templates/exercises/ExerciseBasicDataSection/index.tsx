@@ -46,12 +46,12 @@ const ExerciseBasicDataSection = forwardRef<HTMLDivElement, Props>(
     } = useGetMaxWeightQuery({
       variables: { exerciseId: id },
       onError: (error) => {
-      if (error instanceof ManipulationError) {
-        toast.error(error.message)
-        return
-      }
-      console.error(error)
-    },
+        if (error instanceof ManipulationError) {
+          toast.error(error.message)
+          return
+        }
+        console.error(error)
+      },
     })
     const {
       data: maxTotalLoadData,
@@ -59,13 +59,13 @@ const ExerciseBasicDataSection = forwardRef<HTMLDivElement, Props>(
       refetch: maxTotalLoadDataRefetch,
     } = useGetMaxTotalLoadQuery({
       variables: { exerciseId: id },
-      onError: (error) =>{
-      if (error instanceof ManipulationError) {
-        toast.error(error.message)
-        return
-      }
-      console.error(error)
-    },
+      onError: (error) => {
+        if (error instanceof ManipulationError) {
+          toast.error(error.message)
+          return
+        }
+        console.error(error)
+      },
     })
 
     const trainingNum = normalizedStatData?.length ?? 0
@@ -85,7 +85,7 @@ const ExerciseBasicDataSection = forwardRef<HTMLDivElement, Props>(
 
         <div className="space-y-3 divide-y-2 [&>*]:pt-3 text-sm pb-4 -mt-2">
           <div className="flex items-center">
-            <p className='flex gap-1'>
+            <p className="flex gap-1">
               ・部位：
               {exerciseData?.exercise?.parts?.map((part) => (
                 <button
@@ -98,7 +98,7 @@ const ExerciseBasicDataSection = forwardRef<HTMLDivElement, Props>(
             </p>
           </div>
           <div className="flex items-center justify-between">
-            <p className='flex gap-1 items-baseline'>
+            <p className="flex gap-1 items-baseline">
               ・最大重量：
               {maxWeightLoading ? (
                 <Spinner variant="small" />
@@ -130,7 +130,7 @@ const ExerciseBasicDataSection = forwardRef<HTMLDivElement, Props>(
             </span>
           </div>
           <div className="flex items-center justify-between">
-            <p className='flex gap-1 items-baseline'>
+            <p className="flex gap-1 items-baseline">
               ・最大総負荷量：
               {maxTotalLoadLoading ? (
                 <Spinner variant="small" />

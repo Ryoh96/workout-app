@@ -18,12 +18,12 @@ const OrderAverageDataContainer = ({ id }: ContainerProps) => {
   const { data: trainingsData, loading: trainingsLoading } =
     useGetAllTrainingsInNoteQuery({
       onError: (error) => {
-      if (error instanceof ManipulationError) {
-        toast.error(error.message)
-        return
-      }
-      console.error(error)
-    },
+        if (error instanceof ManipulationError) {
+          toast.error(error.message)
+          return
+        }
+        console.error(error)
+      },
     })
 
   const orders = getOrders(id, trainingsData)

@@ -57,9 +57,9 @@ const Exercise: NextPage<Props> = ({ id }) => {
     variables: {
       exerciseId: id,
     },
-    onError: (error) =>  {
+    onError: (error) => {
       if (error instanceof ManipulationError) toast.error(error.message)
-    }
+    },
   })
 
   useEffect(() => {

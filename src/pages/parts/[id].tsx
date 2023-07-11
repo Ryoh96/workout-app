@@ -21,7 +21,11 @@ import ExerciseSummary from '@/components/templates/exercises/ExerciseSummary'
 import AddExerciseModal from '@/components/templates/modal/AddExerciseModal'
 import ExerciseCountSection from '@/components/templates/part/ExerciseCountSection'
 import TotalLoadSection from '@/components/templates/part/TotalLoadSection'
-import { useGetExerciseNamesByPartLazyQuery, useGetExerciseNamesByPartQuery, useGetPartNameQuery } from '@/graphql/generated/operations-csr'
+import {
+  useGetExerciseNamesByPartLazyQuery,
+  useGetExerciseNamesByPartQuery,
+  useGetPartNameQuery,
+} from '@/graphql/generated/operations-csr'
 import { getSdk } from '@/graphql/generated/operations-ssg'
 import type { ComboBoxOption } from '@/types'
 
@@ -30,11 +34,14 @@ type Props = {
 }
 
 const Parts: NextPage<Props> = ({ id }) => {
-  const [getExerciseNames, { data: getExerciseNameData, refetch }] = useGetExerciseNamesByPartLazyQuery()
-  const {data, loading} = useGetPartNameQuery({variables: {id}, onCompleted: result => {
-
-getExerciseNames({variables: {partIds: result.part?.id as string}})
-  }})
+  const [getExerciseNames, { data: getExerciseNameData, refetch }] =
+    useGetExerciseNamesByPartLazyQuery()
+  const { data, loading } = useGetPartNameQuery({
+    variables: { id },
+    onCompleted: (result) => {
+      getExerciseNames({ variables: { partIds: result.part?.id as string } })
+    },
+  })
   const [isOpenAddExerciseModal, setIsOpenAddExerciseModal] = useState(false)
   const router = useRouter()
   return (
@@ -53,24 +60,32 @@ getExerciseNames({variables: {partIds: result.part?.id as string}})
           />
         </div>
       </div>
-      {loading ? <Spinner variant='small'/> :
-      <div className="md:flex gap-3">
-        <div className="md:w-2/5">
-          <Section className="w-full">
-            <div className="flex items-center gap-5 relative">
-              <div className="flex items-center gap-1">
-                <FontAwesomeIcon
-                  icon={faChild}
-                  className="w-6 h-6 text-indigo-700"
-                />
-                <p className="whitespace-nowrap">{data?.part?.name}のデータ</p>
+      {loading ? (
+        <Spinner variant="small" />
+      ) : (
+        <div className="md:flex gap-3">
+          <div className="md:w-2/5">
+            <Section className="w-full">
+              <div className="flex items-center gap-5 relative">
+                <div className="flex items-center gap-1">
+                  <FontAwesomeIcon
+                    icon={faChild}
+                    className="w-6 h-6 text-indigo-700"
+                  />
+                  <p className="whitespace-nowrap">
+                    {data?.part?.name}のデータ
+                  </p>
+                </div>
               </div>
-            </div>
-          </Section>
-          <ExerciseCountSection parts={data?.part as ComboBoxOption} />
+            </Section>
+            <ExerciseCountSection parts={data?.part as ComboBoxOption} />
+          </div>
+          <TotalLoadSection
+            parts={data?.part as ComboBoxOption}
+            className="md:w-3/5"
+          />
         </div>
-        <TotalLoadSection parts={data?.part as ComboBoxOption} className="md:w-3/5" />
-      </div>}
+      )}
       <Section>
         <div className="mb-4 relative">
           <TitleWithIcon
@@ -98,24 +113,27 @@ getExerciseNames({variables: {partIds: result.part?.id as string}})
                   <ExerciseSummary
                     exercise={exercise}
                     index={index}
-                    onCompleted={() => refetch({ partIds: `${data?.part?.id}` })}
+                    onCompleted={() =>
+                      refetch({ partIds: `${data?.part?.id}` })
+                    }
                   />
                 </div>
               ))}
             </div>
           </div>
         ) : (
-          <p className='text-sm'>種目が登録されていません</p>
+          <p className="text-sm">種目が登録されていません</p>
         )}
       </Section>
-      {data &&
-      <AddExerciseModal
-        isOpen={isOpenAddExerciseModal}
-        setIsOpen={setIsOpenAddExerciseModal}
-        partsOptions={[data.part] as ComboBoxOption[]}
-        parts={data.part as ComboBoxOption}
-        onCompleted={() => refetch({ partIds: data.part?.id as string })}
-      />}
+      {data && (
+        <AddExerciseModal
+          isOpen={isOpenAddExerciseModal}
+          setIsOpen={setIsOpenAddExerciseModal}
+          partsOptions={[data.part] as ComboBoxOption[]}
+          parts={data.part as ComboBoxOption}
+          onCompleted={() => refetch({ partIds: data.part?.id as string })}
+        />
+      )}
       <Toast />
     </>
   )
@@ -127,7 +145,6 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
   context
 ) => {
   const id = context.query.id as string
-
 
   return {
     props: {

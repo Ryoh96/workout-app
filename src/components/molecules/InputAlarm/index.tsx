@@ -31,7 +31,7 @@ const InputAlarm = ({ label, register, errors, info }: Props) => {
               type="number"
               {...register('minutes', { valueAsNumber: true })}
               error={errors.minutes?.message}
-              inputMode='numeric'
+              inputMode="numeric"
             />
           </div>
           <span className="text-lg">:</span>
@@ -44,7 +44,7 @@ const InputAlarm = ({ label, register, errors, info }: Props) => {
               className="flex-auto"
               {...register('seconds', { valueAsNumber: true })}
               error={errors.seconds?.message}
-              inputMode='numeric'
+              inputMode="numeric"
             />
           </div>
         </div>

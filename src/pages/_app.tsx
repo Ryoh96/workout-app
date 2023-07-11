@@ -11,7 +11,7 @@ import { RecoilRoot } from 'recoil'
 import Layout from '@/components/layouts'
 
 export const client = new ApolloClient({
-  uri: "/api/graphql",
+  uri: '/api/graphql',
   cache: new InMemoryCache(),
 })
 

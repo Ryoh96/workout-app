@@ -24,7 +24,7 @@ import CreateTraining from '@/components/templates/notes/CreateTraining'
 import SummarySection from '@/components/templates/notes/SummarySection'
 import TrainingFooter from '@/components/templates/notes/TrainingFooter'
 import TrainingHeader from '@/components/templates/notes/TrainingHeader'
-import TrainingList  from '@/components/templates/notes/TrainingList'
+import TrainingList from '@/components/templates/notes/TrainingList'
 import TrainingsDataSection from '@/components/templates/notes/TrainingsDataSection'
 import TrainingsMemoSection from '@/components/templates/notes/TrainingsMemoSection'
 import { useGetNoteQuery } from '@/graphql/generated/operations-csr'
@@ -62,14 +62,14 @@ const Note: NextPage<Props> = ({ date: dateString, partsOptions }) => {
     onCompleted: (data) => {
       setNoteId(data.note?.id ?? null)
     },
-    onError: error => {
+    onError: (error) => {
       if (error instanceof ManipulationError) {
         toast.error(error.message)
         return
       }
-      
+
       console.error(error)
-    }
+    },
   })
 
   const handleCreateNote = useCreateNote(setNoteId, () =>
@@ -113,16 +113,15 @@ const Note: NextPage<Props> = ({ date: dateString, partsOptions }) => {
       <TrainingHeader />
       <div className="grid md:grid-cols-2 gap-x-2 md:h-screen">
         <div className="md:overflow-y-auto">
-          {
-            noteData?.note && (
-              <SummarySection
-                noteData={noteData}
-                className="md:hidden"
-                datetime={datetimeFormat(
-                  new Date(noteData?.note.createdAt),
-                  true
-                )}
-              />
+          {noteData?.note && (
+            <SummarySection
+              noteData={noteData}
+              className="md:hidden"
+              datetime={datetimeFormat(
+                new Date(noteData?.note.createdAt),
+                true
+              )}
+            />
           )}
           {!noteId ? (
             <div className="flex justify-center">
@@ -140,7 +139,7 @@ const Note: NextPage<Props> = ({ date: dateString, partsOptions }) => {
                           },
                         },
                         success: 'ノート作成完了',
-                        pending: "ノート作成中",
+                        pending: 'ノート作成中',
                       },
                       {
                         autoClose: 3000,

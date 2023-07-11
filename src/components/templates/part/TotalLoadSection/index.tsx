@@ -34,12 +34,12 @@ const TotalLoadSection = ({ parts, className }: Props) => {
         until: today.toISOString(),
       },
       onError: (error) => {
-      if (error instanceof ManipulationError) {
-        toast.error(error.message)
-        return
-      }
-      console.error(error)
-    },
+        if (error instanceof ManipulationError) {
+          toast.error(error.message)
+          return
+        }
+        console.error(error)
+      },
     })
 
   const getTotalLoadsByDate = (totalLoadData?: GetTotalLoadByNoteQuery) => {

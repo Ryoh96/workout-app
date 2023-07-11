@@ -55,7 +55,7 @@ const useCreateTraining = (
             },
           },
           success: 'トレーニング登録完了',
-          pending: "トレーニング作成中"
+          pending: 'トレーニング作成中',
         },
         {
           autoClose: 3000,

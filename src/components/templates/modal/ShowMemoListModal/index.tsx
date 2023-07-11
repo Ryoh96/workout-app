@@ -31,7 +31,7 @@ const ShowMemoListModal = ({
       id,
     },
     onCompleted: onPinOutMemoCompleted,
-    onError: (error) =>{
+    onError: (error) => {
       if (error instanceof ManipulationError) {
         toast.error(error.message)
         return

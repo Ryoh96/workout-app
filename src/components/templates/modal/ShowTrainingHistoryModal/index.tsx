@@ -22,12 +22,12 @@ const ShowTrainingHistoryModal = ({ trainingId, isOpen, setIsOpen }: Props) => {
     useGetPreviousTrainingsQuery({
       variables: { id: trainingId, limit: 10 },
       onError: (error) => {
-      if (error instanceof ManipulationError) {
-        toast.error(error.message)
-        return
-      }
-      console.error(error)
-    },
+        if (error instanceof ManipulationError) {
+          toast.error(error.message)
+          return
+        }
+        console.error(error)
+      },
     })
   return (
     <Modal

@@ -26,12 +26,12 @@ const ExerciseMemoSectionContainer = forwardRef<HTMLDivElement, ContainerProps>(
     const queryResult = useGetPinnedMemosByExercisesQuery({
       variables: { id },
       onError: (error) => {
-      if (error instanceof ManipulationError) {
-        toast.error(error.message)
-        return
-      }
-      console.error(error)
-    },
+        if (error instanceof ManipulationError) {
+          toast.error(error.message)
+          return
+        }
+        console.error(error)
+      },
     })
     const [memoId, setMemoId] = useState<string | null>(null)
     const [isOpenDeleteMemoModal, setIsOpenDeleteMemoModal] = useState(false)

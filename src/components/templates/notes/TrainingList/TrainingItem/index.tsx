@@ -24,7 +24,6 @@ type Props = {
   index: number
 }
 
-
 const TrainingItem = ({ onCompleted, training, index }: Props) => {
   const [handleAddRound, addRoundMutationLoading] = useAddRound(onCompleted)
   const { previousTotalLoad, previousData, previousLoading } = usePreviousData(
@@ -38,7 +37,7 @@ const TrainingItem = ({ onCompleted, training, index }: Props) => {
     useRecoilState(lastTrainingIdState)
 
   const [isEditing, setIsEditing] = useRecoilState(isEditingState)
-  
+
   const setIsOpenDeleteTrainingModal = useSetRecoilState(
     deleteTrainingModalState
   )
@@ -115,7 +114,5 @@ const TrainingItem = ({ onCompleted, training, index }: Props) => {
     </>
   )
 }
-
-
 
 export default TrainingItem

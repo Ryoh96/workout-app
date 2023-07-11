@@ -27,12 +27,12 @@ const OrderCountGraphContainer = ({ id, className }: Props) => {
   const { data: trainingsData, loading: trainingsLoading } =
     useGetAllTrainingsInNoteQuery({
       onError: (error) => {
-      if (error instanceof ManipulationError) {
-        toast.error(error.message)
-        return
-      }
-      console.error(error)
-    },
+        if (error instanceof ManipulationError) {
+          toast.error(error.message)
+          return
+        }
+        console.error(error)
+      },
     })
   const [isOpenFilterModal, setIsOpenFilterModal] = useState(false)
   const [span, setSpan] = useState(10)
