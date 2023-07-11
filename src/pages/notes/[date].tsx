@@ -67,6 +67,7 @@ const Note: NextPage<Props> = ({ date: dateString, partsOptions }) => {
         toast.error(error.message)
         return
       }
+      
       console.error(error)
     }
   })
