@@ -10,7 +10,6 @@ import { useForm } from 'react-hook-form'
 import Button from '@/components/atoms/Button'
 import EmphasizedText from '@/components/atoms/EmphasizedText'
 import InputCounter from '@/components/atoms/InputCounter'
-import Section from '@/components/layouts/Section'
 import CheckIconWithLabel from '@/components/molecules/CheckIconWithLabel'
 import InputTime from '@/components/molecules/InputTime'
 import SelectBoxWithLabel from '@/components/molecules/SelectBoxWithLabel'
@@ -29,9 +28,10 @@ type Props<T extends FieldValues = UpsertRoundInput> = {
   handleCancel?: () => void
   previousData?: Partial<Round>
   previousLoading?: boolean
+  loading: boolean
 }
 
-const RoundForm = ({ id, previousData, previousLoading, ...props }: Props) => {
+const RoundForm = ({ id, previousData, previousLoading, loading, ...props }: Props) => {
   const {
     register,
     handleSubmit,
@@ -132,7 +132,7 @@ const RoundForm = ({ id, previousData, previousLoading, ...props }: Props) => {
           />
         </div>
         <div className="flex justify-center gap-5">
-          <Button type="submit">完了</Button>
+          <Button type="submit" loading={loading}>完了</Button>
           <Button type="reset" onClick={props.handleCancel}>
             キャンセル
           </Button>

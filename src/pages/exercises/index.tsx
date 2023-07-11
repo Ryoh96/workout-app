@@ -6,10 +6,9 @@ import {
   MagnifyingGlassIcon,
   PlusIcon,
 } from '@heroicons/react/24/solid'
-import { GraphQLClient } from 'graphql-request'
-import type { GetServerSideProps, NextPage } from 'next'
+import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { toast } from 'react-toastify'
 
 import Spinner from '@/components/atoms/Spinner'
@@ -42,7 +41,6 @@ const Exercises: NextPage<Props> = ({}) => {
   })
 
    const partsOptions = partsData?.parts ?? [] as ComboBoxOption[]
-
 
 
   const handleChange = async (id: string) => {

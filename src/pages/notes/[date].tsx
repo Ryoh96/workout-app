@@ -13,7 +13,6 @@ import { toast } from 'react-toastify'
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
 
 import Button from '@/components/atoms/Button'
-import Spinner from '@/components/atoms/Spinner'
 import Title from '@/components/atoms/Title'
 import Toast from '@/components/atoms/Toast'
 import DropDownWithButton from '@/components/organisms/DropDownWithButton'
@@ -105,9 +104,7 @@ const Note: NextPage<Props> = ({ date: dateString, partsOptions }) => {
       <TrainingHeader />
       <div className="grid md:grid-cols-2 gap-x-2 md:h-screen">
         <div className="md:overflow-y-auto">
-          {noteDataLoading ? (
-            <Spinner />
-          ) : (
+          {
             noteData?.note && (
               <SummarySection
                 noteData={noteData}
@@ -117,7 +114,6 @@ const Note: NextPage<Props> = ({ date: dateString, partsOptions }) => {
                   true
                 )}
               />
-            )
           )}
           {!noteId ? (
             <div className="flex justify-center">
@@ -145,6 +141,7 @@ const Note: NextPage<Props> = ({ date: dateString, partsOptions }) => {
                     console.error(error)
                   }
                 }}
+                loading={noteDataLoading}
               >
                 ノートを作成
               </Button>

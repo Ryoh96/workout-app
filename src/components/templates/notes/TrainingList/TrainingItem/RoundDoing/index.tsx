@@ -22,6 +22,7 @@ type Props<T extends FieldValues = UpsertRoundInput> = {
   handleCancel?: () => void
   previousData: GetPreviousTrainingsQuery | undefined
   previousLoading: boolean
+  loading: boolean
 }
 const RoundDoing = ({
   training,

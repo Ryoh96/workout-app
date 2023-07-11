@@ -139,7 +139,7 @@ const CreateTraining = ({
         <div className="flex justify-center mt-8">
           <Button
             onClick={handleCreateTraining}
-            disabled={createTrainingMutationLoading}
+            loading={createTrainingMutationLoading}
           >
             トレーニング追加
           </Button>

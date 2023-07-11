@@ -1,12 +1,10 @@
 import { faFireFlameCurved } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
-  ClockIcon,
   EllipsisHorizontalIcon,
   MagnifyingGlassIcon,
   TrashIcon,
 } from '@heroicons/react/24/solid'
-import { id } from 'date-fns/locale'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import Skeleton from 'react-loading-skeleton'
@@ -15,13 +13,9 @@ import { useSetRecoilState } from 'recoil'
 
 import DropDownWithButton from '@/components/organisms/DropDownWithButton'
 import DeleteExerciseModal from '@/components/templates/modal/DeleteModal/DeleteExerciseModal'
-import type { GetMaxTotalLoadQuery } from '@/graphql/generated/operations-csr'
 import {
-  useGetMaxTotalLoadQuery,
-  useGetMaxWeightQuery,
   useGetTrainingStatQuery,
 } from '@/graphql/generated/operations-csr'
-import type { GetMaxWeightQuery } from '@/graphql/generated/operations-type'
 import { deleteExerciseModalState } from '@/recoil/Modal/DeleteExerciseModal'
 import { dateFormat } from '@/utils/dateFormat'
 import getNormalizedStatData from '@/utils/exercise/getNormalizedStatData'
@@ -36,17 +30,7 @@ type ContainerProps = {
 }
 
 const ExerciseSummaryContainer = (props: ContainerProps) => {
-  const { data: maxWeightData, loading: maxWeightLoading } =
-    useGetMaxWeightQuery({
-      variables: { exerciseId: props.exercise.id },
-      onError: (error) => toast.error(error.message),
-    })
-  const { data: maxTotalLoadData, loading: maxTotalLoadLoading } =
-    useGetMaxTotalLoadQuery({
-      variables: { exerciseId: props.exercise.id },
-      onError: (error) => console.error(error.message),
-    })
-  console.log(89, maxTotalLoadData)
+
   const { data: statData, loading: statLoading } = useGetTrainingStatQuery({
     variables: {
       exerciseId: props.exercise.id,
@@ -61,10 +45,6 @@ const ExerciseSummaryContainer = (props: ContainerProps) => {
   return (
     <>
       <Presentational
-        maxTotalLoadData={maxTotalLoadData}
-        maxTotalLoadLoading={maxTotalLoadLoading}
-        maxWeightData={maxWeightData}
-        maxWeightLoading={maxWeightLoading}
         trainingNum={trainingNum}
         lastDate={lastDate}
         statLoading={statLoading}
@@ -79,20 +59,12 @@ const ExerciseSummaryContainer = (props: ContainerProps) => {
 }
 
 type PresentationalProps = {
-  maxWeightData?: GetMaxWeightQuery
-  maxWeightLoading: boolean
-  maxTotalLoadData?: GetMaxTotalLoadQuery
-  maxTotalLoadLoading: boolean
   trainingNum: number
   lastDate?: string
   statLoading: boolean
 } & ContainerProps
 
 export const Presentational = ({
-  maxWeightData,
-  maxWeightLoading,
-  maxTotalLoadData,
-  maxTotalLoadLoading,
   exercise,
   statLoading,
   index,
@@ -130,32 +102,6 @@ export const Presentational = ({
                   {trainingNum}
                 </span>
                 回
-              </span>
-            )}
-          </p>
-          <p className="flex items-baseline justify-between">
-            <span className="mr-2">・最大重量: </span>
-            {maxWeightLoading ? (
-              <Skeleton width={200} className="ml-2" />
-            ) : (
-              <span className="inline-flex items-center">
-                <span className="font-bold text-base mr-0.5">
-                  {maxWeightData?.maxWeight?.maxWeight ?? '--'}
-                </span>
-                kg
-              </span>
-            )}
-          </p>
-          <p className="flex items-baseline justify-between">
-            <span className="mr-2">・最大総負荷量: </span>
-            {maxTotalLoadLoading ? (
-              <Skeleton width={200} className="ml-2" />
-            ) : (
-              <span className="inline-flex items-center">
-                <span className="font-bold text-base mr-0.5">
-                  {maxTotalLoadData?.maxTotalLoad?.maxTotalLoad ?? '--'}
-                </span>
-                kg
               </span>
             )}
           </p>

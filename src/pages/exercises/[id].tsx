@@ -46,7 +46,6 @@ const Exercise: NextPage<Props> = ({ id }) => {
     },
     onError: (error) => toast.error(error.message),
   })
-  console.log(909090, exerciseData)
   const {
     data: statData,
     loading: statLoading,

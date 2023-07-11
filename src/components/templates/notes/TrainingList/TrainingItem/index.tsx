@@ -1,16 +1,13 @@
-import type { SetterOrUpdater } from 'recoil'
 import { useRecoilState, useSetRecoilState } from 'recoil'
 
 import Button from '@/components/atoms/Button'
 import Section from '@/components/layouts/Section'
 import type {
   GetNoteQuery,
-  GetPreviousTrainingsQuery,
   Training,
 } from '@/graphql/generated/operations-type'
 import useAddRound from '@/hooks/pages/editNote/useAddRound'
 import usePreviousData from '@/hooks/pages/editNote/usePreviousData'
-import type { UpsertRoundInput } from '@/libs/schema/upsertRound'
 import { deleteTrainingModalState } from '@/recoil/Modal/DeleteTrainingModal'
 import { isEditingState } from '@/recoil/Note/isEditing'
 import { deleteTrainingIdState } from '@/recoil/Training/deleteTrainingId'
@@ -27,14 +24,7 @@ type Props = {
   index: number
 }
 
-const defaultValues = {
-  weight: 0,
-  repetition: 0,
-  minutes: 0,
-  seconds: 0,
-  memo: '',
-  pin: false,
-}
+
 const TrainingItemContainer = ({ onCompleted, training, index }: Props) => {
   const [handleAddRound, addRoundMutationLoading] = useAddRound(onCompleted)
   const { previousTotalLoad, previousData, previousLoading } = usePreviousData(
@@ -48,61 +38,7 @@ const TrainingItemContainer = ({ onCompleted, training, index }: Props) => {
     useRecoilState(lastTrainingIdState)
 
   const [isEditing, setIsEditing] = useRecoilState(isEditingState)
-  console.log(8999, previousData)
-  return (
-    <Presentational
-      training={training}
-      handleAddRound={handleAddRound}
-      addRoundMutationLoading={addRoundMutationLoading}
-      previousLoading={previousLoading}
-      previousTotalLoad={previousTotalLoad}
-      index={index}
-      previousData={previousData}
-      onCompleted={onCompleted}
-      editedTrainingId={editedTrainingId}
-      lastTrainingId={lastTrainingId}
-      isEditing={isEditing}
-      setEditedTrainingId={setEditedTrainingId}
-      setIsEditing={setIsEditing}
-      setLastTrainingId={setLastTrainingId}
-    />
-  )
-}
-
-type PresentationalProps = {
-  handleAddRound: (
-    trainingId: string,
-    { weight, repetition, minutes, seconds, unit, memo, pin }: UpsertRoundInput,
-    exerciseId: string | undefined
-  ) => Promise<void>
-  addRoundMutationLoading: boolean
-  previousLoading: boolean
-  previousTotalLoad: number
-  previousData?: GetPreviousTrainingsQuery
-  editedTrainingId: string | null
-  lastTrainingId: string | null
-  isEditing: boolean
-  setEditedTrainingId: SetterOrUpdater<string | null>
-  setLastTrainingId: SetterOrUpdater<string | null>
-  setIsEditing: SetterOrUpdater<boolean>
-} & Props
-
-export const Presentational = ({
-  training,
-  handleAddRound,
-  addRoundMutationLoading,
-  previousLoading,
-  previousTotalLoad,
-  previousData,
-  index,
-  onCompleted,
-  editedTrainingId,
-  lastTrainingId,
-  isEditing,
-  setEditedTrainingId,
-  setIsEditing,
-  setLastTrainingId,
-}: PresentationalProps) => {
+  
   const setIsOpenDeleteTrainingModal = useSetRecoilState(
     deleteTrainingModalState
   )
@@ -141,9 +77,9 @@ export const Presentational = ({
                 {isEditing ? (
                   <RoundDoing
                     training={training as Training}
-                    defaultValues={defaultValues}
                     previousData={previousData}
                     previousLoading={previousLoading}
+                    loading={addRoundMutationLoading}
                     onValid={(data) => {
                       handleAddRound(training.id, data, training.exercise?.id)
                     }}
@@ -155,7 +91,7 @@ export const Presentational = ({
                   <div className="flex items-center gap-2 justify-center mt-4">
                     <Button
                       onClick={() => setIsEditing(true)}
-                      disabled={addRoundMutationLoading}
+                      loading={addRoundMutationLoading}
                     >
                       セット追加
                     </Button>
@@ -164,7 +100,7 @@ export const Presentational = ({
                         onClick={() => {
                           addTraining()
                         }}
-                        disabled={addRoundMutationLoading}
+                        loading={addRoundMutationLoading}
                       >
                         次の種目
                       </Button>
@@ -179,5 +115,7 @@ export const Presentational = ({
     </>
   )
 }
+
+
 
 export default TrainingItemContainer
