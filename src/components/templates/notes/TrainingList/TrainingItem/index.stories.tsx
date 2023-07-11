@@ -10,9 +10,9 @@ import { editedTrainingIdState } from '@/recoil/Training/editedTrainingId'
 import { lastTrainingIdState } from '@/recoil/Training/lastTrainingId'
 import { SPStory } from '@/tests/storybook'
 
-import { Presentational } from '.'
+import TrainingItem from '.'
 
-type Props = ComponentProps<typeof Presentational> & {
+type Props = ComponentProps<typeof TrainingItem> & {
   trainingId: string | null
   lastTrainingId: string | null
   isEditing: boolean
@@ -31,7 +31,7 @@ const Component = (props: Props) => {
   setLastTrainingId(props.lastTrainingId)
   setIsEditing(props.isEditing)
 
-  return <Presentational {...props} />
+  return <TrainingItem {...props} />
 }
 
 export default {

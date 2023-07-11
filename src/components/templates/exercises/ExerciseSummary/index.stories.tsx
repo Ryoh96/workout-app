@@ -35,21 +35,7 @@ export const Default: Story = {}
 
 export const LoadingAll: Story = {
   args: {
-    maxTotalLoadLoading: true,
-    maxWeightLoading: true,
     statLoading: true,
-  },
-}
-
-export const LoadingWeight: Story = {
-  args: {
-    maxWeightLoading: true,
-  },
-}
-
-export const LoadingTotalLoad: Story = {
-  args: {
-    maxTotalLoadLoading: true,
   },
 }
 
@@ -61,8 +47,6 @@ export const LoadingStat: Story = {
 
 export const NoData: Story = {
   args: {
-    maxWeightData: undefined,
-    maxTotalLoadData: undefined,
     trainingNum: 0,
     lastDate: undefined,
   },

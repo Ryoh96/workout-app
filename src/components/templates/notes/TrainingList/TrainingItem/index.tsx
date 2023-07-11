@@ -25,7 +25,7 @@ type Props = {
 }
 
 
-const TrainingItemContainer = ({ onCompleted, training, index }: Props) => {
+const TrainingItem = ({ onCompleted, training, index }: Props) => {
   const [handleAddRound, addRoundMutationLoading] = useAddRound(onCompleted)
   const { previousTotalLoad, previousData, previousLoading } = usePreviousData(
     training.id
@@ -118,4 +118,4 @@ const TrainingItemContainer = ({ onCompleted, training, index }: Props) => {
 
 
 
-export default TrainingItemContainer
+export default TrainingItem
