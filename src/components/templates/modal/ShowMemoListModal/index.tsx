@@ -10,6 +10,7 @@ import {
   useGetPinnedMemosByExercisesQuery,
 } from '@/graphql/generated/operations-csr'
 import { dateFormat } from '@/utils/dateFormat'
+import { ManipulationError } from '@/utils/errors'
 
 type Props = {
   id: string
@@ -30,7 +31,13 @@ const ShowMemoListModal = ({
       id,
     },
     onCompleted: onPinOutMemoCompleted,
-    onError: (error) => toast.error(error.message),
+    onError: (error) =>{
+      if (error instanceof ManipulationError) {
+        toast.error(error.message)
+        return
+      }
+      console.error(error)
+    },
   })
 
   const [isOpen, setIsOpen] = useState(false)

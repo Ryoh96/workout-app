@@ -17,6 +17,7 @@ import PinOutMemoModal from '@/components/templates/modal/PinOutMemoModal'
 import type { GetPinnedMemosByExercisesQuery } from '@/graphql/generated/operations-csr'
 import { useGetPinnedMemosByExercisesQuery } from '@/graphql/generated/operations-csr'
 import { dateFormat } from '@/utils/dateFormat'
+import { ManipulationError } from '@/utils/errors'
 
 type ContainerProps = { id: string } & React.ComponentPropsWithoutRef<'div'>
 
@@ -24,7 +25,13 @@ const ExerciseMemoSectionContainer = forwardRef<HTMLDivElement, ContainerProps>(
   function ExerciseMemoSection({ id }, ref) {
     const queryResult = useGetPinnedMemosByExercisesQuery({
       variables: { id },
-      onError: (error) => toast.error(error.message),
+      onError: (error) => {
+      if (error instanceof ManipulationError) {
+        toast.error(error.message)
+        return
+      }
+      console.error(error)
+    },
     })
     const [memoId, setMemoId] = useState<string | null>(null)
     const [isOpenDeleteMemoModal, setIsOpenDeleteMemoModal] = useState(false)

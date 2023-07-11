@@ -3,6 +3,7 @@ import { toast } from 'react-toastify'
 import type { SetterOrUpdater } from 'recoil'
 
 import Modal from '@/components/organisms/Modal'
+import { ManipulationError } from '@/utils/errors'
 
 type Props = {
   title: string
@@ -34,7 +35,7 @@ const DeleteModal = ({
           handleClick: async () => {
             try {
               if (deleteId === null || deleteId === undefined) {
-                throw new Error(`${title}が見つかりません`)
+                throw new ManipulationError(`${title}が見つかりません`)
               }
               await toast.promise(
                 deleteMutation,
@@ -53,7 +54,7 @@ const DeleteModal = ({
                 }
               )
             } catch (error) {
-              if (error instanceof Error) {
+              if (error instanceof ManipulationError) {
                 console.error(error)
               }
             } finally {

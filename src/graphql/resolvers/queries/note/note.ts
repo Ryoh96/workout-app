@@ -8,6 +8,7 @@ import type {
   Resolver,
   ResolverTypeWrapper,
 } from '@/graphql/generated/resolvers-types'
+import { ManipulationError } from '@/utils/errors'
 
 export const note:
   | Resolver<
@@ -18,7 +19,7 @@ export const note:
     >
   | undefined = async (_, { date }, { prisma, currentUser }) => {
   if (!currentUser?.id) {
-    throw new Error('ユーザーがログインしていません')
+    throw new ManipulationError('ユーザーがログインしていません')
   }
 
   const startOfDay = new Date(

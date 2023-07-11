@@ -1,4 +1,5 @@
 import type { Resolvers } from '@/graphql/generated/resolvers-types'
+import { ManipulationError } from '@/utils/errors'
 
 export const Training: Resolvers['Training'] = {
   exercise: async (parent, args, { prisma, currentUser }) => {
@@ -17,7 +18,7 @@ export const Training: Resolvers['Training'] = {
   },
   totalLoad: async (parent, args, { prisma, currentUser }) => {
     if (!currentUser) {
-      throw new Error('ユーザーがログインしていません。')
+      throw new ManipulationError('ユーザーがログインしていません。')
     }
     const trainingId = parent.id
     const user = await prisma.training
@@ -30,7 +31,7 @@ export const Training: Resolvers['Training'] = {
       .user()
 
     if (user.id !== currentUser.id) {
-      throw new Error('アクセス権限がありません。')
+      throw new ManipulationError('アクセス権限がありません。')
     }
 
     const rounds = await prisma.training
@@ -66,7 +67,7 @@ export const Training: Resolvers['Training'] = {
       .note()
 
     if (note === null) {
-      throw new Error('ノートが存在しません')
+      throw new ManipulationError('ノートが存在しません')
     }
 
     return note

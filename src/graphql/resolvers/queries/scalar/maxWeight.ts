@@ -7,6 +7,7 @@ import type {
   Resolver,
   ResolverTypeWrapper,
 } from '@/graphql/generated/resolvers-types'
+import { ManipulationError } from '@/utils/errors'
 
 export const maxWeight:
   | Resolver<
@@ -17,7 +18,7 @@ export const maxWeight:
     >
   | undefined = async (_, { exerciseId }, { prisma, currentUser }) => {
   if (!currentUser) {
-    throw new Error('ユーザーがログインしていません。')
+    throw new ManipulationError('ユーザーがログインしていません。')
   }
 
   const user = await prisma.exercise
@@ -29,7 +30,7 @@ export const maxWeight:
     .user()
 
   if (!user || user.id !== currentUser.id) {
-    throw new Error('アクセス権限がありません')
+    throw new ManipulationError('アクセス権限がありません')
   }
 
   const trainings = await prisma.training.findMany({

@@ -10,6 +10,7 @@ import ShowMemos from '@/components/templates/common/ShowMemos'
 import { CreateMemoModal } from '@/components/templates/modal/EditMemoAtNoteModal/CreateMemoModal'
 import { useGetNoteMemoLazyQuery } from '@/graphql/generated/operations-csr'
 import { noteIdState } from '@/recoil/Note/noteId'
+import { ManipulationError } from '@/utils/errors'
 
 const TrainingsMemoSection = () => {
   const noteId = useRecoilValue(noteIdState)
@@ -57,7 +58,7 @@ const TrainingsMemoSection = () => {
               setDefaultMemoValue(undefined)
               setIsOpenCreateMemoModal(true)
             } catch (error) {
-              if (error instanceof Error) toast.error(error.message)
+              if (error instanceof ManipulationError) toast.error(error.message)
             } finally {
               setIsOpenEditMemoModal(false)
             }

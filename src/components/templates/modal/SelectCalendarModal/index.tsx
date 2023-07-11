@@ -5,6 +5,7 @@ import Calendar from 'react-calendar'
 import { toast } from 'react-toastify'
 
 import Modal from '@/components/organisms/Modal'
+import { ManipulationError } from '@/utils/errors'
 
 type Props = {
   isOpen: boolean
@@ -32,7 +33,7 @@ const SelectCalendarModal = ({
                 setIsOpen(false)
                 await handleChange?.(date)
               } catch (error) {
-                if (error instanceof Error) toast.error(error.message)
+                if (error instanceof ManipulationError) toast.error(error.message)
               }
             }
           }}

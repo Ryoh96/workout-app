@@ -22,6 +22,7 @@ type Props<T extends FieldValues = CreateExerciseInput> = {
   partsOptions: ComboBoxOption[]
   selected?: string
   id: string
+  loading: boolean
 }
 
 const AddExerciseForm = ({
@@ -29,6 +30,7 @@ const AddExerciseForm = ({
   selected,
   onCancel,
   id,
+  loading,
   ...props
 }: Props) => {
   const {
@@ -70,7 +72,7 @@ const AddExerciseForm = ({
           />
         </div>
         <div className="flex justify-center gap-4">
-          <Button type="submit">登録</Button>
+          <Button type="submit" loading={loading}>登録</Button>
           <Button type="reset" onClick={onCancel}>
             キャンセル
           </Button>

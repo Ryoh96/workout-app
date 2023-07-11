@@ -8,6 +8,7 @@ import type {
   Resolver,
   ResolverTypeWrapper,
 } from '@/graphql/generated/resolvers-types'
+import { ManipulationError } from '@/utils/errors'
 
 export const addRound:
   | Resolver<
@@ -18,7 +19,7 @@ export const addRound:
     >
   | undefined = async (_, { input }, { prisma, currentUser }) => {
   if (!currentUser) {
-    throw new Error('ユーザがログインしていません')
+    throw new ManipulationError('ユーザがログインしていません')
   }
   const { trainingId, roundInput, exerciseId } = input
 
@@ -33,7 +34,7 @@ export const addRound:
     .user()
 
   if (!user || user.id !== currentUser.id) {
-    throw new Error('アクセス権限がありません。')
+    throw new ManipulationError('アクセス権限がありません。')
   }
 
   const trainingUser = await prisma.training
@@ -46,12 +47,8 @@ export const addRound:
     .user()
 
   if (!trainingUser || trainingUser.id !== currentUser.id) {
-    throw new Error('アクセス権限がありません')
+    throw new ManipulationError('アクセス権限がありません')
   }
-
-  console.log('MEMOMEMO', memo)
-  console.log(memo === '')
-  console.log(memo?.length)
 
   const memos = await prisma.exercise
     .findUnique({
@@ -64,7 +61,7 @@ export const addRound:
         pin: true,
       },
       orderBy: {
-        createdAt: 'desc',
+        createdAt: 'asc',
       },
     })
   if (memo && memos !== null && memos.length >= 10) {
@@ -78,7 +75,7 @@ export const addRound:
         pin: false,
       },
     })
-    // throw new Error(
+    // throw new ManipulationError(
     //   '固定できるメモは10個までです。不要なメモは削除してください。'
     // )
   }

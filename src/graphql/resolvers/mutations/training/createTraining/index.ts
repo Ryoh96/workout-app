@@ -8,6 +8,7 @@ import type {
   Resolver,
   ResolverTypeWrapper,
 } from '@/graphql/generated/resolvers-types'
+import { ManipulationError } from '@/utils/errors'
 
 export const createTraining:
   | Resolver<
@@ -22,11 +23,11 @@ export const createTraining:
   { prisma, currentUser }
 ) => {
   if (!currentUser) {
-    throw new Error('ユーザーがログインしていません')
+    throw new ManipulationError('ユーザーがログインしていません')
   }
 
   if (!exerciseId) {
-    throw new Error('種目が選択されていません')
+    throw new ManipulationError('種目が選択されていません')
   }
 
   // ユーザの権限チェックなどの追加ロジック
@@ -55,7 +56,7 @@ export const createTraining:
     !exercise ||
     exercise.userId !== currentUser.id
   ) {
-    throw new Error('アクセス権限がありません。')
+    throw new ManipulationError('アクセス権限がありません。')
   }
 
   const training = await prisma.training.create({

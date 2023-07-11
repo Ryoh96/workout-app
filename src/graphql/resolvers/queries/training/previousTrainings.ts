@@ -8,6 +8,7 @@ import type {
   Resolver,
   ResolverTypeWrapper,
 } from '@/graphql/generated/resolvers-types'
+import { ManipulationError } from '@/utils/errors'
 
 export const previousTrainings:
   | Resolver<
@@ -18,7 +19,7 @@ export const previousTrainings:
     >
   | undefined = async (_, { id, limit }, { prisma, currentUser }) => {
   if (!currentUser) {
-    throw new Error('ユーザーがログインしていません。')
+    throw new ManipulationError('ユーザーがログインしていません。')
   }
   const data = await prisma.training.findUnique({
     where: { id },
@@ -26,7 +27,7 @@ export const previousTrainings:
   })
 
   if (!data) {
-    throw new Error(`種目が存在しません。`)
+    throw new ManipulationError(`種目が存在しません。`)
   }
 
   const user = await prisma.exercise
@@ -38,7 +39,7 @@ export const previousTrainings:
     .user()
 
   if (data.note.userId !== currentUser.id || user?.id !== currentUser.id) {
-    throw new Error('アクセス権限がありません。')
+    throw new ManipulationError('アクセス権限がありません。')
   }
 
   const previousTrainings = await prisma.exercise

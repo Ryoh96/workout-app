@@ -14,6 +14,7 @@ import {
 import type { GetExerciseQuery } from '@/graphql/generated/operations-type'
 import type { StatData } from '@/types'
 import { dateFormat } from '@/utils/dateFormat'
+import { ManipulationError } from '@/utils/errors'
 
 import OrderAverageData from '../OrderAverageData'
 import RoundAverageData from '../RoundAverageData'
@@ -44,7 +45,13 @@ const ExerciseBasicDataSection = forwardRef<HTMLDivElement, Props>(
       refetch: maxWeightDataRefetch,
     } = useGetMaxWeightQuery({
       variables: { exerciseId: id },
-      onError: (error) => toast.error(error.message),
+      onError: (error) => {
+      if (error instanceof ManipulationError) {
+        toast.error(error.message)
+        return
+      }
+      console.error(error)
+    },
     })
     const {
       data: maxTotalLoadData,
@@ -52,7 +59,13 @@ const ExerciseBasicDataSection = forwardRef<HTMLDivElement, Props>(
       refetch: maxTotalLoadDataRefetch,
     } = useGetMaxTotalLoadQuery({
       variables: { exerciseId: id },
-      onError: (error) => toast.error(error.message),
+      onError: (error) =>{
+      if (error instanceof ManipulationError) {
+        toast.error(error.message)
+        return
+      }
+      console.error(error)
+    },
     })
 
     const trainingNum = normalizedStatData?.length ?? 0

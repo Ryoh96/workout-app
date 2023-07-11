@@ -7,6 +7,7 @@ import type {
   Resolver,
   ResolverTypeWrapper,
 } from '@/graphql/generated/resolvers-types'
+import { ManipulationError } from '@/utils/errors'
 
 export const createNote:
   | Resolver<
@@ -18,7 +19,7 @@ export const createNote:
   | undefined = async (_, { date }, { prisma, currentUser }) => {
     console.log(101010, currentUser)
   if (!currentUser) {
-    throw new Error('ユーザーがログインしていません。')
+    throw new ManipulationError('ユーザーがログインしていません。')
   }
 
   let day = new Date(date)
@@ -52,7 +53,7 @@ export const createNote:
     })
 
   if (note?.length !== 0) {
-    throw new Error('既にノートが存在しています')
+    throw new ManipulationError('既にノートが存在しています')
   }
 
   //翌日以降のノートは作成禁止
@@ -69,7 +70,7 @@ export const createNote:
   targetDateTime.setHours(0, 0, 0, 0)
 
   if (targetDateTime > currentDateTime) {
-    throw new Error('未来の日付でノートを作成することはできません')
+    throw new ManipulationError('未来の日付でノートを作成することはできません')
   }
 
   const newNote = await prisma.note.create({

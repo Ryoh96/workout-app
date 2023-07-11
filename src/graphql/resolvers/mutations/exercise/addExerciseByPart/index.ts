@@ -8,6 +8,7 @@ import type {
   Resolver,
   ResolverTypeWrapper,
 } from '@/graphql/generated/resolvers-types'
+import { ManipulationError } from '@/utils/errors'
 
 export const addExerciseByPart:
   | Resolver<
@@ -18,7 +19,7 @@ export const addExerciseByPart:
     >
   | undefined = async (_, { name, partId }, { prisma, currentUser }) => {
   if (!currentUser) {
-    throw new Error('ユーザがログインしていません。')
+    throw new ManipulationError('ユーザがログインしていません。')
   }
 
   // 同じ名前のExerciseが存在するかチェック
@@ -36,7 +37,7 @@ export const addExerciseByPart:
   })
 
   if (!existingPart) {
-    throw new Error('そのような部位は存在しません。')
+    throw new ManipulationError('そのような部位は存在しません。')
   }
 
   const exercise = await prisma.exercise.create({

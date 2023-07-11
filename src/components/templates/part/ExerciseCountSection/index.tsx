@@ -12,6 +12,7 @@ import TitleWithIcon from '@/components/molecules/TitleWithIcon'
 import PieChart from '@/components/organisms/PieChart'
 import { useGetExerciseNameByNoteQuery } from '@/graphql/generated/operations-csr'
 import type { ComboBoxOption } from '@/types'
+import { ManipulationError } from '@/utils/errors'
 
 import ExerciseFilterModal from '../../modal/ExerciseFilterModal'
 
@@ -28,7 +29,13 @@ const ExerciseCountSection = ({ parts }: Props) => {
       since: span < 0 ? undefined : subDays(today, span).toISOString(),
       until: today.toISOString(),
     },
-    onError: (error) => toast.error(error.message),
+    onError: (error) => {
+      if (error instanceof ManipulationError) {
+        toast.error(error.message)
+        return
+      }
+      console.error(error)
+    },
   })
   const partSummary: {
     [partName: string]: { [exerciseName: string]: number }

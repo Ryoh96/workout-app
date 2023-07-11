@@ -12,6 +12,7 @@ import {
   useGetMaxWeightQuery,
   useGetTrainingStatQuery,
 } from '@/graphql/generated/operations-csr'
+import { ManipulationError } from '@/utils/errors'
 import getNormalizedStatData from '@/utils/exercise/getNormalizedStatData'
 import getRoundsAverage from '@/utils/exercise/getRoundsAverage'
 import getTotalLoadGraphData from '@/utils/exercise/getTotalLoadsGraphData'
@@ -30,7 +31,13 @@ const ExerciseDetail = ({ id, name }: Props) => {
     error: maxWeightError,
   } = useGetMaxWeightQuery({
     variables: { exerciseId: id },
-    onError: (error) => toast.error(error.message),
+    onError: (error) => {
+      if (error instanceof ManipulationError) {
+        toast.error(error.message)
+        return
+      }
+      console.error(error)
+    },
   })
   const {
     data: maxTotalLoadData,
@@ -39,7 +46,13 @@ const ExerciseDetail = ({ id, name }: Props) => {
     error: maxTotalLoadError,
   } = useGetMaxTotalLoadQuery({
     variables: { exerciseId: id },
-    onError: (error) => toast.error(error.message),
+    onError: (error) => {
+      if (error instanceof ManipulationError) {
+        toast.error(error.message)
+        return
+      }
+      console.error(error)
+    },
   })
 
   const {
@@ -52,7 +65,13 @@ const ExerciseDetail = ({ id, name }: Props) => {
       exerciseId: id,
       limit: 30,
     },
-    onError: (error) => toast.error(error.message),
+    onError: (error) => {
+      if (error instanceof ManipulationError) {
+        toast.error(error.message)
+        return
+      }
+      console.error(error)
+    },
   })
 
   useEffect(() => {

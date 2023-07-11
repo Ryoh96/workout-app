@@ -8,6 +8,7 @@ import type {
   Resolver,
   ResolverTypeWrapper,
 } from '@/graphql/generated/resolvers-types'
+import { ManipulationError } from '@/utils/errors'
 
 export const round:
   | Resolver<
@@ -18,7 +19,7 @@ export const round:
     >
   | undefined = async (_, { id }, { prisma, currentUser }) => {
   if (!currentUser) {
-    throw new Error('ユーザーがログインしていません')
+    throw new ManipulationError('ユーザーがログインしていません')
   }
   const round = await prisma.round.findUnique({
     where: {
@@ -34,11 +35,11 @@ export const round:
   })
 
   if (!round) {
-    throw new Error('セットがありません')
+    throw new ManipulationError('セットがありません')
   }
 
   if (round.training.note.userId !== currentUser.id) {
-    throw new Error('アクセス権限がありません')
+    throw new ManipulationError('アクセス権限がありません')
   }
 
   return round

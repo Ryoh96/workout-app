@@ -7,6 +7,7 @@ import Modal from '@/components/organisms/Modal'
 import ShowMemos from '@/components/templates/common/ShowMemos'
 import { useGetNoteMemoLazyQuery } from '@/graphql/generated/operations-csr'
 import { noteIdState } from '@/recoil/Note/noteId'
+import { ManipulationError } from '@/utils/errors'
 
 import { CreateMemoModal } from './CreateMemoModal'
 
@@ -20,7 +21,13 @@ const EditMemoAtNoteModal = ({ isOpen, setIsOpen }: Props) => {
   const id = useRecoilValue(noteIdState)
   const [getNoteMemo, { data, loading, error, refetch }] =
     useGetNoteMemoLazyQuery({
-      onError: (error) => toast.error('エラーが発生しました'),
+      onError: (error) => {
+      if (error instanceof ManipulationError) {
+        toast.error(error.message)
+        return
+      }
+      console.error(error)
+    },
     })
   const [defaultMemoValue, setDefaultMemoValue] = useState<string | undefined>(
     undefined
@@ -66,13 +73,13 @@ const EditMemoAtNoteModal = ({ isOpen, setIsOpen }: Props) => {
             handleClick: () => {
               try {
                 if (!id) {
-                  throw new Error('ノートが存在しません')
+                  throw new ManipulationError('ノートが存在しません')
                 }
                 setEditMemoIndex(undefined)
                 setDefaultMemoValue(undefined)
                 setIsOpenCreateMemoModal(true)
               } catch (error) {
-                if (error instanceof Error) toast.error(error.message)
+                if (error instanceof ManipulationError) toast.error(error.message)
               } finally {
                 setIsOpen(false)
               }

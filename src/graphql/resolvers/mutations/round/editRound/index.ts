@@ -8,6 +8,7 @@ import type {
   Resolver,
   ResolverTypeWrapper,
 } from '@/graphql/generated/resolvers-types'
+import { ManipulationError } from '@/utils/errors'
 
 export const editRound:
   | Resolver<
@@ -18,7 +19,7 @@ export const editRound:
     >
   | undefined = async (_, { input }, { prisma, currentUser }) => {
   if (!currentUser) {
-    throw new Error('ユーザがログインしていません。')
+    throw new ManipulationError('ユーザがログインしていません。')
   }
   const { id, roundInput } = input
 
@@ -35,7 +36,7 @@ export const editRound:
     .user()
 
   if (user.id !== currentUser.id) {
-    throw new Error('アクセス権限がありません。')
+    throw new ManipulationError('アクセス権限がありません。')
   }
 
   const updatedRound = await prisma.round.update({
@@ -84,7 +85,7 @@ export const editRound:
           pin: false,
         },
       })
-      // throw new Error(
+      // throw new ManipulationError(
       //   '固定できるメモは10個までです。不要なメモは削除してください。'
       // )
     }

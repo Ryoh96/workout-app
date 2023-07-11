@@ -7,6 +7,7 @@ import type {
   Resolver,
   ResolverTypeWrapper,
 } from '@/graphql/generated/resolvers-types'
+import { ManipulationError } from '@/utils/errors'
 
 export const notes:
   | Resolver<
@@ -17,7 +18,7 @@ export const notes:
     >
   | undefined = async (_, { since, until }, { prisma, currentUser }) => {
   if (!currentUser) {
-    throw new Error('ユーザーがログインしていません。')
+    throw new ManipulationError('ユーザーがログインしていません。')
   }
 
   const data = await prisma.user

@@ -7,6 +7,7 @@ import type {
   Resolver,
   ResolverTypeWrapper,
 } from '@/graphql/generated/resolvers-types'
+import { ManipulationError } from '@/utils/errors'
 
 export const upsertMemoAtNote:
   | Resolver<
@@ -17,20 +18,20 @@ export const upsertMemoAtNote:
     >
   | undefined = async (_, { id, memo, index }, { currentUser, prisma }) => {
   if (!currentUser) {
-    throw new Error('ユーザがログインしていません')
+    throw new ManipulationError('ユーザがログインしていません')
   }
 
   if (memo.length === 0) {
-    throw new Error('文字を入力してください')
+    throw new ManipulationError('文字を入力してください')
   }
 
   const note = await prisma.note.findUnique({ where: { id } })
   if (!note) {
-    throw new Error('ノートが存在しません')
+    throw new ManipulationError('ノートが存在しません')
   }
 
   if (currentUser.id !== note.userId) {
-    throw new Error('アクセス権限がありません')
+    throw new ManipulationError('アクセス権限がありません')
   }
 
   if (

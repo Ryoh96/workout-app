@@ -8,6 +8,7 @@ import type {
   Resolver,
   ResolverTypeWrapper,
 } from '@/graphql/generated/resolvers-types'
+import { ManipulationError } from '@/utils/errors'
 
 export const removeTraining:
   | Resolver<
@@ -18,7 +19,7 @@ export const removeTraining:
     >
   | undefined = async (_, { id }, { prisma, currentUser }) => {
   if (!currentUser) {
-    throw new Error('ユーザーがログインしていません。')
+    throw new ManipulationError('ユーザーがログインしていません。')
   }
 
   const userId = await prisma.training
@@ -35,7 +36,7 @@ export const removeTraining:
     })
 
   if (currentUser.id !== userId.id) {
-    throw new Error('アクセス権限がありません')
+    throw new ManipulationError('アクセス権限がありません')
   }
 
   const training = await prisma.training.delete({

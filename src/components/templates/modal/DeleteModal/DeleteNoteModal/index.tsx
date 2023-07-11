@@ -4,6 +4,7 @@ import { useRecoilState, useRecoilValue } from 'recoil'
 import { useDeleteNoteMutation } from '@/graphql/generated/operations-csr'
 import { deleteNoteModalState } from '@/recoil/Modal/DeleteNoteModal'
 import { noteIdState } from '@/recoil/Note/noteId'
+import { ManipulationError } from '@/utils/errors'
 
 import DeleteModal from '..'
 
@@ -22,11 +23,11 @@ export const DeleteNoteModal = ({ onDeleteCompleted }: Props) => {
     <DeleteModal
       title="ノート"
       deleteMutation={async () => {
-        if (!id) throw new Error('ノートがありません')
+        if (!id) throw new ManipulationError('ノートがありません')
         try {
           await deleteNoteMutation({ variables: { id } })
         } catch (error) {
-          if (error instanceof Error) toast.error(error.message)
+          if (error instanceof ManipulationError) toast.error(error.message)
         } finally {
           setId(null)
         }

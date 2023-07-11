@@ -10,6 +10,7 @@ import { Unit, useEditRoundMutation } from '@/graphql/generated/operations-csr'
 import type { UpsertRoundInput } from '@/libs/schema/upsertRound'
 import { editRoundModalState } from '@/recoil/Modal/EditRoundModal'
 import { editRoundState } from '@/recoil/Round/editRound'
+import { ManipulationError } from '@/utils/errors'
 
 type Props = {
   onCompleted: () => void
@@ -76,7 +77,7 @@ const EditRoundModal = ({ onCompleted }: Props) => {
 
         setEditedRound(null)
       } catch (error) {
-        if (error instanceof Error) {
+        if (error instanceof ManipulationError) {
           console.error(error)
         }
       }

@@ -22,6 +22,7 @@ import ExerciseSummary from '@/components/templates/exercises/ExerciseSummary'
 import AddExerciseModal from '@/components/templates/modal/AddExerciseModal'
 import { useGetAllPartsNameQuery, useGetExerciseNamesByPartLazyQuery } from '@/graphql/generated/operations-csr'
 import type { ComboBoxOption } from '@/types'
+import { ManipulationError } from '@/utils/errors'
 
 type Props = {
 }
@@ -29,7 +30,9 @@ type Props = {
 const Exercises: NextPage<Props> = ({}) => {
     const [getExerciseName, { data: getExerciseNameData, loading, refetch }] =
     useGetExerciseNamesByPartLazyQuery({
-      onError: (error) => toast.error(error.message),
+      onError: (error) =>  {
+      if (error instanceof ManipulationError) toast.error(error.message)
+    },
     })
   const [parts, setParts] = useState<ComboBoxOption| undefined>(undefined)
 
@@ -46,13 +49,13 @@ const Exercises: NextPage<Props> = ({}) => {
   const handleChange = async (id: string) => {
     try {
       const part = partsOptions.find((part) => part.id === id)
-      if (!part) throw new Error('Part not found')
+      if (!part) throw new ManipulationError('パーツが見つかりません')
       setParts(part)
       await refetch({
         partIds: `${id}`,
       })
     } catch (error) {
-      if (error instanceof Error) {
+      if (error instanceof ManipulationError) {
         toast.error(error.message)
         console.error(error)
       }

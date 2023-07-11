@@ -8,6 +8,7 @@ import type {
   Resolver,
   ResolverTypeWrapper,
 } from '@/graphql/generated/resolvers-types'
+import { ManipulationError } from '@/utils/errors'
 
 export const exerciseByDate:
   | Resolver<
@@ -18,7 +19,7 @@ export const exerciseByDate:
     >
   | undefined = async (_, { date }, { prisma, currentUser }) => {
   if (!currentUser?.id) {
-    throw new Error('ユーザーがログインしていません。')
+    throw new ManipulationError('ユーザーがログインしていません。')
   }
 
   const datetime = new Date(date)
@@ -39,7 +40,7 @@ export const exerciseByDate:
     })
 
   if (!exercise) {
-    throw new Error('エクササイズがありません。')
+    throw new ManipulationError('エクササイズがありません。')
   }
 
   return exercise ?? []

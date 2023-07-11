@@ -23,7 +23,7 @@ const AddExerciseModal = ({
   partsOptions,
   parts,
 }: Props) => {
-  const [addExerciseByPartMutation] = useAddExerciseByPartMutation({
+  const [addExerciseByPartMutation, {loading}] = useAddExerciseByPartMutation({
     onCompleted,
   })
 
@@ -33,6 +33,7 @@ const AddExerciseModal = ({
       titleIcon={<FontAwesomeIcon icon={faDumbbell} />}
       content={
         <AddExerciseForm
+        loading={loading}
           onValid={async (data) => {
             await toast.promise(
               addExerciseByPartMutation({

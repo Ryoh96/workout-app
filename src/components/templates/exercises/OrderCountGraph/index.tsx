@@ -15,6 +15,7 @@ import ExerciseFilterModal from '@/components/templates/modal/ExerciseFilterModa
 import ShowDatasetModal from '@/components/templates/modal/ShowDatasetModal'
 import { useGetAllTrainingsInNoteQuery } from '@/graphql/generated/operations-csr'
 import { dateFormat } from '@/utils/dateFormat'
+import { ManipulationError } from '@/utils/errors'
 import getOrdersGraphData from '@/utils/exercise/getOrdersGraphData'
 
 type Props = {
@@ -25,7 +26,13 @@ type Props = {
 const OrderCountGraphContainer = ({ id, className }: Props) => {
   const { data: trainingsData, loading: trainingsLoading } =
     useGetAllTrainingsInNoteQuery({
-      onError: (error) => toast.error(error.message),
+      onError: (error) => {
+      if (error instanceof ManipulationError) {
+        toast.error(error.message)
+        return
+      }
+      console.error(error)
+    },
     })
   const [isOpenFilterModal, setIsOpenFilterModal] = useState(false)
   const [span, setSpan] = useState(10)

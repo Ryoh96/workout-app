@@ -16,6 +16,7 @@ import useCreateTraining from '@/hooks/pages/editNote/useCreateTraining'
 import useExerciseName from '@/hooks/pages/editNote/useExerciseName'
 import { noteIdState } from '@/recoil/Note/noteId'
 import type { ComboBoxOption } from '@/types'
+import { ManipulationError } from '@/utils/errors'
 
 type Props = {
   onCompleted: () => void
@@ -50,7 +51,7 @@ const CreateTraining = ({
   const handleChange = async (id: string) => {
     try {
       const part = partsOptions.find((part) => part.id === id)
-      if (!part) throw new Error('Part not found')
+      if (!part) throw new ManipulationError('部位が見つかりません')
       setParts(part)
       await getExerciseName({
         variables: {

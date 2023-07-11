@@ -18,6 +18,7 @@ import {
 } from '@/graphql/generated/operations-csr'
 import { deleteExerciseModalState } from '@/recoil/Modal/DeleteExerciseModal'
 import { dateFormat } from '@/utils/dateFormat'
+import { ManipulationError } from '@/utils/errors'
 import getNormalizedStatData from '@/utils/exercise/getNormalizedStatData'
 
 type ContainerProps = {
@@ -35,7 +36,13 @@ const ExerciseSummaryContainer = (props: ContainerProps) => {
     variables: {
       exerciseId: props.exercise.id,
     },
-    onError: (error) => toast.error(error.message),
+    onError: (error) => {
+      if (error instanceof ManipulationError) {
+        toast.error(error.message)
+        return
+      }
+      console.error(error)
+    },
   })
 
   const normalizedStatData = getNormalizedStatData(statData)

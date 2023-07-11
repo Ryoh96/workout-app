@@ -5,6 +5,7 @@ import { toast } from 'react-toastify'
 
 import ExerciseFilterModal from '@/components/templates/modal/ExerciseFilterModal'
 import { useGetAllTrainingsInNoteQuery } from '@/graphql/generated/operations-csr'
+import { ManipulationError } from '@/utils/errors'
 import getOrders from '@/utils/exercise/getOrders'
 
 type ContainerProps = {
@@ -16,7 +17,13 @@ const OrderAverageDataContainer = ({ id }: ContainerProps) => {
   const [span, setSpan] = useState(30)
   const { data: trainingsData, loading: trainingsLoading } =
     useGetAllTrainingsInNoteQuery({
-      onError: (error) => toast.error(error.message),
+      onError: (error) => {
+      if (error instanceof ManipulationError) {
+        toast.error(error.message)
+        return
+      }
+      console.error(error)
+    },
     })
 
   const orders = getOrders(id, trainingsData)

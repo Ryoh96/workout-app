@@ -8,6 +8,7 @@ import type {
   Resolver,
   ResolverTypeWrapper,
 } from '@/graphql/generated/resolvers-types'
+import { ManipulationError } from '@/utils/errors'
 
 export const deleteMemo:
   | Resolver<
@@ -18,7 +19,7 @@ export const deleteMemo:
     >
   | undefined = async (_, { id }, { currentUser, prisma }) => {
   if (!currentUser) {
-    throw new Error('ユーザがログインしていません')
+    throw new ManipulationError('ユーザがログインしていません')
   }
 
   const user = await prisma.memo
@@ -31,7 +32,7 @@ export const deleteMemo:
     .user()
 
   if (user.id !== currentUser.id) {
-    throw new Error('アクセス権限がありません')
+    throw new ManipulationError('アクセス権限がありません')
   }
 
   return prisma.memo.delete({

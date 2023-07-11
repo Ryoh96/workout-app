@@ -8,6 +8,7 @@ import type {
   ResolverTypeWrapper,
 } from '@/graphql/generated/resolvers-types'
 import calcTotalLoad from '@/utils/calcTotalLoad'
+import { ManipulationError } from '@/utils/errors'
 
 export const maxTotalLoad:
   | Resolver<
@@ -18,7 +19,7 @@ export const maxTotalLoad:
     >
   | undefined = async (_, { exerciseId }, { prisma, currentUser }) => {
   if (!currentUser) {
-    throw new Error('ユーザーがログインしていません。')
+    throw new ManipulationError('ユーザーがログインしていません。')
   }
 
   const exercise = await prisma.exercise.findUnique({
@@ -31,13 +32,13 @@ export const maxTotalLoad:
   })
 
   if (!exercise) {
-    throw new Error('種目が存在しません')
+    throw new ManipulationError('種目が存在しません')
   }
 
   const userId = await exercise.userId
 
   if (userId !== currentUser.id) {
-    throw new Error('アクセス権限がありません')
+    throw new ManipulationError('アクセス権限がありません')
   }
 
   let maxTotalLoad = 0

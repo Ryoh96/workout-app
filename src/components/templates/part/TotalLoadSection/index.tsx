@@ -14,6 +14,7 @@ import { useGetTotalLoadByNoteQuery } from '@/graphql/generated/operations-csr'
 import type { GetTotalLoadByNoteQuery } from '@/graphql/generated/operations-type'
 import type { ComboBoxOption } from '@/types'
 import { dateFormat } from '@/utils/dateFormat'
+import { ManipulationError } from '@/utils/errors'
 
 import ExerciseFilterModal from '../../modal/ExerciseFilterModal'
 
@@ -32,7 +33,13 @@ const TotalLoadSection = ({ parts, className }: Props) => {
         since: span < 0 ? undefined : subDays(today, span).toISOString(),
         until: today.toISOString(),
       },
-      onError: (error) => toast.error(error.message),
+      onError: (error) => {
+      if (error instanceof ManipulationError) {
+        toast.error(error.message)
+        return
+      }
+      console.error(error)
+    },
     })
 
   const getTotalLoadsByDate = (totalLoadData?: GetTotalLoadByNoteQuery) => {

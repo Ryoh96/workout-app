@@ -29,6 +29,7 @@ import {
   useGetExerciseQuery,
   useGetTrainingStatQuery,
 } from '@/graphql/generated/operations-csr'
+import { ManipulationError } from '@/utils/errors'
 import getNormalizedStatData from '@/utils/exercise/getNormalizedStatData'
 
 type Props = {
@@ -44,7 +45,9 @@ const Exercise: NextPage<Props> = ({ id }) => {
     variables: {
       id,
     },
-    onError: (error) => toast.error(error.message),
+    onError: (error) => {
+      if (error instanceof ManipulationError) toast.error(error.message)
+    },
   })
   const {
     data: statData,
@@ -54,7 +57,9 @@ const Exercise: NextPage<Props> = ({ id }) => {
     variables: {
       exerciseId: id,
     },
-    onError: (error) => toast.error(error.message),
+    onError: (error) =>  {
+      if (error instanceof ManipulationError) toast.error(error.message)
+    }
   })
 
   useEffect(() => {

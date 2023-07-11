@@ -8,6 +8,7 @@ import Modal from '@/components/organisms/Modal'
 import { useGetPreviousTrainingsQuery } from '@/graphql/generated/operations-csr'
 import type { Round } from '@/graphql/generated/operations-type'
 import { dateFormat } from '@/utils/dateFormat'
+import { ManipulationError } from '@/utils/errors'
 import makeRoundsSummary from '@/utils/makeRoundsSummary'
 
 type Props = {
@@ -20,7 +21,13 @@ const ShowTrainingHistoryModal = ({ trainingId, isOpen, setIsOpen }: Props) => {
   const { data: previousData, loading: previousLoading } =
     useGetPreviousTrainingsQuery({
       variables: { id: trainingId, limit: 10 },
-      onError: (error) => toast.error(error.message),
+      onError: (error) => {
+      if (error instanceof ManipulationError) {
+        toast.error(error.message)
+        return
+      }
+      console.error(error)
+    },
     })
   return (
     <Modal
