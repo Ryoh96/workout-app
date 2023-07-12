@@ -168,11 +168,7 @@ const Note: NextPage<Props> = ({ date: dateString }) => {
               />
             )
           )}
-          {partsLoading ? (
-            <Section>
-              <Spinner />
-            </Section>
-          ) : (
+          {!partsLoading  &&
             (lastTrainingId === null ||
               noteData?.note?.trainings?.length === 0) &&
             noteId && (
@@ -188,7 +184,7 @@ const Note: NextPage<Props> = ({ date: dateString }) => {
                 }
               />
             )
-          )}
+          }
         </div>
         <div className="hidden md:block md:overflow-y-auto">
           <TrainingsDataSection noteData={noteData} />
