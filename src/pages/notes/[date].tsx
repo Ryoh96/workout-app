@@ -154,7 +154,7 @@ const Note: NextPage<Props> = ({ date: dateString, partsOptions }) => {
               </Button>
             </div>
           ) : (
-            noteData?.note?.trainings?.length !== 0 && (
+            noteData?.note?.trainings?.length !== 0 && !noteDataLoading &&(
               <TrainingList
                 noteData={noteData}
                 onCompleted={() => refetch({ date: date.toISOString() })}
@@ -163,7 +163,7 @@ const Note: NextPage<Props> = ({ date: dateString, partsOptions }) => {
           )}
           {(lastTrainingId === null ||
             noteData?.note?.trainings?.length === 0) &&
-            noteId && (
+            noteId &&  (
               <CreateTraining
                 onCompleted={() => refetch({ date: date.toISOString() })}
                 partsOptions={partsOptions ?? []}
