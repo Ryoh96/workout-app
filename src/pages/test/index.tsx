@@ -40,12 +40,29 @@ const Home: NextPage = () => {
     onError: (error) => console.error(error.message),
   })
 
+  const [isOpenCalenderModal, setIsOpenCalenderModal] = useState(false)
+  const [currentDate, setCurrentDate] = useRecoilState(currentDateState)
+  const router = useRouter()
 
   if (loading) return <Spinner />
   return (
     <>
+                  <Button
+                onClick={() => setIsOpenCalenderModal(true)}
+                className="py-2"
+              >
+                ノートを見る
+              </Button>
       <>{console.log(data?.notes)}</>
-      <p>{data?.notes?.map(note => note.date)}</p>
+      <Section>{data?.notes?.map(note => note.date)}</Section>
+        <SelectCalendarModal
+        isOpen={isOpenCalenderModal}
+        setIsOpen={setIsOpenCalenderModal}
+        setCurrentDate={setCurrentDate}
+        handleChange={async (date) =>
+          date && router.push(`/test/${format(date, 'yyyy-MM-dd')}`)
+        }
+      />
       <Toast />
     </>
   )
