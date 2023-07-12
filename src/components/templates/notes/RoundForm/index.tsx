@@ -8,7 +8,6 @@ import type {
 import { useForm } from 'react-hook-form'
 
 import Button from '@/components/atoms/Button'
-import EmphasizedText from '@/components/atoms/EmphasizedText'
 import InputCounter from '@/components/atoms/InputCounter'
 import CheckIconWithLabel from '@/components/molecules/CheckIconWithLabel'
 import InputTime from '@/components/molecules/InputTime'
@@ -16,7 +15,6 @@ import SelectBoxWithLabel from '@/components/molecules/SelectBoxWithLabel'
 import TextAreaWithInfo from '@/components/molecules/TextAreaWithInfo'
 import TextBoxWithInfo from '@/components/molecules/TextBoxWithInfo'
 import { unitOptions } from '@/constants'
-import type { Round } from '@/graphql/generated/operations-type'
 import type { UpsertRoundInput } from '@/libs/schema/upsertRound'
 import { upsertRoundSchema } from '@/libs/schema/upsertRound'
 
@@ -26,15 +24,11 @@ type Props<T extends FieldValues = UpsertRoundInput> = {
   onInvalid?: SubmitErrorHandler<T>
   id?: string
   handleCancel?: () => void
-  previousData?: Partial<Round>
-  previousLoading?: boolean
   loading: boolean
 }
 
 const RoundForm = ({
   id,
-  previousData,
-  previousLoading,
   loading,
   ...props
 }: Props) => {
@@ -60,14 +54,6 @@ const RoundForm = ({
             label="重量"
             {...register('weight', { valueAsNumber: true })}
             error={errors.weight?.message}
-            info={
-              !previousLoading && (
-                <EmphasizedText
-                  content={previousData?.weight ?? '--'}
-                  unit="kg"
-                />
-              )
-            }
             placeholder="-- kg"
             unit={
               <SelectBoxWithLabel
@@ -87,14 +73,6 @@ const RoundForm = ({
             placeholder="-- 回"
             {...register('repetition', { valueAsNumber: true })}
             error={errors.repetition?.message}
-            info={
-              !previousLoading && (
-                <EmphasizedText
-                  content={previousData?.repetition ?? '--'}
-                  unit="回"
-                />
-              )
-            }
             unit="回"
           />
         </div>
@@ -103,19 +81,6 @@ const RoundForm = ({
             label="インターバル"
             register={register}
             errors={errors}
-            info={
-              !previousLoading && (
-                <EmphasizedText
-                  content={
-                    previousData?.interval
-                      ? `${Math.floor(previousData?.interval / 60)}:${
-                          previousData?.interval % 60
-                        }`
-                      : '--:--'
-                  }
-                />
-              )
-            }
           />
         </div>
         <div>

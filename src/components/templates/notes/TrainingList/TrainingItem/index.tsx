@@ -26,9 +26,6 @@ type Props = {
 
 const TrainingItem = ({ onCompleted, training, index }: Props) => {
   const [handleAddRound, addRoundMutationLoading] = useAddRound(onCompleted)
-  const { previousTotalLoad, previousData, previousLoading } = usePreviousData(
-    training.id
-  )
 
   const [editedTrainingId, setEditedTrainingId] = useRecoilState(
     editedTrainingIdState
@@ -55,7 +52,6 @@ const TrainingItem = ({ onCompleted, training, index }: Props) => {
           <Section key={training.id}>
             <ExerciseHeader
               training={training as Training}
-              previousTotalLoad={previousTotalLoad}
               removeTraining={() => {
                 setDeleteTrainingId(training.id)
                 setIsOpenDeleteTrainingModal(true)
@@ -76,8 +72,6 @@ const TrainingItem = ({ onCompleted, training, index }: Props) => {
                 {isEditing ? (
                   <RoundDoing
                     training={training as Training}
-                    previousData={previousData}
-                    previousLoading={previousLoading}
                     loading={addRoundMutationLoading}
                     onValid={(data) => {
                       handleAddRound(training.id, data, training.exercise?.id)

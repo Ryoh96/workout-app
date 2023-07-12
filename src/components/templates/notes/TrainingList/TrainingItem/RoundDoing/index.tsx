@@ -20,14 +20,10 @@ type Props<T extends FieldValues = UpsertRoundInput> = {
   isDone?: Boolean
   training: Training
   handleCancel?: () => void
-  previousData: GetPreviousTrainingsQuery | undefined
-  previousLoading: boolean
   loading: boolean
 }
 const RoundDoing = ({
   training,
-  previousData,
-  previousLoading,
   ...props
 }: Props) => {
   const id = useId()
@@ -44,12 +40,6 @@ const RoundDoing = ({
       </div>
       <RoundForm
         id={id}
-        previousData={
-          previousData?.previousTrainings?.[0]?.rounds?.[
-            training.rounds?.length ?? 0
-          ]
-        }
-        previousLoading={previousLoading}
         {...props}
       />
     </>

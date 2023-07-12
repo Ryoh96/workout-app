@@ -20,7 +20,6 @@ import ShowTrainingHistoryModal from '@/components/templates/modal/ShowTrainingH
 import type { Part, Training } from '@/graphql/generated/operations-type'
 
 type Props = {
-  previousTotalLoad: number
   removeTraining: () => void
   editTraining: () => void
   index: number
@@ -28,8 +27,7 @@ type Props = {
   training: Training
 }
 
-const ExerciseHeaderContainer = ({
-  previousTotalLoad,
+const ExerciseHeader = ({
   removeTraining,
   editTraining,
   index,
@@ -49,92 +47,10 @@ const ExerciseHeaderContainer = ({
   const [isOpenRenameExerciseModal, setIsOpenRenameExerciseModal] =
     useState(false)
   const [isOpenChangePartModal, setIsOpenChangePartModal] = useState(false)
-
-  return (
-    <>
-      <Presentational
-        training={training}
-        index={index}
-        setIsOpenChangePartModal={setIsOpenChangePartModal}
-        setIsOpenExerciseDetailModal={setIsOpenExerciseDetailModal}
-        setIsOpenExerciseMemoModal={setIsOpenExerciseMemoModal}
-        setIsOpenRenameExerciseModal={setIsOpenRenameExerciseModal}
-        setIsOpenTrainingHistoryModal={setIsOpenTrainingHistoryModal}
-        name={name}
-        part={part}
-        previousTotalLoad={previousTotalLoad}
-        removeTraining={removeTraining}
-        editTraining={editTraining}
-      />
-      <ShowMemoListModal
-        id={exerciseId}
-        isOpenExerciseMemoModal={isOpenExerciseMemoModal}
-        setIsOpenExerciseMemoModal={setIsOpenExerciseMemoModal}
-        onPinOutMemoCompleted={onCompleted}
-      />
-      <ShowExerciseDetailModal
-        id={exerciseId}
-        name={name}
-        isOpen={isOpenExerciseDetailModal}
-        setIsOpen={setIsOpenExerciseDetailModal}
-      />
-      <ShowTrainingHistoryModal
-        trainingId={trainingId}
-        isOpen={isOpenTrainingHistoryModal}
-        setIsOpen={setIsOpenTrainingHistoryModal}
-      />
-      <RenameExerciseModal
-        isOpen={isOpenRenameExerciseModal}
-        setIsOpen={setIsOpenRenameExerciseModal}
-        id={exerciseId}
-        defaultValue={{ exercise: name }}
-        onCompleted={onCompleted}
-      />
-      <ChangeExercisePartModal
-        isOpen={isOpenChangePartModal}
-        setIsOpen={setIsOpenChangePartModal}
-        exerciseId={exerciseId}
-        selected={part.id}
-        onCompleted={onCompleted}
-      />
-    </>
-  )
-}
-
-export default ExerciseHeaderContainer
-
-type PresentationalProps = {
-  training: Training
-  index: number
-  setIsOpenRenameExerciseModal: React.Dispatch<React.SetStateAction<boolean>>
-  setIsOpenChangePartModal: React.Dispatch<React.SetStateAction<boolean>>
-  setIsOpenExerciseMemoModal: React.Dispatch<React.SetStateAction<boolean>>
-  setIsOpenExerciseDetailModal: React.Dispatch<React.SetStateAction<boolean>>
-  setIsOpenTrainingHistoryModal: React.Dispatch<React.SetStateAction<boolean>>
-  name: string
-  part: Part
-  previousTotalLoad: number
-  removeTraining: () => void
-  editTraining: () => void
-}
-
-export const Presentational = ({
-  training,
-  index,
-  setIsOpenChangePartModal,
-  setIsOpenRenameExerciseModal,
-  name,
-  part,
-  previousTotalLoad,
-  setIsOpenExerciseDetailModal,
-  setIsOpenExerciseMemoModal,
-  setIsOpenTrainingHistoryModal,
-  editTraining,
-  removeTraining,
-}: PresentationalProps) => {
   const totalLoad = training.totalLoad ?? 0
 
   return (
+    <>
     <div className="flex justify-between items-start border-b-2 pb-2">
       <span className="text-lg">{index + 1}.</span>
       <div
@@ -162,7 +78,6 @@ export const Presentational = ({
             <span className="text-lg font-bold text-indigo- mr-1">
               {totalLoad}
             </span>
-            <span className="text-sm">(前回:{previousTotalLoad})</span>
           </p>
         </div>
       </div>
@@ -211,5 +126,39 @@ export const Presentational = ({
         />
       </div>
     </div>
+      <ShowMemoListModal
+        id={exerciseId}
+        isOpenExerciseMemoModal={isOpenExerciseMemoModal}
+        setIsOpenExerciseMemoModal={setIsOpenExerciseMemoModal}
+        onPinOutMemoCompleted={onCompleted}
+      />
+      <ShowExerciseDetailModal
+        id={exerciseId}
+        name={name}
+        isOpen={isOpenExerciseDetailModal}
+        setIsOpen={setIsOpenExerciseDetailModal}
+      />
+      <ShowTrainingHistoryModal
+        trainingId={trainingId}
+        isOpen={isOpenTrainingHistoryModal}
+        setIsOpen={setIsOpenTrainingHistoryModal}
+      />
+      <RenameExerciseModal
+        isOpen={isOpenRenameExerciseModal}
+        setIsOpen={setIsOpenRenameExerciseModal}
+        id={exerciseId}
+        defaultValue={{ exercise: name }}
+        onCompleted={onCompleted}
+      />
+      <ChangeExercisePartModal
+        isOpen={isOpenChangePartModal}
+        setIsOpen={setIsOpenChangePartModal}
+        exerciseId={exerciseId}
+        selected={part.id}
+        onCompleted={onCompleted}
+      />
+    </>
   )
 }
+
+export default ExerciseHeader
