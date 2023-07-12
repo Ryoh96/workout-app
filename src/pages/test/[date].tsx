@@ -48,7 +48,6 @@ const Note: NextPage<Props> = ({ date: dateString, partsOptions }) => {
   const date = useMemo(() => new Date(dateString), [dateString])
   useCurrentDate(date)
 
-  
   const {
     data: noteData,
     loading: noteDataLoading,
@@ -57,8 +56,7 @@ const Note: NextPage<Props> = ({ date: dateString, partsOptions }) => {
     variables: {
       date: new Date(date).toISOString(),
     },
-    onCompleted: (data) => {
-    },
+    onCompleted: (data) => {},
     onError: (error) => {
       if (error instanceof ManipulationError) {
         toast.error(error.message)
@@ -69,10 +67,8 @@ const Note: NextPage<Props> = ({ date: dateString, partsOptions }) => {
   })
 
   const router = useRouter()
-if (noteDataLoading) return <Spinner/>
-  return (
-<>{console.log(noteData)}</>
-  )
+  if (noteDataLoading) return <Spinner />
+  return <>{console.log(noteData)}</>
 }
 
 export default Note

@@ -47,15 +47,12 @@ const Home: NextPage = () => {
   if (loading) return <Spinner />
   return (
     <>
-                  <Button
-                onClick={() => setIsOpenCalenderModal(true)}
-                className="py-2"
-              >
-                ノートを見る
-              </Button>
+      <Button onClick={() => setIsOpenCalenderModal(true)} className="py-2">
+        ノートを見る
+      </Button>
       <>{console.log(data?.notes)}</>
-      <Section>{data?.notes?.map(note => note.date)}</Section>
-        <SelectCalendarModal
+      <Section>{data?.notes?.map((note) => note.date)}</Section>
+      <SelectCalendarModal
         isOpen={isOpenCalenderModal}
         setIsOpen={setIsOpenCalenderModal}
         setCurrentDate={setCurrentDate}

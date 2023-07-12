@@ -13,8 +13,10 @@ import { toast } from 'react-toastify'
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
 
 import Button from '@/components/atoms/Button'
+import Spinner from '@/components/atoms/Spinner'
 import Title from '@/components/atoms/Title'
 import Toast from '@/components/atoms/Toast'
+import Section from '@/components/layouts/Section'
 import DropDownWithButton from '@/components/organisms/DropDownWithButton'
 import { DeleteNoteModal } from '@/components/templates/modal/DeleteModal/DeleteNoteModal'
 import { DeleteRoundModal } from '@/components/templates/modal/DeleteModal/DeleteRoundModal'
@@ -27,7 +29,10 @@ import TrainingHeader from '@/components/templates/notes/TrainingHeader'
 import TrainingList from '@/components/templates/notes/TrainingList'
 import TrainingsDataSection from '@/components/templates/notes/TrainingsDataSection'
 import TrainingsMemoSection from '@/components/templates/notes/TrainingsMemoSection'
-import { useGetNoteQuery } from '@/graphql/generated/operations-csr'
+import {
+  useGetAllPartsNameQuery,
+  useGetNoteQuery,
+} from '@/graphql/generated/operations-csr'
 import { getSdk } from '@/graphql/generated/operations-ssg'
 import useCurrentDate from '@/hooks/common/useCurrentDate'
 import { useCreateNote } from '@/hooks/pages/editNote/useCreateNote'
@@ -40,16 +45,17 @@ import { ManipulationError } from '@/utils/errors'
 
 type Props = {
   date: string
-  partsOptions: ComboBoxOption[]
 }
 
-const Note: NextPage<Props> = ({ date: dateString, partsOptions }) => {
+const Note: NextPage<Props> = ({ date: dateString }) => {
   const date = useMemo(() => new Date(dateString), [dateString])
   useCurrentDate(date)
 
   const [noteId, setNoteId] = useRecoilState(noteIdState)
   const lastTrainingId = useRecoilValue(lastTrainingIdState)
   const setIsOpenDeleteNoteModal = useSetRecoilState(deleteNoteModalState)
+
+  const { data: partsData, loading: partsLoading } = useGetAllPartsNameQuery()
 
   const {
     data: noteData,
@@ -154,19 +160,25 @@ const Note: NextPage<Props> = ({ date: dateString, partsOptions }) => {
               </Button>
             </div>
           ) : (
-            noteData?.note?.trainings?.length !== 0 && !noteDataLoading &&(
+            noteData?.note?.trainings?.length !== 0 &&
+            !noteDataLoading && (
               <TrainingList
                 noteData={noteData}
                 onCompleted={() => refetch({ date: date.toISOString() })}
               />
             )
           )}
-          {(lastTrainingId === null ||
-            noteData?.note?.trainings?.length === 0) &&
-            noteId &&  (
+          {partsLoading ? (
+            <Section>
+              <Spinner />
+            </Section>
+          ) : (
+            (lastTrainingId === null ||
+              noteData?.note?.trainings?.length === 0) &&
+            noteId && (
               <CreateTraining
                 onCompleted={() => refetch({ date: date.toISOString() })}
-                partsOptions={partsOptions ?? []}
+                partsOptions={partsData!.parts ?? []}
                 existingTrainings={
                   new Set(
                     noteData?.note?.trainings?.map(
@@ -175,7 +187,8 @@ const Note: NextPage<Props> = ({ date: dateString, partsOptions }) => {
                   )
                 }
               />
-            )}
+            )
+          )}
         </div>
         <div className="hidden md:block md:overflow-y-auto">
           <TrainingsDataSection noteData={noteData} />
@@ -217,24 +230,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       notFound: true,
     }
   }
-
-  if (!process.env.NEXT_PUBLIC_END_POINT) {
-    throw new Error('End point not defined.')
-  }
-
-  const graphQLClient = new GraphQLClient(process.env.NEXT_PUBLIC_END_POINT)
-  const client = getSdk(graphQLClient)
-  const partsName = await client.getAllPartsName()
-
-  if (!partsName.parts) {
-    throw new Error('Parts name not found.')
-  }
-  const partsOptions = partsName.parts
-
   return {
     props: {
       date,
-      partsOptions,
     },
   }
 }
