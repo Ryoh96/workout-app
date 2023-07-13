@@ -44,6 +44,7 @@ const ShowTrainingHistoryModal = ({ trainingId, isOpen, setIsOpen }: Props) => {
                   index={index + 1}
                   title={dateFormat(new Date(training?.note.date ?? '')) ?? ''}
                   data={makeRoundsSummary(training?.rounds as Round[])}
+                  footer={{ title: '総負荷量', content: training?.totalLoad }}
                 />
               </div>
             ))}

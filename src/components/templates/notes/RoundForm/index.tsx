@@ -27,11 +27,7 @@ type Props<T extends FieldValues = UpsertRoundInput> = {
   loading: boolean
 }
 
-const RoundForm = ({
-  id,
-  loading,
-  ...props
-}: Props) => {
+const RoundForm = ({ id, loading, ...props }: Props) => {
   const {
     register,
     handleSubmit,
@@ -77,11 +73,7 @@ const RoundForm = ({
           />
         </div>
         <div>
-          <InputTime
-            label="インターバル"
-            register={register}
-            errors={errors}
-          />
+          <InputTime label="インターバル" register={register} errors={errors} />
         </div>
         <div>
           <TextAreaWithInfo

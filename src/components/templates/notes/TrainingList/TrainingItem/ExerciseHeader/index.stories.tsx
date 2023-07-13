@@ -4,7 +4,7 @@ import type { Part, Training } from '@/graphql/generated/operations-type'
 import { note } from '@/graphql/schema/queries/note/getNote/fixture'
 import { SPStory, TABStory } from '@/tests/storybook'
 
-import  Presentational  from '.'
+import Presentational from '.'
 
 const training = note.note?.trainings?.[0] as Training
 

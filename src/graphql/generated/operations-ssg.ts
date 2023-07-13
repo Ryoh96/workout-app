@@ -375,6 +375,7 @@ export const GetPreviousTrainingsDocument = gql`
   query getPreviousTrainings($id: ID!, $limit: Int!) {
     previousTrainings(id: $id, limit: $limit) {
       id
+      totalLoad
       rounds {
         id
         weight
@@ -1744,6 +1745,7 @@ export type GetPreviousTrainingsQuery = {
   previousTrainings?: Array<{
     __typename?: 'Training'
     id: string
+    totalLoad?: number | null
     rounds?: Array<{
       __typename?: 'Round'
       id: string

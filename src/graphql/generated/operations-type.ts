@@ -850,6 +850,7 @@ export type GetPreviousTrainingsQuery = {
   previousTrainings?: Array<{
     __typename?: 'Training'
     id: string
+    totalLoad?: number | null
     rounds?: Array<{
       __typename?: 'Round'
       id: string

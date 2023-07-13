@@ -51,81 +51,87 @@ const ExerciseHeader = ({
 
   return (
     <>
-    <div className="flex justify-between items-start border-b-2 pb-2">
-      <span className="text-lg">{index + 1}.</span>
-      <div
-        className={`flex flex-col  items-center sticky top-0 bg-white bg-opacity-90 `}
-        style={{ zIndex: 100 - index }}
-      >
-        <div>
-          <button
-            className=""
-            onClick={() => setIsOpenRenameExerciseModal(true)}
-          >
-            <h3 className="relative text-lg font-bold text-red-600">{name}</h3>
-          </button>
+      <div className="flex justify-between items-start border-b-2 pb-2">
+        <span className="text-lg">{index + 1}.</span>
+        <div
+          className={`flex flex-col  items-center sticky top-0 bg-white bg-opacity-90 `}
+          style={{ zIndex: 100 - index }}
+        >
+          <div>
+            <button
+              className=""
+              onClick={() => setIsOpenRenameExerciseModal(true)}
+            >
+              <h3 className="relative text-lg font-bold text-red-600">
+                {name}
+              </h3>
+            </button>
+          </div>
+          <div className="flex items-center relative w-full justify-center mb-1">
+            <button
+              key={part.name}
+              onClick={() => setIsOpenChangePartModal(true)}
+              className="mr-2"
+            >
+              <Tag className="-mt-2">{part.name}</Tag>
+            </button>
+            <p className="text-sm ">
+              総負荷量:
+              <span className="text-lg font-bold text-indigo- mr-1">
+                {totalLoad}
+              </span>
+            </p>
+          </div>
         </div>
-        <div className="flex items-center relative w-full justify-center mb-1">
-          <button
-            key={part.name}
-            onClick={() => setIsOpenChangePartModal(true)}
-            className="mr-2"
-          >
-            <Tag className="-mt-2">{part.name}</Tag>
-          </button>
-          <p className="text-sm ">
-            総負荷量:
-            <span className="text-lg font-bold text-indigo- mr-1">
-              {totalLoad}
-            </span>
-          </p>
-        </div>
-      </div>
-      <div className="z-[100]">
-        <DropDownWithButton
-          icon={<EllipsisHorizontalIcon className="text-indigo-800 w-6 h-6" />}
-          menuItems={[
-            {
-              icon: <BookmarkIcon className="text-indigo-800 w-6 h-6" />,
-              name: '固定メモを見る',
-              handleClick: () => {
-                setIsOpenExerciseMemoModal(true)
+        <div className="z-[100]">
+          <DropDownWithButton
+            icon={
+              <EllipsisHorizontalIcon className="text-indigo-800 w-6 h-6" />
+            }
+            menuItems={[
+              {
+                icon: <BookmarkIcon className="text-indigo-800 w-6 h-6" />,
+                name: '固定メモを見る',
+                handleClick: () => {
+                  setIsOpenExerciseMemoModal(true)
+                },
               },
-            },
-            {
-              icon: <MagnifyingGlassIcon className="text-indigo-800 w-6 h-6" />,
-              name: '種目詳細',
-              handleClick: () => {
-                setIsOpenExerciseDetailModal(true)
+              {
+                icon: (
+                  <MagnifyingGlassIcon className="text-indigo-800 w-6 h-6" />
+                ),
+                name: '種目詳細',
+                handleClick: () => {
+                  setIsOpenExerciseDetailModal(true)
+                },
               },
-            },
 
-            {
-              icon: (
-                <FontAwesomeIcon
-                  icon={faHistory}
-                  className="text-indigo-800 w-6 h-6"
-                />
-              ),
-              name: '種目履歴',
-              handleClick: () => {
-                setIsOpenTrainingHistoryModal(true)
+              {
+                icon: (
+                  <FontAwesomeIcon
+                    icon={faHistory}
+                    className="text-indigo-800 w-6 h-6"
+                  />
+                ),
+                name: '種目履歴',
+                handleClick: () => {
+                  setIsOpenTrainingHistoryModal(true)
+                },
               },
-            },
-            {
-              icon: <PencilSquareIcon className="text-indigo-800 w-6 h-6" />,
-              name: '編集',
-              handleClick: editTraining,
-            },
-            {
-              icon: <TrashIcon className="text-indigo-800 w-6 h-6" />,
-              name: '削除',
-              handleClick: removeTraining,
-            },
-          ]}
-        />
+              {
+                icon: <PencilSquareIcon className="text-indigo-800 w-6 h-6" />,
+                name: '編集',
+                handleClick: editTraining,
+              },
+              {
+                icon: <TrashIcon className="text-indigo-800 w-6 h-6" />,
+                name: '削除',
+                handleClick: removeTraining,
+              },
+            ]}
+          />
+        </div>
       </div>
-    </div>
       <ShowMemoListModal
         id={exerciseId}
         isOpenExerciseMemoModal={isOpenExerciseMemoModal}

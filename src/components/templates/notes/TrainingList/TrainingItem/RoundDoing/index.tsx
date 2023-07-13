@@ -22,10 +22,7 @@ type Props<T extends FieldValues = UpsertRoundInput> = {
   handleCancel?: () => void
   loading: boolean
 }
-const RoundDoing = ({
-  training,
-  ...props
-}: Props) => {
+const RoundDoing = ({ training, ...props }: Props) => {
   const id = useId()
   return (
     <>
@@ -38,10 +35,7 @@ const RoundDoing = ({
       <div className="flex text-sm justify-end">
         <span>作成：{timeFormat(new Date(training.createdAt))}</span>
       </div>
-      <RoundForm
-        id={id}
-        {...props}
-      />
+      <RoundForm id={id} {...props} />
     </>
   )
 }
