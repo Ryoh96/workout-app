@@ -21,7 +21,7 @@ export const previousTrainings:
   if (!currentUser) {
     throw new ManipulationError('ユーザーがログインしていません。')
   }
-  const data = await prisma.training.findUnique({
+  const data = await prisma.training.findFirst({
     where: { id },
     include: { note: true },
   })

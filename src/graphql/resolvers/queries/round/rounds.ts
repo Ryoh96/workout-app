@@ -22,7 +22,7 @@ export const rounds:
     throw new ManipulationError('ユーザーがログインしていません。')
   }
 
-  const training = await prisma.training.findUnique({
+  const training = await prisma.training.findFirst({
     where: {
       id: trainingId,
     },

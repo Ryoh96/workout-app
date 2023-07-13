@@ -13,7 +13,6 @@ const userIconMenuProps = {
 
 const Header = () => {
   const { data: session, status } = useSession()
-  console.log(session)
   return (
     <>
       <header className="bg-gradient-to-r from-orange-600 to-rose-600 text-white text-2xl h-12 grid items-center ">
