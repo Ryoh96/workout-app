@@ -69,8 +69,8 @@ const IconMenuButton = (props: Props) => {
               {({ active }) => (
                 <div
                   className={`${
-                    active && 'bg-orange-500 text-white'
-                  } group flex w-full items-center rounded-md px-2 py-2 text-sm ring-1 ring-black ring-opacity-5 focus:outline-none`}
+                    active && 'bg-indigo-100 '
+                  } group flex w-full items-center rounded-md px-2 py-2 text-sm ring-1 ring-black ring-opacity-5 focus:outline-none cursor-pointer`}
                   onClick={() => item.onClick?.()}
                 >
                   {

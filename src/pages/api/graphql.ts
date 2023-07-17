@@ -1,7 +1,4 @@
-import { GraphQLFileLoader } from '@graphql-tools/graphql-file-loader'
-import { loadSchemaSync } from '@graphql-tools/load'
-import { addResolversToSchema } from '@graphql-tools/schema'
-import { ApolloServer, gql } from 'apollo-server-micro'
+import { ApolloServer } from 'apollo-server-micro'
 import Cors from 'micro-cors'
 
 import { createContext } from '@/graphql/context'
@@ -9,10 +6,6 @@ import { typeDefs } from '@/graphql/generated/typeDefs'
 import { resolvers } from '@/graphql/resolvers'
 
 const cors = Cors()
-
-// const schema = loadSchemaSync('../../graphql/generated/schema.graphql', {
-//   loaders: [new GraphQLFileLoader()],
-// })
 
 const apolloServer = new ApolloServer({
   typeDefs,

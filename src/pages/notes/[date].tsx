@@ -5,9 +5,9 @@ import {
   TrashIcon,
 } from '@heroicons/react/24/solid'
 import { format } from 'date-fns'
-import { GraphQLClient } from 'graphql-request'
 import type { GetServerSideProps, NextPage } from 'next'
 import { useRouter } from 'next/router'
+import { useSession } from 'next-auth/react'
 import React, { useMemo } from 'react'
 import { toast } from 'react-toastify'
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
@@ -48,6 +48,8 @@ type Props = {
 }
 
 const Note: NextPage<Props> = ({ date: dateString }) => {
+  const { status } = useSession()
+
   const date = useMemo(() => new Date(dateString), [dateString])
   useCurrentDate(date)
 
@@ -154,7 +156,9 @@ const Note: NextPage<Props> = ({ date: dateString }) => {
                     console.error(error)
                   }
                 }}
-                loading={noteDataLoading || createNoteLoading}
+                loading={
+                  noteDataLoading || createNoteLoading || status === 'loading'
+                }
               >
                 ノートを作成
               </Button>

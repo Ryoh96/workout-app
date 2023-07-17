@@ -1,4 +1,5 @@
 import { PencilIcon } from '@heroicons/react/24/solid'
+import { useSession } from 'next-auth/react'
 import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import { useRecoilValue } from 'recoil'
@@ -13,6 +14,7 @@ import { noteIdState } from '@/recoil/Note/noteId'
 import { ManipulationError } from '@/utils/errors'
 
 const TrainingsMemoSection = () => {
+  const { status } = useSession()
   const noteId = useRecoilValue(noteIdState)
 
   const [defaultMemoValue, setDefaultMemoValue] = useState<string | undefined>(
@@ -63,6 +65,8 @@ const TrainingsMemoSection = () => {
               setIsOpenEditMemoModal(false)
             }
           }}
+          loading={status === 'loading'}
+          disabled={noteId === null}
         >
           新規作成
         </Button>

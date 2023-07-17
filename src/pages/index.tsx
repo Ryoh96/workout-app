@@ -9,8 +9,8 @@ import { format, isSameDay, subDays } from 'date-fns'
 import type { NextPage } from 'next'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useEffect, useMemo, useState } from 'react'
-import { toast } from 'react-toastify'
+import { useSession } from 'next-auth/react'
+import { useMemo, useState } from 'react'
 import { useRecoilState } from 'recoil'
 
 import Button from '@/components/atoms/Button'
@@ -29,6 +29,8 @@ import { dateFormat } from '@/utils/dateFormat'
 import makeRoundsSummary from '@/utils/makeRoundsSummary'
 
 const Home: NextPage = () => {
+  const { status } = useSession()
+
   const today = useMemo(() => new Date(), [])
   const thirtyDaysAgo = subDays(new Date(today), 30)
 
@@ -73,10 +75,6 @@ const Home: NextPage = () => {
     }
   })
 
-  const hasNote = (day: string) => {
-    return isSameDay(new Date(), new Date(day))
-  }
-
   const [isOpenCalenderModal, setIsOpenCalenderModal] = useState(false)
 
   const [currentDate, setCurrentDate] = useRecoilState(currentDateState)
@@ -95,11 +93,14 @@ const Home: NextPage = () => {
 
             <div className="flex gap-2 justify-center mt-3">
               <Link href={`/notes/${format(new Date(), 'yyyy-MM-dd')}`}>
-                <Button variant="important">ノートの追加</Button>
+                <Button variant="important" loading={status === 'loading'}>
+                  ノートの追加
+                </Button>
               </Link>
               <Button
                 onClick={() => setIsOpenCalenderModal(true)}
                 className="py-2"
+                loading={status === 'loading'}
               >
                 ノートを見る
               </Button>
@@ -113,8 +114,12 @@ const Home: NextPage = () => {
               種目管理
             </TitleWithIcon>
             <p className="pb-2 text-sm">登録した種目のデータを見る</p>
+
             <div className="flex gap-2 justify-center mt-3">
-              <Button onClick={() => router.push('/exercises')}>
+              <Button
+                onClick={() => router.push('/exercises')}
+                loading={status === 'loading'}
+              >
                 種目一覧へ
               </Button>
             </div>
@@ -124,7 +129,7 @@ const Home: NextPage = () => {
           <TitleWithIcon as="h2" icon={<FontAwesomeIcon icon={faHistory} />}>
             最近の記録
           </TitleWithIcon>
-          {loading ? (
+          {status === 'authenticated' && loading ? (
             <Spinner />
           ) : normalizedData ? (
             <AccordionList items={normalizedData} />
