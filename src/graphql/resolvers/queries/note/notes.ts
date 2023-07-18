@@ -29,7 +29,7 @@ export const notes:
     })
     .notes({
       where: {
-        createdAt: {
+        date: {
           gte: since ?? undefined,
           lte: until ?? undefined,
         },

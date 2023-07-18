@@ -82,9 +82,7 @@ const Exercises: NextPage<Props> = ({}) => {
         </div>
       </div>
       <div className="md:flex gap-3">
-        {!parts ? (
-          <Spinner />
-        ) : (
+   
           <Section className="w-full ">
             <div className="flex items-center gap-5 relative">
               <div className="flex items-center gap-1">
@@ -94,6 +92,7 @@ const Exercises: NextPage<Props> = ({}) => {
                 />
                 <p className="whitespace-nowrap">部位を選択:</p>
               </div>
+                {!parts ? <Spinner/> : <>
               <div className="w-full flex items-center gap-2">
                 <SelectBoxWithLabel
                   label="部位"
@@ -128,10 +127,10 @@ const Exercises: NextPage<Props> = ({}) => {
                     },
                   ]}
                 />
-              </div>
+              </div> </>}
             </div>
           </Section>
-        )}
+        
       </div>
       <Section>
         <div className="mb-4 relative">
