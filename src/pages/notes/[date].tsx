@@ -5,7 +5,7 @@ import {
   TrashIcon,
 } from '@heroicons/react/24/solid'
 import { format } from 'date-fns'
-import type { GetServerSideProps, NextPage } from 'next'
+import type {  NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
 import React, { useMemo } from 'react'
@@ -13,7 +13,6 @@ import { toast } from 'react-toastify'
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
 
 import Button from '@/components/atoms/Button'
-import Spinner from '@/components/atoms/Spinner'
 import Title from '@/components/atoms/Title'
 import Toast from '@/components/atoms/Toast'
 import Section from '@/components/layouts/Section'
@@ -33,24 +32,24 @@ import {
   useGetAllPartsNameQuery,
   useGetNoteQuery,
 } from '@/graphql/generated/operations-csr'
-import { getSdk } from '@/graphql/generated/operations-ssg'
 import useCurrentDate from '@/hooks/common/useCurrentDate'
 import { useCreateNote } from '@/hooks/pages/editNote/useCreateNote'
 import { deleteNoteModalState } from '@/recoil/Modal/DeleteNoteModal'
 import { noteIdState } from '@/recoil/Note/noteId'
 import { lastTrainingIdState } from '@/recoil/Training/lastTrainingId'
-import type { ComboBoxOption } from '@/types'
 import { datetimeFormat } from '@/utils/dateFormat'
 import { ManipulationError } from '@/utils/errors'
 
-type Props = {
-  date: string
-}
-
-const Note: NextPage<Props> = ({ date: dateString }) => {
+const Note: NextPage = () => {
+  const router = useRouter()
   const { status } = useSession()
 
-  const date = useMemo(() => new Date(dateString), [dateString])
+  const date = useMemo(() => new Date(router.query.date as string), [])
+  const dateString = `${router.query.date}`
+  const regex = /^\d{4}-\d{2}-\d{2}$/
+  const isValidFormat = regex.test(dateString)
+
+
   useCurrentDate(date)
 
   const [noteId, setNoteId] = useRecoilState(noteIdState)
@@ -58,6 +57,7 @@ const Note: NextPage<Props> = ({ date: dateString }) => {
   const setIsOpenDeleteNoteModal = useSetRecoilState(deleteNoteModalState)
 
   const { data: partsData, loading: partsLoading } = useGetAllPartsNameQuery()
+
 
   const {
     data: noteData,
@@ -82,7 +82,11 @@ const Note: NextPage<Props> = ({ date: dateString }) => {
   const { handleCreateNote, createNoteLoading } = useCreateNote(setNoteId, () =>
     refetch({ date: date.toISOString() })
   )
-  const router = useRouter()
+
+  if (!isValidFormat) {
+    return <Section>ページが存在しません</Section>
+  }
+
 
   return (
     <>
@@ -216,22 +220,3 @@ const Note: NextPage<Props> = ({ date: dateString }) => {
 }
 
 export default Note
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { date } = context.query
-
-  const dateString = `${date}`
-  const regex = /^\d{4}-\d{2}-\d{2}$/
-  const isValidFormat = regex.test(dateString)
-
-  if (!isValidFormat) {
-    return {
-      notFound: true,
-    }
-  }
-  return {
-    props: {
-      date,
-    },
-  }
-}
