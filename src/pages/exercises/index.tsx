@@ -82,55 +82,58 @@ const Exercises: NextPage<Props> = ({}) => {
         </div>
       </div>
       <div className="md:flex gap-3">
-   
-          <Section className="w-full ">
-            <div className="flex items-center gap-5 relative">
-              <div className="flex items-center gap-1">
-                <FontAwesomeIcon
-                  icon={faChild}
-                  className="w-6 h-6 text-indigo-700"
-                />
-                <p className="whitespace-nowrap">部位を選択:</p>
-              </div>
-                {!parts ? <Spinner/> : <>
-              <div className="w-full flex items-center gap-2">
-                <SelectBoxWithLabel
-                  label="部位"
-                  options={partsOptions.map((option) => ({
-                    name: option.name,
-                    value: `${option.id}`,
-                  }))}
-                  variant="large"
-                  labelVisible={false}
-                  defaultValue={parts.name}
-                  value={parts.id}
-                  handleChange={(id) => handleChange(id)}
-                />
-              </div>
-              <div className="z-50">
-                <DropDownWithButton
-                  icon={
-                    <EllipsisHorizontalIcon className="text-indigo-800 w-6 h-6" />
-                  }
-                  menuItems={[
-                    {
-                      icon: (
-                        <MagnifyingGlassIcon className="text-indigo-800 w-6 h-6" />
-                      ),
-                      name: 'この部位のデータ',
-                      handleClick: () => router.push(`/parts/${parts.id}`),
-                    },
-                    {
-                      icon: <PlusIcon className="text-indigo-800 w-6 h-6" />,
-                      name: '種目の追加',
-                      handleClick: () => setIsOpenAddExerciseModal(true),
-                    },
-                  ]}
-                />
-              </div> </>}
+        <Section className="w-full ">
+          <div className="flex items-center gap-5 relative">
+            <div className="flex items-center gap-1">
+              <FontAwesomeIcon
+                icon={faChild}
+                className="w-6 h-6 text-indigo-700"
+              />
+              <p className="whitespace-nowrap">部位を選択:</p>
             </div>
-          </Section>
-        
+            {!parts ? (
+              <Spinner />
+            ) : (
+              <>
+                <div className="w-full flex items-center gap-2">
+                  <SelectBoxWithLabel
+                    label="部位"
+                    options={partsOptions.map((option) => ({
+                      name: option.name,
+                      value: `${option.id}`,
+                    }))}
+                    variant="large"
+                    labelVisible={false}
+                    defaultValue={parts.name}
+                    value={parts.id}
+                    handleChange={(id) => handleChange(id)}
+                  />
+                </div>
+                <div className="z-50">
+                  <DropDownWithButton
+                    icon={
+                      <EllipsisHorizontalIcon className="text-indigo-800 w-6 h-6" />
+                    }
+                    menuItems={[
+                      {
+                        icon: (
+                          <MagnifyingGlassIcon className="text-indigo-800 w-6 h-6" />
+                        ),
+                        name: 'この部位のデータ',
+                        handleClick: () => router.push(`/parts/${parts.id}`),
+                      },
+                      {
+                        icon: <PlusIcon className="text-indigo-800 w-6 h-6" />,
+                        name: '種目の追加',
+                        handleClick: () => setIsOpenAddExerciseModal(true),
+                      },
+                    ]}
+                  />
+                </div>{' '}
+              </>
+            )}
+          </div>
+        </Section>
       </div>
       <Section>
         <div className="mb-4 relative">

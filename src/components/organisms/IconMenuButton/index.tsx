@@ -36,12 +36,6 @@ const IconMenuButton = (props: Props) => {
       onClick: () => router.push('/exercises'),
       icon: <FontAwesomeIcon icon={faDumbbell} className="w-6 h-6" />,
     },
-
-    {
-      name: 'マイページ',
-      link: '/',
-      icon: <UserIcon />,
-    },
     {
       name: 'ログアウト',
       icon: <ArrowLeftOnRectangleIcon />,

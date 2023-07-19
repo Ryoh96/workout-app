@@ -5,7 +5,7 @@ import {
   TrashIcon,
 } from '@heroicons/react/24/solid'
 import { format } from 'date-fns'
-import type {  NextPage } from 'next'
+import type { GetServerSideProps, NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
 import React, { useMemo } from 'react'
@@ -13,6 +13,7 @@ import { toast } from 'react-toastify'
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
 
 import Button from '@/components/atoms/Button'
+import Spinner from '@/components/atoms/Spinner'
 import Title from '@/components/atoms/Title'
 import Toast from '@/components/atoms/Toast'
 import Section from '@/components/layouts/Section'
@@ -32,24 +33,24 @@ import {
   useGetAllPartsNameQuery,
   useGetNoteQuery,
 } from '@/graphql/generated/operations-csr'
+import { getSdk } from '@/graphql/generated/operations-ssg'
 import useCurrentDate from '@/hooks/common/useCurrentDate'
 import { useCreateNote } from '@/hooks/pages/editNote/useCreateNote'
 import { deleteNoteModalState } from '@/recoil/Modal/DeleteNoteModal'
 import { noteIdState } from '@/recoil/Note/noteId'
 import { lastTrainingIdState } from '@/recoil/Training/lastTrainingId'
+import type { ComboBoxOption } from '@/types'
 import { datetimeFormat } from '@/utils/dateFormat'
 import { ManipulationError } from '@/utils/errors'
 
-const Note: NextPage = () => {
-  const router = useRouter()
+type Props = {
+  date: string
+}
+
+const Note: NextPage<Props> = ({ date: dateString }) => {
   const { status } = useSession()
 
-  const date = useMemo(() => new Date(router.query.date as string), [router.query.date])
-  const dateString = `${router.query.date}`
-  const regex = /^\d{4}-\d{2}-\d{2}$/
-  const isValidFormat = regex.test(dateString)
-
-
+  const date = useMemo(() => new Date(dateString), [dateString])
   useCurrentDate(date)
 
   const [noteId, setNoteId] = useRecoilState(noteIdState)
@@ -57,7 +58,6 @@ const Note: NextPage = () => {
   const setIsOpenDeleteNoteModal = useSetRecoilState(deleteNoteModalState)
 
   const { data: partsData, loading: partsLoading } = useGetAllPartsNameQuery()
-
 
   const {
     data: noteData,
@@ -82,11 +82,7 @@ const Note: NextPage = () => {
   const { handleCreateNote, createNoteLoading } = useCreateNote(setNoteId, () =>
     refetch({ date: date.toISOString() })
   )
-
-  if (!isValidFormat) {
-    return <Section>ページが存在しません</Section>
-  }
-
+  const router = useRouter()
 
   return (
     <>
@@ -122,6 +118,40 @@ const Note: NextPage = () => {
         </div>
       </div>
       <TrainingHeader />
+      {!noteId && (
+        <div className="w-full flex justify-center items-start">
+          <Button
+            variant="important"
+            onClick={async () => {
+              try {
+                await toast.promise(
+                  handleCreateNote(),
+                  {
+                    error: {
+                      render({ data }) {
+                        //@ts-ignore
+                        return `${data.message}`
+                      },
+                    },
+                    success: 'ノート作成完了',
+                    pending: 'ノート作成中',
+                  },
+                  {
+                    autoClose: 3000,
+                  }
+                )
+              } catch (error) {
+                console.error(error)
+              }
+            }}
+            loading={
+              noteDataLoading || createNoteLoading || status === 'loading'
+            }
+          >
+            ノートを作成
+          </Button>
+        </div>
+      )}
       <div className="grid md:grid-cols-2 gap-x-2 md:h-screen">
         <div className="md:overflow-y-auto">
           {noteData?.note && (
@@ -134,48 +164,14 @@ const Note: NextPage = () => {
               )}
             />
           )}
-          {!noteId ? (
-            <div className="flex justify-center">
-              <Button
-                variant="important"
-                onClick={async () => {
-                  try {
-                    await toast.promise(
-                      handleCreateNote(),
-                      {
-                        error: {
-                          render({ data }) {
-                            //@ts-ignore
-                            return `${data.message}`
-                          },
-                        },
-                        success: 'ノート作成完了',
-                        pending: 'ノート作成中',
-                      },
-                      {
-                        autoClose: 3000,
-                      }
-                    )
-                  } catch (error) {
-                    console.error(error)
-                  }
-                }}
-                loading={
-                  noteDataLoading || createNoteLoading || status === 'loading'
-                }
-              >
-                ノートを作成
-              </Button>
-            </div>
-          ) : (
+          {noteId &&
             noteData?.note?.trainings?.length !== 0 &&
             !noteDataLoading && (
               <TrainingList
                 noteData={noteData}
                 onCompleted={() => refetch({ date: date.toISOString() })}
               />
-            )
-          )}
+            )}
           {!partsLoading &&
             (lastTrainingId === null ||
               noteData?.note?.trainings?.length === 0) &&
@@ -193,10 +189,13 @@ const Note: NextPage = () => {
               />
             )}
         </div>
-        <div className="hidden md:block md:overflow-y-auto">
-          <TrainingsDataSection noteData={noteData} />
-          <TrainingsMemoSection />
-        </div>
+
+        {noteId && (
+          <div className="hidden md:block md:overflow-y-auto">
+            <TrainingsDataSection noteData={noteData} />
+            <TrainingsMemoSection />
+          </div>
+        )}
       </div>
       <TrainingFooter noteData={noteData} className="md:hidden" />
       <EditRoundModal
@@ -214,9 +213,29 @@ const Note: NextPage = () => {
           refetch()
         }}
       />
+
       <Toast />
     </>
   )
 }
 
 export default Note
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { date } = context.query
+
+  const dateString = `${date}`
+  const regex = /^\d{4}-\d{2}-\d{2}$/
+  const isValidFormat = regex.test(dateString)
+
+  if (!isValidFormat) {
+    return {
+      notFound: true,
+    }
+  }
+  return {
+    props: {
+      date,
+    },
+  }
+}

@@ -19,7 +19,11 @@ export const addExerciseByPart:
     >
   | undefined = async (_, { name, partId }, { prisma, currentUser }) => {
   if (!currentUser) {
-    throw new ManipulationError('ユーザがログインしていません。')
+    throw new ManipulationError('ユーザがログインしていません')
+  }
+
+  if (name.length === 0) {
+    throw new ManipulationError("文字を入力して下さい")
   }
 
   // 同じ名前のExerciseが存在するかチェック
@@ -28,7 +32,7 @@ export const addExerciseByPart:
   })
 
   if (existingExercise) {
-    throw new Error('既に同じ名前の種目が登録されています。')
+    throw new ManipulationError('既に同じ名前の種目が登録されています')
   }
 
   // 指定された部位が存在するかチェック
@@ -37,7 +41,7 @@ export const addExerciseByPart:
   })
 
   if (!existingPart) {
-    throw new ManipulationError('そのような部位は存在しません。')
+    throw new ManipulationError('そのような部位は存在しません')
   }
 
   const exercise = await prisma.exercise.create({

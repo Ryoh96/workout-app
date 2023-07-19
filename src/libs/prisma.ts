@@ -13,5 +13,5 @@ export const prisma =
 
 if (process.env.NODE_ENV !== 'production') {
   global.prisma = prisma
-  await global.prisma.$connect()
+  // await global.prisma.$connect()
 }
