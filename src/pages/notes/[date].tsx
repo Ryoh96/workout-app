@@ -44,7 +44,7 @@ const Note: NextPage = () => {
   const router = useRouter()
   const { status } = useSession()
 
-  const date = useMemo(() => new Date(router.query.date as string), [])
+  const date = useMemo(() => new Date(router.query.date as string), [router.query.date])
   const dateString = `${router.query.date}`
   const regex = /^\d{4}-\d{2}-\d{2}$/
   const isValidFormat = regex.test(dateString)
