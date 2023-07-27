@@ -1,6 +1,5 @@
 import { ApolloProvider } from '@apollo/client'
 import type { Meta, StoryObj } from '@storybook/react'
-import { RecoilRoot } from 'recoil'
 
 import { handleGetTotalLoadByNote } from '@/graphql/schema/queries/note/getTotalLoadByNote/msw'
 import { allPartsName } from '@/graphql/schema/queries/part/getAllPartsName/fixture'
@@ -17,11 +16,7 @@ export default {
     parts: parts?.[0],
   },
   decorators: [
-    (story) => (
-      <RecoilRoot>
-        <ApolloProvider client={client}>{story()}</ApolloProvider>
-      </RecoilRoot>
-    ),
+    (story) => <ApolloProvider client={client}>{story()}</ApolloProvider>,
   ],
   parameters: {
     msw: {

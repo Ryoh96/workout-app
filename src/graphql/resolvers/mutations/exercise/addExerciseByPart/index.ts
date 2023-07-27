@@ -23,7 +23,7 @@ export const addExerciseByPart:
   }
 
   if (name.length === 0) {
-    throw new ManipulationError("文字を入力して下さい")
+    throw new ManipulationError('文字を入力して下さい')
   }
 
   // 同じ名前のExerciseが存在するかチェック

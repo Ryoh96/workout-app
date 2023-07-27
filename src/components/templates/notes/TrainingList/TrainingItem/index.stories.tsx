@@ -1,13 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import type { ComponentProps } from 'react'
-import { RecoilRoot, useSetRecoilState } from 'recoil'
 
 import { note } from '@/graphql/schema/queries/note/getNote/fixture'
 import { previousTrainings } from '@/graphql/schema/queries/training/getPreviousTrainings/fixture'
-import { currentDateState } from '@/recoil/currentDate/states'
-import { isEditingState } from '@/recoil/Note/isEditing'
-import { editedTrainingIdState } from '@/recoil/Training/editedTrainingId'
-import { lastTrainingIdState } from '@/recoil/Training/lastTrainingId'
+import useIsEditingStore from '@/store/note/isEditing'
+import useEditedTrainingIdStore from '@/store/training/editedTrainingId'
+import useLastTrainingIdStore from '@/store/training/lastTrainingId'
 import { SPStory } from '@/tests/storybook'
 
 import TrainingItem from '.'
@@ -23,9 +21,13 @@ const training = trainings?.[0]
 const previousData = previousTrainings
 
 const Component = (props: Props) => {
-  const setEditedTrainingId = useSetRecoilState(editedTrainingIdState)
-  const setLastTrainingId = useSetRecoilState(lastTrainingIdState)
-  const setIsEditing = useSetRecoilState(isEditingState)
+  const setEditedTrainingId = useEditedTrainingIdStore(
+    (state) => state.setEditedTrainingId
+  )
+  const setLastTrainingId = useLastTrainingIdStore(
+    (state) => state.setLastTrainingId
+  )
+  const setIsEditing = useIsEditingStore((state) => state.setIsEditing)
 
   setEditedTrainingId(props.trainingId)
   setLastTrainingId(props.lastTrainingId)
@@ -48,7 +50,6 @@ export default {
     lastTrainingId: trainings?.at(-1)?.id,
     isEditing: true,
   },
-  decorators: [(story) => <RecoilRoot>{story()}</RecoilRoot>],
 } as Meta<typeof Component>
 
 type Story = StoryObj<typeof Component>

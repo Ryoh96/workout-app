@@ -1,8 +1,6 @@
-import { useRecoilState } from 'recoil'
-
 import { useRemoveTrainingMutation } from '@/graphql/generated/operations-csr'
-import { deleteTrainingModalState } from '@/recoil/Modal/DeleteTrainingModal'
-import { deleteTrainingIdState } from '@/recoil/Training/deleteTrainingId'
+import useDeleteTrainingModalStore from '@/store/modal/deleteTrainingModal'
+import useDeleteTrainingIdStore from '@/store/training/deleteTrainingId'
 
 import DeleteModal from '..'
 
@@ -14,8 +12,15 @@ export const DeleteTrainingModal = ({ onDeleteCompleted }: Props) => {
   const [removeTrainingMutation] = useRemoveTrainingMutation({
     onCompleted: onDeleteCompleted,
   })
-  const [isOpen, setIsOpen] = useRecoilState(deleteTrainingModalState)
-  const [deleteId, setDeleteId] = useRecoilState(deleteTrainingIdState)
+  const { isOpen, setIsOpen } = useDeleteTrainingModalStore((state) => ({
+    isOpen: state.isOpen,
+    setIsOpen: state.setIsOpen,
+  }))
+
+  const { deleteId, setDeleteId } = useDeleteTrainingIdStore((state) => ({
+    deleteId: state.deleteId,
+    setDeleteId: state.setDeleteId,
+  }))
   return (
     <>
       {deleteId && (

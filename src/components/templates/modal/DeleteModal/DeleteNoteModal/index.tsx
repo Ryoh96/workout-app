@@ -1,9 +1,8 @@
 import { toast } from 'react-toastify'
-import { useRecoilState, useRecoilValue } from 'recoil'
 
 import { useDeleteNoteMutation } from '@/graphql/generated/operations-csr'
-import { deleteNoteModalState } from '@/recoil/Modal/DeleteNoteModal'
-import { noteIdState } from '@/recoil/Note/noteId'
+import useDeleteNoteModalStore from '@/store/modal/deleteNoteModal'
+import useNoteIdStore from '@/store/note/noteId'
 import { ManipulationError } from '@/utils/errors'
 
 import DeleteModal from '..'
@@ -16,8 +15,14 @@ export const DeleteNoteModal = ({ onDeleteCompleted }: Props) => {
   const [deleteNoteMutation] = useDeleteNoteMutation({
     onCompleted: onDeleteCompleted,
   })
-  const [isOpen, setIsOpen] = useRecoilState(deleteNoteModalState)
-  const [id, setId] = useRecoilState(noteIdState)
+  const { isOpen, setIsOpen } = useDeleteNoteModalStore((state) => ({
+    isOpen: state.isOpen,
+    setIsOpen: state.setIsOpen,
+  }))
+  const { noteId: id, setNoteId: setId } = useNoteIdStore((state) => ({
+    noteId: state.noteId,
+    setNoteId: state.setNoteId,
+  }))
 
   return (
     <DeleteModal

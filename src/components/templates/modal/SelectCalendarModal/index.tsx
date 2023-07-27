@@ -10,7 +10,7 @@ import { ManipulationError } from '@/utils/errors'
 type Props = {
   isOpen: boolean
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>
-  setCurrentDate: React.Dispatch<React.SetStateAction<Date>>
+  setCurrentDate: (payload: Date) => void
   handleChange?: (date?: Date) => Promise<any>
 }
 

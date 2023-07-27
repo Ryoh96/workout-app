@@ -1,6 +1,5 @@
 import { ApolloProvider } from '@apollo/client'
 import type { Meta, StoryObj } from '@storybook/react'
-import { RecoilRoot } from 'recoil'
 
 import { handleAddExercisesByPart } from '@/graphql/schema/mutations/exercise/addExerciseByPart/msw'
 import { note } from '@/graphql/schema/queries/note/getNote/fixture'
@@ -18,11 +17,7 @@ export default {
     noteData,
   },
   decorators: [
-    (story) => (
-      <RecoilRoot>
-        <ApolloProvider client={client}>{story()}</ApolloProvider>
-      </RecoilRoot>
-    ),
+    (story) => <ApolloProvider client={client}>{story()}</ApolloProvider>,
   ],
   parameters: {
     msw: {

@@ -1,12 +1,11 @@
 import { PencilSquareIcon, TrashIcon } from '@heroicons/react/24/solid'
 import { useState } from 'react'
-import { useRecoilValue, useSetRecoilState } from 'recoil'
 
 import Spinner from '@/components/atoms/Spinner'
 import { DeleteMemoAtNoteModal } from '@/components/templates/modal/DeleteModal/DeleteMemoAtNoteModal'
 import type { GetNoteMemoQuery } from '@/graphql/generated/operations-csr'
-import { deleteMemoAtNoteModalState } from '@/recoil/Modal/DeleteMemoAtNoteModal'
-import { noteIdState } from '@/recoil/Note/noteId'
+import useDeleteMemoModalStore from '@/store/modal/deleteMemoModal'
+import useNoteIdStore from '@/store/note/noteId'
 
 type Props = {
   data: GetNoteMemoQuery | undefined
@@ -24,7 +23,7 @@ const ShowMemosContainer = ({
   ...props
 }: Props) => {
   const [deleteMemoIndex, setDeleteMemoIndex] = useState(0)
-  const noteId = useRecoilValue(noteIdState)
+  const noteId = useNoteIdStore((state) => state.noteId)
 
   return (
     <>
@@ -57,7 +56,9 @@ export const Presentational = ({
   setIsOpenCreateMemoModal,
   setDeleteMemoIndex,
 }: PresentationalProps) => {
-  const setIsOpenDeleteMemoModal = useSetRecoilState(deleteMemoAtNoteModalState)
+  const setIsOpenDeleteMemoModal = useDeleteMemoModalStore(
+    (state) => state.setIsOpen
+  )
   return (
     <>
       {loading ? (

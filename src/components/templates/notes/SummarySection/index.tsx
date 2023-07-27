@@ -1,7 +1,6 @@
 import { faCalculator } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { ClockIcon } from '@heroicons/react/24/solid'
-import { useRecoilState } from 'recoil'
 
 import Tag from '@/components/atoms/Tag'
 import Section from '@/components/layouts/Section'
@@ -10,7 +9,7 @@ import type {
   GetNoteQuery,
   Training,
 } from '@/graphql/generated/operations-type'
-import { noteIdState } from '@/recoil/Note/noteId'
+import useNoteIdStore from '@/store/note/noteId'
 import createTrainingSummary from '@/utils/notes/createTrainingSummary'
 
 type Props = {
@@ -20,7 +19,7 @@ type Props = {
 }
 
 const SummarySection = ({ noteData, className, datetime }: Props) => {
-  const [noteId, setNoteId] = useRecoilState(noteIdState)
+  const noteId = useNoteIdStore((state) => state.noteId)
   const summaries = createTrainingSummary(
     (noteData?.note?.trainings ?? []) as Training[]
   )

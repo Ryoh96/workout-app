@@ -1,10 +1,9 @@
 import { useEffect } from 'react'
-import { useSetRecoilState } from 'recoil'
 
-import { currentDateState } from '@/recoil/currentDate'
+import useCurrentDateStore from '@/store/date/currentDate'
 
 const useCurrentDate = (date: Date) => {
-  const setCurrentDate = useSetRecoilState(currentDateState)
+  const setCurrentDate = useCurrentDateStore((state) => state.setCurrentDate)
 
   useEffect(() => {
     setCurrentDate(new Date(date))

@@ -1,7 +1,5 @@
-import { useRecoilState } from 'recoil'
-
 import { useDeleteExerciseMutation } from '@/graphql/generated/operations-csr'
-import { deleteExerciseModalState } from '@/recoil/Modal/DeleteExerciseModal'
+import useDeleteExerciseModalStore from '@/store/modal/deleteExerciseModal'
 
 import DeleteModal from '..'
 
@@ -15,7 +13,10 @@ const DeleteExerciseModal = ({ onCompleted, deleteId }: Props) => {
     onCompleted,
   })
 
-  const [isOpen, setIsOpen] = useRecoilState(deleteExerciseModalState)
+  const { isOpen, setIsOpen } = useDeleteExerciseModalStore((state) => ({
+    isOpen: state.isOpen,
+    setIsOpen: state.setIsOpen,
+  }))
   return (
     <DeleteModal
       title="種目"

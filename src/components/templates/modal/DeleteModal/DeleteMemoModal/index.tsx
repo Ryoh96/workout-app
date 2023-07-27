@@ -1,7 +1,4 @@
-import { useRecoilState } from 'recoil'
-
 import { useDeleteMemoMutation } from '@/graphql/generated/operations-csr'
-import { deleteMemoModalState } from '@/recoil/Modal/DeleteMemoModal'
 
 import DeleteModal from '..'
 

@@ -1,8 +1,6 @@
 import { ApolloProvider } from '@apollo/client'
 import type { Meta, StoryObj } from '@storybook/react'
 import type { ComponentProps } from 'react'
-import { useState } from 'react'
-import { RecoilRoot, useSetRecoilState } from 'recoil'
 
 import Button from '@/components/atoms/Button'
 import Toast from '@/components/atoms/Toast'
@@ -10,17 +8,15 @@ import type { Exercise } from '@/graphql/generated/operations-type'
 import { handleDeleteExercise } from '@/graphql/schema/mutations/exercise/deleteExercise/msw'
 import { note } from '@/graphql/schema/queries/note/getNote/fixture'
 import { client } from '@/pages/_app'
-import { deleteExerciseModalState } from '@/recoil/Modal/DeleteExerciseModal'
+import useDeleteExerciseModalStore from '@/store/modal/deleteExerciseModal'
 import { SPStory } from '@/tests/storybook'
 
 import DeleteExerciseModal from '.'
 
 type Props = ComponentProps<typeof DeleteExerciseModal> & { isOpen: boolean }
 
-const exercise = note.note?.trainings?.[0].exercise as Exercise
-
 const TestComponent = (props: Props) => {
-  const setIsOpen = useSetRecoilState(deleteExerciseModalState)
+  const setIsOpen = useDeleteExerciseModalStore((state) => state.setIsOpen)
   const openModal = () => setIsOpen(true)
 
   return (
@@ -47,11 +43,7 @@ export default {
     ...SPStory,
   },
   decorators: [
-    (story) => (
-      <RecoilRoot>
-        <ApolloProvider client={client}>{story()}</ApolloProvider>
-      </RecoilRoot>
-    ),
+    (story) => <ApolloProvider client={client}>{story()}</ApolloProvider>,
   ],
 } as Meta<typeof TestComponent>
 

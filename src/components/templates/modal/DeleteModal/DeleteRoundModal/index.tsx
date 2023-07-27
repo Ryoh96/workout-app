@@ -1,8 +1,6 @@
-import { useRecoilState } from 'recoil'
-
 import { useRemoveRoundMutation } from '@/graphql/generated/operations-csr'
-import { deleteRoundModalState } from '@/recoil/Modal/DeleteRoundModal'
-import { deleteRoundIdState } from '@/recoil/Round/deleteRoundId'
+import useDeleteRoundModalStore from '@/store/modal/deleteRoundModal'
+import useDeleteRoundIdStore from '@/store/round/deleteRoundId'
 
 import DeleteModal from '..'
 
@@ -14,8 +12,14 @@ export const DeleteRoundModal = ({ onDeleteCompleted }: Props) => {
   const [removeRoundMutation] = useRemoveRoundMutation({
     onCompleted: onDeleteCompleted,
   })
-  const [isOpen, setIsOpen] = useRecoilState(deleteRoundModalState)
-  const [deleteId, setDeleteId] = useRecoilState(deleteRoundIdState)
+  const { isOpen, setIsOpen } = useDeleteRoundModalStore((state) => ({
+    isOpen: state.isOpen,
+    setIsOpen: state.setIsOpen,
+  }))
+  const { deleteId, setDeleteId } = useDeleteRoundIdStore((state) => ({
+    deleteId: state.deleteId,
+    setDeleteId: state.setDeleteId,
+  }))
 
   return (
     <>

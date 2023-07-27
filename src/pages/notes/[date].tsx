@@ -10,13 +10,10 @@ import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
 import React, { useMemo } from 'react'
 import { toast } from 'react-toastify'
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
 
 import Button from '@/components/atoms/Button'
-import Spinner from '@/components/atoms/Spinner'
 import Title from '@/components/atoms/Title'
 import Toast from '@/components/atoms/Toast'
-import Section from '@/components/layouts/Section'
 import DropDownWithButton from '@/components/organisms/DropDownWithButton'
 import { DeleteNoteModal } from '@/components/templates/modal/DeleteModal/DeleteNoteModal'
 import { DeleteRoundModal } from '@/components/templates/modal/DeleteModal/DeleteRoundModal'
@@ -33,13 +30,11 @@ import {
   useGetAllPartsNameQuery,
   useGetNoteQuery,
 } from '@/graphql/generated/operations-csr'
-import { getSdk } from '@/graphql/generated/operations-ssg'
 import useCurrentDate from '@/hooks/common/useCurrentDate'
 import { useCreateNote } from '@/hooks/pages/editNote/useCreateNote'
-import { deleteNoteModalState } from '@/recoil/Modal/DeleteNoteModal'
-import { noteIdState } from '@/recoil/Note/noteId'
-import { lastTrainingIdState } from '@/recoil/Training/lastTrainingId'
-import type { ComboBoxOption } from '@/types'
+import useDeleteNoteModalStore from '@/store/modal/deleteNoteModal'
+import useNoteIdStore from '@/store/note/noteId'
+import useLastTrainingIdStore from '@/store/training/lastTrainingId'
 import { datetimeFormat } from '@/utils/dateFormat'
 import { ManipulationError } from '@/utils/errors'
 
@@ -53,9 +48,14 @@ const Note: NextPage<Props> = ({ date: dateString }) => {
   const date = useMemo(() => new Date(dateString), [dateString])
   useCurrentDate(date)
 
-  const [noteId, setNoteId] = useRecoilState(noteIdState)
-  const lastTrainingId = useRecoilValue(lastTrainingIdState)
-  const setIsOpenDeleteNoteModal = useSetRecoilState(deleteNoteModalState)
+  const { noteId, setNoteId } = useNoteIdStore((state) => ({
+    noteId: state.noteId,
+    setNoteId: state.setNoteId,
+  }))
+  const lastTrainingId = useLastTrainingIdStore((state) => state.lastTrainingId)
+  const setIsOpenDeleteNoteModal = useDeleteNoteModalStore(
+    (state) => state.setIsOpen
+  )
 
   const { data: partsData, loading: partsLoading } = useGetAllPartsNameQuery()
 

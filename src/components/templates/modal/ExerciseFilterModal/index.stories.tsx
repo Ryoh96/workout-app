@@ -1,15 +1,10 @@
 import { ApolloProvider } from '@apollo/client'
 import type { Meta, StoryObj } from '@storybook/react'
-import type { ComponentProps } from 'react'
 import { useState } from 'react'
-import { RecoilRoot } from 'recoil'
 
 import Button from '@/components/atoms/Button'
 import Toast from '@/components/atoms/Toast'
-import { handleEditRound } from '@/graphql/schema/mutations/round/editRoundInput/msw'
-import { note } from '@/graphql/schema/queries/note/getNote/fixture'
 import { client } from '@/pages/_app'
-import { SPStory } from '@/tests/storybook'
 
 import ExerciseFilterModal from '.'
 
@@ -52,11 +47,7 @@ export default {
     hasRound: true,
   },
   decorators: [
-    (story) => (
-      <RecoilRoot>
-        <ApolloProvider client={client}>{story()}</ApolloProvider>
-      </RecoilRoot>
-    ),
+    (story) => <ApolloProvider client={client}>{story()}</ApolloProvider>,
   ],
 } as Meta<typeof TestComponent>
 

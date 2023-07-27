@@ -2,14 +2,13 @@ import { faFireFlameCurved } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useCallback } from 'react'
 import { toast } from 'react-toastify'
-import { useRecoilState } from 'recoil'
 
 import Modal from '@/components/organisms/Modal'
 import RoundForm from '@/components/templates/notes/RoundForm'
 import { Unit, useEditRoundMutation } from '@/graphql/generated/operations-csr'
 import type { UpsertRoundInput } from '@/libs/schema/upsertRound'
-import { editRoundModalState } from '@/recoil/Modal/EditRoundModal'
-import { editRoundState } from '@/recoil/Round/editRound'
+import useEditRoundModalStore from '@/store/modal/editRoundModal'
+import useEditRoundStore from '@/store/round/editRound'
 import { ManipulationError } from '@/utils/errors'
 
 type Props = {
@@ -21,7 +20,10 @@ const EditRoundModal = ({ onCompleted }: Props) => {
     onCompleted,
   })
 
-  const [editedRound, setEditedRound] = useRecoilState(editRoundState)
+  const { editedRound, setEditedRound } = useEditRoundStore((state) => ({
+    editedRound: state.editedRound,
+    setEditedRound: state.setEditRound,
+  }))
 
   const handleEditRound = useCallback(
     async ({
@@ -85,8 +87,10 @@ const EditRoundModal = ({ onCompleted }: Props) => {
     [editRoundMutation, editedRound?.id, setEditedRound]
   )
 
-  const [isOpenEditRoundModal, setIsOpenEditRoundModal] =
-    useRecoilState(editRoundModalState)
+  const { isOpen, setIsOpen } = useEditRoundModalStore((state) => ({
+    isOpen: state.isOpen,
+    setIsOpen: state.setIsOpen,
+  }))
 
   return (
     <Modal
@@ -109,14 +113,14 @@ const EditRoundModal = ({ onCompleted }: Props) => {
           }}
           onValid={(data) => {
             handleEditRound(data)
-            setIsOpenEditRoundModal(false)
+            setIsOpen(false)
           }}
-          handleCancel={() => setIsOpenEditRoundModal(false)}
+          handleCancel={() => setIsOpen(false)}
           loading={loading}
         />
       }
-      isOpen={isOpenEditRoundModal}
-      closeModal={() => setIsOpenEditRoundModal(false)}
+      isOpen={isOpen}
+      closeModal={() => setIsOpen(false)}
     />
   )
 }

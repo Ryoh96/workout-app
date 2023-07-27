@@ -1,7 +1,5 @@
-import { useRecoilState } from 'recoil'
-
 import { useDeleteMemoAtNoteMutation } from '@/graphql/generated/operations-csr'
-import { deleteMemoAtNoteModalState } from '@/recoil/Modal/DeleteMemoAtNoteModal'
+import useDeleteMemoAtModalStore from '@/store/modal/deleteMemoAtNoteModal'
 
 import DeleteModal from '..'
 
@@ -19,7 +17,10 @@ export const DeleteMemoAtNoteModal = ({
   const [removeRoundMutation] = useDeleteMemoAtNoteMutation({
     onCompleted: onDeleteCompleted,
   })
-  const [isOpen, setIsOpen] = useRecoilState(deleteMemoAtNoteModalState)
+  const { isOpen, setIsOpen } = useDeleteMemoAtModalStore((state) => ({
+    isOpen: state.isOpen,
+    setIsOpen: state.setIsOpen,
+  }))
 
   return (
     <DeleteModal

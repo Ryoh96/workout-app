@@ -2,7 +2,6 @@ import { ApolloProvider } from '@apollo/client'
 import type { Meta, StoryObj } from '@storybook/react'
 import type { ComponentProps } from 'react'
 import { useState } from 'react'
-import { RecoilRoot, useSetRecoilState } from 'recoil'
 
 import Button from '@/components/atoms/Button'
 import Toast from '@/components/atoms/Toast'
@@ -43,11 +42,7 @@ export default {
     ...SPStory,
   },
   decorators: [
-    (story) => (
-      <RecoilRoot>
-        <ApolloProvider client={client}>{story()}</ApolloProvider>
-      </RecoilRoot>
-    ),
+    (story) => <ApolloProvider client={client}>{story()}</ApolloProvider>,
   ],
 } as Meta<typeof TestComponent>
 

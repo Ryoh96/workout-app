@@ -1,7 +1,6 @@
 import { ApolloProvider } from '@apollo/client'
 import type { Meta, StoryObj } from '@storybook/react'
 import type { ComponentProps } from 'react'
-import { RecoilRoot, useSetRecoilState } from 'recoil'
 
 import Button from '@/components/atoms/Button'
 import Toast from '@/components/atoms/Toast'
@@ -9,8 +8,8 @@ import type { Round } from '@/graphql/generated/operations-type'
 import { handleEditRound } from '@/graphql/schema/mutations/round/editRoundInput/msw'
 import { note } from '@/graphql/schema/queries/note/getNote/fixture'
 import { client } from '@/pages/_app'
-import { editRoundModalState } from '@/recoil/Modal/EditRoundModal'
-import { editRoundState } from '@/recoil/Round/editRound'
+import useEditRoundModalStore from '@/store/modal/editRoundModal'
+import useEditRoundStore from '@/store/round/editRound'
 import { SPStory } from '@/tests/storybook'
 
 import EditRoundModal from '.'
@@ -21,9 +20,11 @@ type Props = ComponentProps<typeof EditRoundModal> & {
 }
 
 const TestComponent = (props: Props) => {
-  const setIsOpenEditRoundModal = useSetRecoilState(editRoundModalState)
+  const setIsOpenEditRoundModal = useEditRoundModalStore(
+    (state) => state.setIsOpen
+  )
   setIsOpenEditRoundModal(props.isOpenEditRoundModal)
-  const setEditedRound = useSetRecoilState(editRoundState)
+  const setEditedRound = useEditRoundStore((state) => state.setEditRound)
   setEditedRound(props.editRound)
   return (
     <>
@@ -46,11 +47,7 @@ export default {
     ...SPStory,
   },
   decorators: [
-    (story) => (
-      <RecoilRoot>
-        <ApolloProvider client={client}>{story()}</ApolloProvider>
-      </RecoilRoot>
-    ),
+    (story) => <ApolloProvider client={client}>{story()}</ApolloProvider>,
   ],
 } as Meta<typeof TestComponent>
 

@@ -2,14 +2,11 @@ import { ApolloProvider } from '@apollo/client'
 import type { Meta, StoryObj } from '@storybook/react'
 import type { ComponentProps } from 'react'
 import { useState } from 'react'
-import { RecoilRoot, useSetRecoilState } from 'recoil'
 
 import Button from '@/components/atoms/Button'
 import Toast from '@/components/atoms/Toast'
 import { note } from '@/graphql/schema/queries/note/getNote/fixture'
-import { handleGetPreviousTrainings } from '@/graphql/schema/queries/training/getPreviousTrainings/msw'
 import { client } from '@/pages/_app'
-import { SPStory } from '@/tests/storybook'
 
 import TrainingDataModal from '.'
 
@@ -36,11 +33,7 @@ export default {
     noteData: note,
   },
   decorators: [
-    (story) => (
-      <RecoilRoot>
-        <ApolloProvider client={client}>{story()}</ApolloProvider>
-      </RecoilRoot>
-    ),
+    (story) => <ApolloProvider client={client}>{story()}</ApolloProvider>,
   ],
 } as Meta<typeof TestComponent>
 

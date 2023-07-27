@@ -1,18 +1,17 @@
 import { useCallback } from 'react'
 import { toast } from 'react-toastify'
-import { useSetRecoilState } from 'recoil'
 
 import { useAddRoundMutation } from '@/graphql/generated/operations-csr'
 import { Unit } from '@/graphql/generated/operations-type'
 import type { UpsertRoundInput } from '@/libs/schema/upsertRound'
-import { isEditingState } from '@/recoil/Note/isEditing'
+import useIsEditingStore from '@/store/note/isEditing'
 
 const useAddRound = (onCompleted: () => void) => {
   const [addRoundMutation, { loading: addRoundMutationLoading }] =
     useAddRoundMutation({
       onCompleted,
     })
-  const setIsEditing = useSetRecoilState(isEditingState)
+  const setIsEditing = useIsEditingStore((state) => state.setIsEditing)
 
   const handleAddRound = useCallback(
     async (

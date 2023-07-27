@@ -1,12 +1,11 @@
 import { PencilIcon } from '@heroicons/react/24/solid'
 import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
-import { useRecoilValue } from 'recoil'
 
 import Modal from '@/components/organisms/Modal'
 import ShowMemos from '@/components/templates/common/ShowMemos'
 import { useGetNoteMemoLazyQuery } from '@/graphql/generated/operations-csr'
-import { noteIdState } from '@/recoil/Note/noteId'
+import useNoteIdStore from '@/store/note/noteId'
 import { ManipulationError } from '@/utils/errors'
 
 import { CreateMemoModal } from './CreateMemoModal'
@@ -18,7 +17,7 @@ type Props = {
 
 const EditMemoAtNoteModal = ({ isOpen, setIsOpen }: Props) => {
   const [isOpenCreateMemoModal, setIsOpenCreateMemoModal] = useState(false)
-  const id = useRecoilValue(noteIdState)
+  const id = useNoteIdStore((state) => state.noteId)
   const [getNoteMemo, { data, loading, error, refetch }] =
     useGetNoteMemoLazyQuery({
       onError: (error) => {

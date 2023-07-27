@@ -1,11 +1,10 @@
 import { PencilSquareIcon, TrashIcon } from '@heroicons/react/24/solid'
-import { useRecoilValue, useSetRecoilState } from 'recoil'
 
-import type { Training, Unit } from '@/graphql/generated/operations-type'
-import { deleteRoundModalState } from '@/recoil/Modal/DeleteRoundModal'
-import { editRoundModalState } from '@/recoil/Modal/EditRoundModal'
-import { deleteRoundIdState } from '@/recoil/Round/deleteRoundId'
-import { editRoundState } from '@/recoil/Round/editRound'
+import type { Training } from '@/graphql/generated/operations-type'
+import useDeleteRoundModalStore from '@/store/modal/deleteRoundModal'
+import useEditRoundModalStore from '@/store/modal/editRoundModal'
+import useDeleteRoundIdStore from '@/store/round/deleteRoundId'
+import useEditRoundStore from '@/store/round/editRound'
 
 type Props = {
   training: Training
@@ -13,10 +12,14 @@ type Props = {
 }
 
 const TrainingResults = ({ training, id }: Props) => {
-  const setIsOpenEditRoundModal = useSetRecoilState(editRoundModalState)
-  const setIsOpenDeleteRoundModal = useSetRecoilState(deleteRoundModalState)
-  const setEditedRound = useSetRecoilState(editRoundState)
-  const setDeleteRoundId = useSetRecoilState(deleteRoundIdState)
+  const setIsOpenEditRoundModal = useEditRoundModalStore(
+    (state) => state.setIsOpen
+  )
+  const setIsOpenDeleteRoundModal = useDeleteRoundModalStore(
+    (state) => state.setIsOpen
+  )
+  const setEditedRound = useEditRoundStore((state) => state.setEditRound)
+  const setDeleteRoundId = useDeleteRoundIdStore((state) => state.setDeleteId)
 
   return (
     <table className="border-collapse bg-white rounded mx-auto border-b-2 w-full max-w-md">

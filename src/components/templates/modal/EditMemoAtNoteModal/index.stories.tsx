@@ -2,14 +2,13 @@ import { ApolloProvider } from '@apollo/client'
 import type { Meta, StoryObj } from '@storybook/react'
 import type { ComponentProps } from 'react'
 import { useState } from 'react'
-import { RecoilRoot, useSetRecoilState } from 'recoil'
 
 import Button from '@/components/atoms/Button'
 import Toast from '@/components/atoms/Toast'
 import { note } from '@/graphql/schema/queries/note/getNote/fixture'
 import { handleGetNoteMemo } from '@/graphql/schema/queries/note/getNoteMemo/msw'
 import { client } from '@/pages/_app'
-import { noteIdState } from '@/recoil/Note/noteId'
+import useNoteIdStore from '@/store/note/noteId'
 import { SPStory } from '@/tests/storybook'
 
 import EditMemoAtNote from '.'
@@ -19,7 +18,7 @@ type Props = ComponentProps<typeof EditMemoAtNote> & { id: string }
 const id = note.note?.id as string
 const TestComponent = (props: Props) => {
   const [isOpen, setIsOpen] = useState(false)
-  const setIdState = useSetRecoilState(noteIdState)
+  const setIdState = useNoteIdStore((state) => state.setNoteId)
   setIdState(props.id)
 
   return (
@@ -43,11 +42,7 @@ export default {
     ...SPStory,
   },
   decorators: [
-    (story) => (
-      <RecoilRoot>
-        <ApolloProvider client={client}>{story()}</ApolloProvider>
-      </RecoilRoot>
-    ),
+    (story) => <ApolloProvider client={client}>{story()}</ApolloProvider>,
   ],
 } as Meta<typeof TestComponent>
 

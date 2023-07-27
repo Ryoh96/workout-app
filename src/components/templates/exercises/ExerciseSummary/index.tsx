@@ -9,12 +9,11 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import Skeleton from 'react-loading-skeleton'
 import { toast } from 'react-toastify'
-import { useSetRecoilState } from 'recoil'
 
 import DropDownWithButton from '@/components/organisms/DropDownWithButton'
 import DeleteExerciseModal from '@/components/templates/modal/DeleteModal/DeleteExerciseModal'
 import { useGetTrainingStatQuery } from '@/graphql/generated/operations-csr'
-import { deleteExerciseModalState } from '@/recoil/Modal/DeleteExerciseModal'
+import useDeleteExerciseModalStore from '@/store/modal/deleteExerciseModal'
 import { dateFormat } from '@/utils/dateFormat'
 import { ManipulationError } from '@/utils/errors'
 import getNormalizedStatData from '@/utils/exercise/getNormalizedStatData'
@@ -76,8 +75,8 @@ export const Presentational = ({
   lastDate,
 }: PresentationalProps) => {
   const router = useRouter()
-  const setIsOpenDeleteExerciseModal = useSetRecoilState(
-    deleteExerciseModalState
+  const setIsOpenDeleteExerciseModal = useDeleteExerciseModalStore(
+    (state) => state.setIsOpen
   )
 
   return (

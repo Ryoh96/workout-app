@@ -1,6 +1,5 @@
 import { ApolloProvider } from '@apollo/client'
 import type { Meta, StoryObj } from '@storybook/react'
-import { RecoilRoot } from 'recoil'
 
 import Toast from '@/components/atoms/Toast'
 import { handleAddExercisesByPart } from '@/graphql/schema/mutations/exercise/addExerciseByPart/msw'
@@ -26,10 +25,10 @@ export default {
   },
   decorators: [
     (story) => (
-      <RecoilRoot>
+      <>
         <ApolloProvider client={client}>{story()}</ApolloProvider>
         <Toast />
-      </RecoilRoot>
+      </>
     ),
   ],
   parameters: {

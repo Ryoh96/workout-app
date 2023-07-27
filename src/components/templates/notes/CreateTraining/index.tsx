@@ -2,7 +2,6 @@ import { faDumbbell } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
-import { useRecoilValue } from 'recoil'
 
 import Button from '@/components/atoms/Button'
 import Spinner from '@/components/atoms/Spinner'
@@ -14,7 +13,7 @@ import ComboBox from '@/components/organisms/ComboBox'
 import AddExerciseModal from '@/components/templates/modal/AddExerciseModal'
 import useCreateTraining from '@/hooks/pages/editNote/useCreateTraining'
 import useExerciseName from '@/hooks/pages/editNote/useExerciseName'
-import { noteIdState } from '@/recoil/Note/noteId'
+import useNoteIdStore from '@/store/note/noteId'
 import type { ComboBoxOption } from '@/types'
 import { ManipulationError } from '@/utils/errors'
 
@@ -39,7 +38,7 @@ const CreateTraining = ({
   } = useExerciseName(partsOptions[0]?.id as string)
 
   const [isOpenAddExerciseModal, setIsOpenAddExerciseModal] = useState(false)
-  const noteId = useRecoilValue(noteIdState)
+  const noteId = useNoteIdStore((state) => state.noteId)
 
   const [exerciseOptions, setExerciseOptions] = useState(
     exerciseNames?.part?.exercises ?? []

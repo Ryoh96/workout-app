@@ -5,13 +5,12 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { BookOpenIcon } from '@heroicons/react/24/solid'
-import { format, isSameDay, subDays } from 'date-fns'
+import { format, subDays } from 'date-fns'
 import type { NextPage } from 'next'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
 import { useMemo, useState } from 'react'
-import { useRecoilState } from 'recoil'
 
 import Button from '@/components/atoms/Button'
 import Spinner from '@/components/atoms/Spinner'
@@ -24,7 +23,7 @@ import AccordionList from '@/components/organisms/AccordionList'
 import SelectCalendarModal from '@/components/templates/modal/SelectCalendarModal'
 import { useGetNotesQuery } from '@/graphql/generated/operations-csr'
 import type { Round } from '@/graphql/generated/operations-type'
-import { currentDateState } from '@/recoil/currentDate'
+import useCurrentDateStore from '@/store/date/currentDate'
 import { dateFormat } from '@/utils/dateFormat'
 import makeRoundsSummary from '@/utils/makeRoundsSummary'
 
@@ -77,7 +76,7 @@ const Home: NextPage = () => {
 
   const [isOpenCalenderModal, setIsOpenCalenderModal] = useState(false)
 
-  const [currentDate, setCurrentDate] = useRecoilState(currentDateState)
+  const setCurrentDate = useCurrentDateStore((state) => state.setCurrentDate)
   const router = useRouter()
 
   return (

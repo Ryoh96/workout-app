@@ -1,5 +1,3 @@
-import { useRecoilState, useSetRecoilState } from 'recoil'
-
 import Button from '@/components/atoms/Button'
 import Section from '@/components/layouts/Section'
 import type {
@@ -7,12 +5,11 @@ import type {
   Training,
 } from '@/graphql/generated/operations-type'
 import useAddRound from '@/hooks/pages/editNote/useAddRound'
-import usePreviousData from '@/hooks/pages/editNote/usePreviousData'
-import { deleteTrainingModalState } from '@/recoil/Modal/DeleteTrainingModal'
-import { isEditingState } from '@/recoil/Note/isEditing'
-import { deleteTrainingIdState } from '@/recoil/Training/deleteTrainingId'
-import { editedTrainingIdState } from '@/recoil/Training/editedTrainingId'
-import { lastTrainingIdState } from '@/recoil/Training/lastTrainingId'
+import useDeleteTrainingModalStore from '@/store/modal/deleteTrainingModal'
+import useIsEditingStore from '@/store/note/isEditing'
+import useDeleteTrainingIdStore from '@/store/training/deleteTrainingId'
+import useEditedTrainingIdStore from '@/store/training/editedTrainingId'
+import useLastTrainingIdStore from '@/store/training/lastTrainingId'
 
 import ExerciseHeader from './ExerciseHeader'
 import RoundDoing from './RoundDoing'
@@ -27,19 +24,31 @@ type Props = {
 const TrainingItem = ({ onCompleted, training, index }: Props) => {
   const [handleAddRound, addRoundMutationLoading] = useAddRound(onCompleted)
 
-  const [editedTrainingId, setEditedTrainingId] = useRecoilState(
-    editedTrainingIdState
+  const { editedTrainingId, setEditedTrainingId } = useEditedTrainingIdStore(
+    (state) => ({
+      editedTrainingId: state.editedTrainingId,
+      setEditedTrainingId: state.setEditedTrainingId,
+    })
   )
-  const [lastTrainingId, setLastTrainingId] =
-    useRecoilState(lastTrainingIdState)
-
-  const [isEditing, setIsEditing] = useRecoilState(isEditingState)
-
-  const setIsOpenDeleteTrainingModal = useSetRecoilState(
-    deleteTrainingModalState
+  const { lastTrainingId, setLastTrainingId } = useLastTrainingIdStore(
+    (state) => ({
+      lastTrainingId: state.lastTrainingId,
+      setLastTrainingId: state.setLastTrainingId,
+    })
   )
 
-  const setDeleteTrainingId = useSetRecoilState(deleteTrainingIdState)
+  const { isEditing, setIsEditing } = useIsEditingStore((state) => ({
+    isEditing: state.isEditing,
+    setIsEditing: state.setIsEditing,
+  }))
+
+  const setIsOpenDeleteTrainingModal = useDeleteTrainingModalStore(
+    (state) => state.setIsOpen
+  )
+
+  const setDeleteTrainingId = useDeleteTrainingIdStore(
+    (state) => state.setDeleteId
+  )
 
   const addTraining = async () => {
     setLastTrainingId(null)

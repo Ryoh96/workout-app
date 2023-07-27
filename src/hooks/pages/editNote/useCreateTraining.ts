@@ -1,11 +1,10 @@
 import { toast } from 'react-toastify'
-import { useSetRecoilState } from 'recoil'
 import { v4 as uuid } from 'uuid'
 
 import { useCreateTrainingMutation } from '@/graphql/generated/operations-csr'
-import { isEditingState } from '@/recoil/Note/isEditing'
-import { editedTrainingIdState } from '@/recoil/Training/editedTrainingId'
-import { lastTrainingIdState } from '@/recoil/Training/lastTrainingId'
+import useIsEditingStore from '@/store/note/isEditing'
+import useEditedTrainingIdStore from '@/store/training/editedTrainingId'
+import useLastTrainingIdStore from '@/store/training/lastTrainingId'
 import type { ComboBoxOption } from '@/types'
 
 const useCreateTraining = (
@@ -18,9 +17,13 @@ const useCreateTraining = (
     useCreateTrainingMutation({
       onCompleted,
     })
-  const setEditedTrainingId = useSetRecoilState(editedTrainingIdState)
-  const setLastTrainingId = useSetRecoilState(lastTrainingIdState)
-  const setIsEditing = useSetRecoilState(isEditingState)
+  const setEditedTrainingId = useEditedTrainingIdStore(
+    (state) => state.setEditedTrainingId
+  )
+  const setLastTrainingId = useLastTrainingIdStore(
+    (state) => state.setLastTrainingId
+  )
+  const setIsEditing = useIsEditingStore((state) => state.setIsEditing)
 
   const handleCreateTraining = async () => {
     const trainingId = uuid()

@@ -1,6 +1,5 @@
 import { TrashIcon } from '@heroicons/react/24/solid'
 import { toast } from 'react-toastify'
-import type { SetterOrUpdater } from 'recoil'
 
 import Modal from '@/components/organisms/Modal'
 import { ManipulationError } from '@/utils/errors'
@@ -11,7 +10,7 @@ type Props = {
   isOpen: boolean
   closeModal: () => void
   deleteId: string | number | null
-  setDeleteId?: SetterOrUpdater<string | null>
+  setDeleteId?: (payload: string | null) => void
   handleCancel?: () => void
 }
 

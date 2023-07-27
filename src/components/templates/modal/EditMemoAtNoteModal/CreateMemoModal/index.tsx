@@ -1,11 +1,10 @@
 import { BookOpenIcon } from '@heroicons/react/24/solid'
 import { toast } from 'react-toastify'
-import { useRecoilValue } from 'recoil'
 
 import Modal from '@/components/organisms/Modal'
 import { useUpsertMemoAtNoteMutation } from '@/graphql/generated/operations-csr'
 import type { CreateMemoInput } from '@/libs/schema/createMemo'
-import { noteIdState } from '@/recoil/Note/noteId'
+import useNoteIdStore from '@/store/note/noteId'
 
 import CreateMemoForm from '../CreateMemoForm'
 
@@ -30,7 +29,7 @@ export const CreateMemoModal = ({
     onCompleted,
   })
 
-  const id = useRecoilValue(noteIdState)
+  const id = useNoteIdStore((state) => state.noteId)
 
   return (
     <Modal

@@ -1,9 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import type { ComponentProps } from 'react'
-import type { RecoilState } from 'recoil'
-import { RecoilRoot, useSetRecoilState } from 'recoil'
 
-import { currentDateState } from '@/recoil/currentDate/states'
+import useCurrentDateStore from '@/store/date/currentDate'
 import { SPStory } from '@/tests/storybook'
 
 import TrainingHeader from '.'
@@ -11,7 +9,7 @@ import TrainingHeader from '.'
 type Props = ComponentProps<typeof TrainingHeader> & { currentDate: Date }
 
 const Component = (props: Props) => {
-  const setCurrentDate = useSetRecoilState(currentDateState)
+  const setCurrentDate = useCurrentDateStore((state) => state.setCurrentDate)
   setCurrentDate(props.currentDate)
 
   return <TrainingHeader />
@@ -23,7 +21,6 @@ export default {
   args: {
     currentDate: new Date(),
   },
-  decorators: [(story) => <RecoilRoot>{story()}</RecoilRoot>],
 } as Meta<typeof Component>
 
 type Story = StoryObj<typeof Component>

@@ -1,10 +1,8 @@
-import { useRecoilValue } from 'recoil'
-
 import { useCreateNoteMutation } from '@/graphql/generated/operations-csr'
-import { currentDateState } from '@/recoil/currentDate'
+import useCurrentDateStore from '@/store/date/currentDate'
 
 export const useCreateNote = (
-  setNoteId: React.Dispatch<React.SetStateAction<string | null>>,
+  setNoteId: (payload: string | null) => void,
   onCompleted: () => void
 ) => {
   const [createNoteMutation, { loading: createNoteLoading }] =
@@ -14,7 +12,7 @@ export const useCreateNote = (
         setNoteId(result.createNote.id)
       },
     })
-  const currentDate = useRecoilValue(currentDateState)
+  const currentDate = useCurrentDateStore((state) => state.currentDate)
 
   const handleCreateNote = () =>
     createNoteMutation({

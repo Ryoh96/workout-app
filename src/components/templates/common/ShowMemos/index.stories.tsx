@@ -1,8 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import { RecoilRoot } from 'recoil'
 
-import type { Part, Training } from '@/graphql/generated/operations-type'
-import { note } from '@/graphql/schema/queries/note/getNote/fixture'
 import { noteMemo } from '@/graphql/schema/queries/note/getNoteMemo/fixture'
 import { SPStory, TABStory } from '@/tests/storybook'
 

@@ -2,7 +2,6 @@ import { PencilIcon } from '@heroicons/react/24/solid'
 import { useSession } from 'next-auth/react'
 import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
-import { useRecoilValue } from 'recoil'
 
 import Button from '@/components/atoms/Button'
 import Section from '@/components/layouts/Section'
@@ -10,12 +9,12 @@ import TitleWithIcon from '@/components/molecules/TitleWithIcon'
 import ShowMemos from '@/components/templates/common/ShowMemos'
 import { CreateMemoModal } from '@/components/templates/modal/EditMemoAtNoteModal/CreateMemoModal'
 import { useGetNoteMemoLazyQuery } from '@/graphql/generated/operations-csr'
-import { noteIdState } from '@/recoil/Note/noteId'
+import useNoteIdStore from '@/store/note/noteId'
 import { ManipulationError } from '@/utils/errors'
 
 const TrainingsMemoSection = () => {
   const { status } = useSession()
-  const noteId = useRecoilValue(noteIdState)
+  const noteId = useNoteIdStore((state) => state.noteId)
 
   const [defaultMemoValue, setDefaultMemoValue] = useState<string | undefined>(
     undefined

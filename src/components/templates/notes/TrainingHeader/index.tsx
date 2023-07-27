@@ -6,17 +6,19 @@ import {
 import { addDays, format, subDays } from 'date-fns'
 import { useRouter } from 'next/router'
 import { useMemo, useState } from 'react'
-import { useRecoilState } from 'recoil'
 
 import Section from '@/components/layouts/Section'
 import SelectCalendarModal from '@/components/templates/modal/SelectCalendarModal'
-import { currentDateState } from '@/recoil/currentDate'
+import useCurrentDateStore from '@/store/date/currentDate'
 import { dateFormat } from '@/utils/dateFormat'
 
 const TrainingHeader = () => {
   const router = useRouter()
   const [isOpenCalenderModal, setIsOpenCalenderModal] = useState(false)
-  const [currentDate, setCurrentDate] = useRecoilState(currentDateState)
+  const { currentDate, setCurrentDate } = useCurrentDateStore((state) => ({
+    currentDate: state.currentDate,
+    setCurrentDate: state.setCurrentDate,
+  }))
 
   const formattedCurrentDate = useMemo(
     () => dateFormat(currentDate),
