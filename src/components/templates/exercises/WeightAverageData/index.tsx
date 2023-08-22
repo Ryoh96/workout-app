@@ -55,6 +55,7 @@ export const Presentational = ({
       <div className="flex items-center gap-3 justify-between mb-2">
         <p className="whitespace-nowrap">・平均重量 - 回数 (IV) </p>
         <button className="pr-2" onClick={() => setIsOpenFilterModal(true)}>
+          <span className="sr-only">フィルター</span>
           <AdjustmentsHorizontalIcon className="w-6 h-6 text-indigo-800" />
         </button>
       </div>
@@ -71,7 +72,10 @@ export const Presentational = ({
               >
                 <p className="p-2  ml-0.5 mr-4  font-bold">{index + 1}set</p>{' '}
                 <p className="px-1 text-right pr-4">
-                  <span className="text-base font-bold">
+                  <span
+                    className="text-base font-bold"
+                    data-testid="weightAverage"
+                  >
                     {Number.isNaN(weight) ? '--' : Number(weight.toFixed(2))}
                   </span>{' '}
                   kg -{' '}

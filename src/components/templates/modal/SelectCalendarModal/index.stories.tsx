@@ -13,7 +13,6 @@ import SelectCalenderModal from '.'
 
 type Props = ComponentProps<typeof SelectCalenderModal>
 
-const id = note.note?.id as string
 const TestComponent = (props: Props) => {
   const [isOpen, setIsOpen] = useState(false)
   const [date, setCurrentDate] = useState(new Date())

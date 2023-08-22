@@ -39,6 +39,7 @@ const SelectCalendarModal = ({
             }
           }}
           formatDay={(_, date) => new Date(date).getDate().toString()}
+          locale="ja-JP"
         />
       }
       handlers={[

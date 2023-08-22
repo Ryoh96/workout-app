@@ -24,8 +24,9 @@ export const upsertRoundSchema = z.object({
   seconds: z
     .number({ invalid_type_error: '数値を入力してください' })
     .nonnegative('0以上の値を入力してください')
+    .lt(60, '入力できる数字は59秒までです')
     .optional(),
-  memo: z.string().max(100, '入力できる文字数は100文字までです。').optional(),
+  memo: z.string().max(100, '入力できる文字数は100文字までです').optional(),
   pin: z.boolean().optional(),
 })
 

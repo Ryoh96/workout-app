@@ -7,6 +7,7 @@ import Toast from '@/components/atoms/Toast'
 import type { Exercise } from '@/graphql/generated/operations-type'
 import { handleChangeExercisePart } from '@/graphql/schema/mutations/exercise/changeExercisePart/msw'
 import { note } from '@/graphql/schema/queries/note/getNote/fixture'
+import { handleGetAllPartName } from '@/graphql/schema/queries/part/getAllPartsName/msw'
 import { client } from '@/pages/_app'
 import { SPStory } from '@/tests/storybook'
 
@@ -41,7 +42,7 @@ export default {
   args: {},
   parameters: {
     msw: {
-      handlers: [handleChangeExercisePart()],
+      handlers: [handleChangeExercisePart(), handleGetAllPartName()],
     },
     ...SPStory,
   },
@@ -57,7 +58,10 @@ export const Default: Story = {}
 export const Loading: Story = {
   parameters: {
     msw: {
-      handlers: [handleChangeExercisePart({ status: 200 })],
+      handlers: [
+        handleGetAllPartName(),
+        handleChangeExercisePart({ status: 200, loadingInfinite: true }),
+      ],
     },
   },
 }

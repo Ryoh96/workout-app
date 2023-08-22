@@ -2,11 +2,19 @@ import { graphql } from 'msw'
 
 import { GetTrainingStatDocument } from '@/graphql/generated/operations-ssg'
 
-import { trainingStat } from './fixture'
+import { noData, trainingStat } from './fixture'
 
-export const handleGetTrainingStat = (args?: { status?: number }) => {
+export const handleGetTrainingStat = (args?: {
+  status?: number
+  loadingInfinite?: boolean
+}) => {
   return graphql.query(GetTrainingStatDocument, (req, res, ctx) => {
-    if (args?.status === 200) return res(ctx.status(200), ctx.delay('infinite'))
+    if (args?.status === 200)
+      return res(
+        ctx.status(200),
+        ctx.delay(args.loadingInfinite ? 'infinite' : 100)
+      )
+    if (args?.status === 204) return res(ctx.data(noData))
     if (args?.status === 500)
       return res(ctx.status(500), ctx.errors([{ message: 'some error' }]))
 

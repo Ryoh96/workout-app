@@ -18,17 +18,20 @@ type Props = {
 }
 
 const ShowTrainingHistoryModal = ({ trainingId, isOpen, setIsOpen }: Props) => {
-  const { data: previousData, loading: previousLoading } =
-    useGetPreviousTrainingsQuery({
-      variables: { id: trainingId, limit: 10 },
-      onError: (error) => {
-        if (error instanceof ManipulationError) {
-          toast.error(error.message)
-          return
-        }
-        console.error(error)
-      },
-    })
+  const {
+    data: previousData,
+    loading: previousLoading,
+    error: previousError,
+  } = useGetPreviousTrainingsQuery({
+    variables: { id: trainingId, limit: 10 },
+    onError: (error) => {
+      if (error instanceof Error) {
+        toast.error('エラーが発生しました')
+        return
+      }
+      console.error(error)
+    },
+  })
   return (
     <Modal
       title="種目の履歴"
@@ -36,7 +39,7 @@ const ShowTrainingHistoryModal = ({ trainingId, isOpen, setIsOpen }: Props) => {
       content={
         previousLoading ? (
           <Spinner />
-        ) : previousData?.previousTrainings?.length !== 0 ? (
+        ) : previousData && previousData?.previousTrainings?.length !== 0 ? (
           <div className="w-4/5">
             {previousData?.previousTrainings?.map((training, index) => (
               <div key={index} className="pb-10 w-full">

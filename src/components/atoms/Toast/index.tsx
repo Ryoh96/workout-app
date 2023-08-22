@@ -14,7 +14,12 @@ const defaultProps: Partial<ToastProps> = {
 }
 
 const Toast = (props: Partial<ToastProps>) => (
-  <ToastContainer {...defaultProps} {...props} style={{ zIndex: 99999 }} />
+  <ToastContainer
+    {...defaultProps}
+    {...props}
+    style={{ zIndex: 99999 }}
+    data-testid="toast"
+  />
 )
 
 export default Toast

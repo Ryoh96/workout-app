@@ -5,7 +5,7 @@ import type { ComboBoxOption } from '@/types'
 
 type Props = {
   options: ComboBoxOption[]
-  selected?: ComboBoxOption
+  selected: ComboBoxOption | null
   variant?: 'small' | 'default'
   placeholder?: string
   setSelected: React.Dispatch<React.SetStateAction<ComboBoxOption>>
@@ -19,7 +19,6 @@ const ComboBox = ({
   variant = 'default',
 }: Props) => {
   const [query, setQuery] = useState('')
-
   const filteredOptions =
     query === ''
       ? options
@@ -37,11 +36,16 @@ const ComboBox = ({
           <div className="relative w-full cursor-default overflow-hidden rounded-lg bg-white text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
             <Combobox.Input
               className="w-full border-none py-2 pl-3 pr-10 text-xs leading-5 text-gray-900 focus:ring-0 focus:outline-none"
-              displayValue={(option: ComboBoxOption) => option.name}
+              displayValue={(option: ComboBoxOption) =>
+                option?.name ?? undefined
+              }
               onChange={(event) => setQuery(event.target.value)}
               placeholder={placeholder}
             />
-            <Combobox.Button className="absolute inset-y-0 right-0 flex items-center px-1.5 bg-orange-400">
+            <Combobox.Button
+              className="absolute inset-y-0 right-0 flex items-center px-1.5 bg-orange-400"
+              data-testid="comboboxButton"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"

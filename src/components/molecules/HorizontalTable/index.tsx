@@ -19,10 +19,14 @@ const HorizontalTable = ({ title, data, titleIcon, index, footer }: Props) => {
         </div>
       )}
       <table className="border-collapse bg-white w-full ">
-        <tbody>
+        <tbody data-testid="tableBody">
           {data.map((datum, index) => (
             <React.Fragment key={index}>
-              <tr key={index} className="border-b-2 w-full">
+              <tr
+                key={index}
+                className="border-b-2 w-full"
+                data-testid="tableRow"
+              >
                 <th
                   className="px-4 py-2 mr-4  text-blue-900 text-start"
                   scope="row"

@@ -18,10 +18,12 @@ const Header = () => {
       <header className="bg-gradient-to-r from-orange-600 to-rose-600 text-white text-2xl h-12 grid items-center ">
         <div className="flex justify-between items-center px-4 max-w-[1125px] mx-auto w-full">
           <Link href="/">
-            <p>{title}</p>
+            <p aria-label="ロゴ">{title}</p>
           </Link>
           {status === 'authenticated' ? (
             <IconMenuButton {...userIconMenuProps} />
+          ) : status === 'loading' ? (
+            'ログイン中'
           ) : (
             <button
               className="flex items-center text-sm gap-2"

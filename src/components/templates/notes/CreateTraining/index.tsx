@@ -1,5 +1,11 @@
 import { faDumbbell } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {
+  EllipsisHorizontalIcon,
+  EllipsisVerticalIcon,
+  PlusIcon,
+  TrashIcon,
+} from '@heroicons/react/24/solid'
 import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 
@@ -8,14 +14,20 @@ import Spinner from '@/components/atoms/Spinner'
 import Section from '@/components/layouts/Section'
 import AddIconButton from '@/components/molecules/AddIconButton'
 import SelectBoxWithLabel from '@/components/molecules/SelectBoxWithLabel'
+import SubIconButton from '@/components/molecules/SubIconButton'
 import TitleWithIcon from '@/components/molecules/TitleWithIcon'
 import ComboBox from '@/components/organisms/ComboBox'
+import DropDownWithButton from '@/components/organisms/DropDownWithButton'
 import AddExerciseModal from '@/components/templates/modal/AddExerciseModal'
+import { useRemoveTrainingMutation } from '@/graphql/generated/operations-csr'
 import useCreateTraining from '@/hooks/pages/editNote/useCreateTraining'
 import useExerciseName from '@/hooks/pages/editNote/useExerciseName'
+import useDeleteExerciseModalStore from '@/store/modal/deleteExerciseModal'
 import useNoteIdStore from '@/store/note/noteId'
 import type { ComboBoxOption } from '@/types'
 import { ManipulationError } from '@/utils/errors'
+
+import DeleteExerciseModal from '../../modal/DeleteModal/DeleteExerciseModal'
 
 type Props = {
   onCompleted: () => void
@@ -43,6 +55,7 @@ const CreateTraining = ({
   const [exerciseOptions, setExerciseOptions] = useState(
     exerciseNames?.part?.exercises ?? []
   )
+
   const [parts, setParts] = useState<ComboBoxOption>(partsOptions[0])
 
   const notify = (message: string) => toast(message)
@@ -66,6 +79,10 @@ const CreateTraining = ({
   const [handleCreateTraining, createTrainingMutationLoading] =
     useCreateTraining(noteId, onCompleted, existingTrainings, exercise)
 
+  const setIsOpenDeleteExerciseModal = useDeleteExerciseModalStore(
+    (state) => state.setIsOpen
+  )
+
   useEffect(() => {
     if (exerciseNames) {
       const newExercises =
@@ -78,7 +95,6 @@ const CreateTraining = ({
       setExercise(newExercises[newExercises.length - 1])
     }
   }, [exerciseNames, setExercise])
-
   return (
     <>
       <Section>
@@ -87,7 +103,7 @@ const CreateTraining = ({
           as="h2"
           className="flex items-center gap-2"
         >
-          新規作成
+          新規トレーニング
         </TitleWithIcon>
         <div className="space-y-4">
           <div className="flex items-center gap-3 w-full">
@@ -113,27 +129,44 @@ const CreateTraining = ({
             </p>
 
             {!exerciseNameLoading ? (
-              <ComboBox
-                options={exerciseOptions}
-                selected={exercise}
-                setSelected={
-                  setExercise as React.Dispatch<
-                    React.SetStateAction<ComboBoxOption>
-                  >
-                }
-                placeholder="「種目の追加」を押してください"
-              />
+              <div className="flex items-center w-full gap-2">
+                <ComboBox
+                  options={exerciseOptions}
+                  selected={exercise}
+                  setSelected={
+                    setExercise as React.Dispatch<
+                      React.SetStateAction<ComboBoxOption>
+                    >
+                  }
+                  placeholder={
+                    exerciseOptions.length === 0
+                      ? '右の点々ボタンから種目を追加'
+                      : '種目を選択'
+                  }
+                />
+                <div className="mt-2" data-testid="exerciseMenu">
+                  <DropDownWithButton
+                    icon={<EllipsisVerticalIcon className="w-6 h-6" />}
+                    menuItems={[
+                      {
+                        icon: <PlusIcon className="text-indigo-800 w-6 h-6" />,
+                        name: '種目の追加',
+                        handleClick: () => setIsOpenAddExerciseModal(true),
+                      },
+                      {
+                        icon: <TrashIcon className="text-indigo-800 w-6 h-6" />,
+                        name: '種目の削除',
+                        handleClick: () => setIsOpenDeleteExerciseModal(true),
+                      },
+                    ]}
+                  />
+                </div>
+              </div>
             ) : (
               <div className="flex items-center h-10">
                 <Spinner variant="small" />
               </div>
             )}
-          </div>
-          <div className="flex justify-end">
-            <AddIconButton
-              text="種目の追加"
-              onClick={() => setIsOpenAddExerciseModal(true)}
-            />
           </div>
         </div>
         <div className="flex justify-center mt-8">
@@ -154,6 +187,19 @@ const CreateTraining = ({
         partsOptions={partsOptions}
         parts={parts}
       />
+      {exercise && (
+        <DeleteExerciseModal
+          deleteId={exercise.id as string}
+          onCompleted={() => {
+            console.log('piyo')
+            setExercise(null)
+            setExerciseOptions((prev) =>
+              prev.filter((exerciseOption) => exerciseOption.id !== exercise.id)
+            )
+            onCompleted()
+          }}
+        />
+      )}
     </>
   )
 }

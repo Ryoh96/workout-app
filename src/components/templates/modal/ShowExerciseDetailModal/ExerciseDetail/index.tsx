@@ -1,6 +1,7 @@
 import { faDumbbell } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useEffect, useMemo } from 'react'
+import Skeleton from 'react-loading-skeleton'
 import { toast } from 'react-toastify'
 
 import Spinner from '@/components/atoms/Spinner'
@@ -100,14 +101,19 @@ const ExerciseDetail = ({ id, name }: Props) => {
         <p>
           <span className="font-bold">・最大重量:</span>{' '}
           {maxWeightLoading ? (
-            <Spinner variant="small" />
+            <div data-testid="skelton" className="inline">
+              <Skeleton width={310} className="ml-2" />
+            </div>
           ) : maxWeightError ? (
             <span className="text-sm" role="alert">
               エラーが発生しました
             </span>
           ) : (
             <span>
-              <span className="text-lg font-bold text-red-600">
+              <span
+                className="text-lg font-bold text-red-600 mr-1"
+                data-testid="maxWeight"
+              >
                 {maxWeightData?.maxWeight?.maxWeight}
               </span>
               kg
@@ -117,14 +123,19 @@ const ExerciseDetail = ({ id, name }: Props) => {
         <p>
           <span className="font-bold">・最大総負荷量:</span>{' '}
           {maxTotalLoadLoading ? (
-            <Spinner variant="small" />
+            <div data-testid="skelton" className="inline">
+              <Skeleton width={280} className="ml-2" />
+            </div>
           ) : maxTotalLoadError ? (
             <span className="text-sm" role="alert">
               エラーが発生しました
             </span>
           ) : (
             <span>
-              <span className="text-lg font-bold text-red-600">
+              <span
+                className="text-lg font-bold text-red-600 mr-1"
+                data-testid="maxTotalLoad"
+              >
                 {maxTotalLoadData?.maxTotalLoad?.maxTotalLoad}
               </span>
               kg
@@ -133,11 +144,13 @@ const ExerciseDetail = ({ id, name }: Props) => {
         </p>
 
         <div className="mb-6 pt-1">
-          <p>
-            <span className="font-bold pb-3">・平均重量:</span>
-          </p>
+          <span className="font-bold pb-3">・平均重量:</span>
           {statLoading ? (
-            <Spinner variant="small" />
+            <div className="text-center mx-auto" data-testid="skelton">
+              <Skeleton width={380} className="ml-2" />
+              <Skeleton width={380} className="ml-2" />
+              <Skeleton width={380} className="ml-2" />
+            </div>
           ) : statError ? (
             <span className="text-sm" role="alert">
               エラーが発生しました
@@ -147,7 +160,10 @@ const ExerciseDetail = ({ id, name }: Props) => {
               {averages.map(({ weight }, index) => (
                 <li key={index}>
                   <span>- {index + 1}set:</span>{' '}
-                  <span className="text-lg font-bold text-red-600">
+                  <span
+                    className="text-lg font-bold text-red-600"
+                    data-testid="average"
+                  >
                     {Number(weight.toFixed(2))}
                   </span>{' '}
                   kg
@@ -158,7 +174,7 @@ const ExerciseDetail = ({ id, name }: Props) => {
         </div>
       </div>
       <div className="mb-3">
-        <p className="font-bold">・重量の推移</p>
+        <span className="font-bold">・重量の推移:</span>
         {statLoading ? (
           <Spinner />
         ) : statError ? (
@@ -166,14 +182,16 @@ const ExerciseDetail = ({ id, name }: Props) => {
             エラーが発生しました
           </span>
         ) : (
-          <LineChart
-            datasets={weightsDatasets}
-            labels={weightsDatasetsLabels}
-          />
+          <div data-testid="weightTransition">
+            <LineChart
+              datasets={weightsDatasets}
+              labels={weightsDatasetsLabels}
+            />
+          </div>
         )}
       </div>
       <div>
-        <p className="font-bold">・総負荷量の推移</p>
+        <span className="font-bold">・総負荷量の推移:</span>
         {statLoading ? (
           <Spinner />
         ) : statError ? (
@@ -181,10 +199,12 @@ const ExerciseDetail = ({ id, name }: Props) => {
             エラーが発生しました
           </span>
         ) : (
-          <LineChart
-            datasets={totalLoadsDatasets}
-            labels={totalLoadsDatasetsLabels}
-          />
+          <div data-testid="totalLoadTransition">
+            <LineChart
+              datasets={totalLoadsDatasets}
+              labels={totalLoadsDatasetsLabels}
+            />
+          </div>
         )}
       </div>
     </div>

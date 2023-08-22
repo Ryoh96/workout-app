@@ -1,7 +1,9 @@
+import { ApolloProvider } from '@apollo/client'
 import type { Meta, StoryObj } from '@storybook/react'
 
 import type { Part, Training } from '@/graphql/generated/operations-type'
 import { note } from '@/graphql/schema/queries/note/getNote/fixture'
+import { client } from '@/pages/_app'
 import { SPStory, TABStory } from '@/tests/storybook'
 
 import Presentational from '.'
@@ -17,6 +19,9 @@ export default {
     name: training.exercise?.name ?? '',
     part: training.exercise?.parts?.[0] as Part,
   },
+  decorators: [
+    (story) => <ApolloProvider client={client}>{story()}</ApolloProvider>,
+  ],
   ...SPStory,
 } as Meta<typeof Presentational>
 

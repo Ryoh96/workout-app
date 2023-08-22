@@ -13,6 +13,7 @@ const Spinner = ({ variant = 'default', color = 'default' }: Props) => {
       role="alert"
       aria-busy="true"
       aria-label="Loading"
+      data-testid="spinner"
     />
   )
 }

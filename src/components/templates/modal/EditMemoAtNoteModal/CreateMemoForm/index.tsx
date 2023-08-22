@@ -38,7 +38,10 @@ const CreateMemoForm = ({
   })
 
   return (
-    <form onSubmit={handleSubmit(onValid, onInvalid)}>
+    <form
+      onSubmit={handleSubmit(onValid, onInvalid)}
+      data-testid="createMemoForm"
+    >
       <div className="my-7">
         <TextAreaWithInfo
           label="メモ"

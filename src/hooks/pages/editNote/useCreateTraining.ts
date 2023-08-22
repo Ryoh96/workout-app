@@ -11,7 +11,7 @@ const useCreateTraining = (
   noteId: string | null,
   onCompleted: () => void,
   existingTrainings: Set<string | number | undefined>,
-  exercise?: ComboBoxOption
+  exercise: ComboBoxOption | null
 ) => {
   const [createTrainingMutation, { loading: createTrainingMutationLoading }] =
     useCreateTrainingMutation({

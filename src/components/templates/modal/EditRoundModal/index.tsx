@@ -68,7 +68,8 @@ const EditRoundModal = ({ onCompleted }: Props) => {
             error: {
               render({ data }) {
                 //@ts-ignore
-                return `${data.message}`
+                console.error(data.message)
+                return `エラーが発生しました`
               },
             },
           },
@@ -106,8 +107,12 @@ const EditRoundModal = ({ onCompleted }: Props) => {
           defaultValues={{
             weight: editedRound?.weight,
             repetition: editedRound?.repetition,
-            minutes: Math.floor((editedRound?.interval ?? 0) / 60),
-            seconds: (editedRound?.interval ?? 0) % 60,
+            minutes: editedRound?.interval
+              ? Math.floor(editedRound?.interval / 60)
+              : 0,
+            seconds: editedRound?.interval
+              ? Math.floor(editedRound?.interval % 60)
+              : 0,
             memo: editedRound?.memo?.content,
             pin: editedRound?.memo?.pin ?? false,
           }}

@@ -56,7 +56,7 @@ const TrainingItem = ({ onCompleted, training, index }: Props) => {
 
   return (
     <>
-      <li>
+      <li data-testid="training-item">
         {training.id && (
           <Section key={training.id}>
             <ExerciseHeader

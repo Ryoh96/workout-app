@@ -1,20 +1,24 @@
 import type { Meta, StoryObj } from '@storybook/react'
 
 import { SPStory, TABStory } from '@/tests/storybook'
-import { fixture } from '@/utils/exercise/getNormalizedStatData/fixture'
+import {
+  fixture,
+  noDataFixture,
+} from '@/utils/exercise/getNormalizedStatData/fixture'
 import getRoundsAverage from '@/utils/exercise/getRoundsAverage'
 
-import { Presentational } from '.'
+import Component from '.'
 
 export default {
-  component: Presentational,
+  component: Component,
   args: {
-    averages: getRoundsAverage(fixture),
+    normalizedStatData: fixture,
+    loading: false,
   },
   ...SPStory,
-} as Meta<typeof Presentational>
+} as Meta<typeof Component>
 
-type Story = StoryObj<typeof Presentational>
+type Story = StoryObj<typeof Component>
 
 export const Default: Story = {}
 
@@ -26,6 +30,6 @@ export const Loading: Story = {
 
 export const NoData: Story = {
   args: {
-    averages: getRoundsAverage([]),
+    normalizedStatData: noDataFixture,
   },
 }

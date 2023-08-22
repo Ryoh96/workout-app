@@ -1,24 +1,56 @@
+import { ApolloProvider } from '@apollo/client'
 import type { Meta, StoryObj } from '@storybook/react'
 
+import { handleGetAllTrainingsInNote } from '@/graphql/schema/queries/training/getAllTrainingsInNote/msw'
+import { client } from '@/pages/_app'
 import { SPStory, TABStory } from '@/tests/storybook'
 
-import { Presentational } from '.'
+import Component from '.'
 
 export default {
-  component: Presentational,
+  component: Component,
   args: {
-    ordersAverage: 3,
-    loading: false,
+    id: 'hoge',
+  },
+  decorators: [
+    (story) => (
+      <>
+        <ApolloProvider client={client}>{story()}</ApolloProvider>
+      </>
+    ),
+  ],
+  parameters: {
+    msw: {
+      handlers: [handleGetAllTrainingsInNote()],
+    },
+  },
+} as Meta<typeof Component>
+
+type Story = StoryObj<typeof Component>
+
+export const Default: Story = {
+  ...SPStory,
+}
+
+export const AnotherValue: Story = {
+  args: {
+    id: 'boo',
   },
   ...SPStory,
-} as Meta<typeof Presentational>
-
-type Story = StoryObj<typeof Presentational>
-
-export const Default: Story = {}
+}
 
 export const Loading: Story = {
-  args: {
-    trainingsLoading: true,
+  parameters: {
+    msw: {
+      handlers: [handleGetAllTrainingsInNote({ status: 200 })],
+    },
+    ...SPStory,
   },
+}
+
+export const NoData: Story = {
+  args: {
+    id: 'dummy',
+  },
+  ...SPStory,
 }

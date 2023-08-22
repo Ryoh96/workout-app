@@ -1,8 +1,10 @@
+import { ApolloProvider } from '@apollo/client'
 import type { Meta, StoryObj } from '@storybook/react'
 import type { ComponentProps } from 'react'
 
 import { note } from '@/graphql/schema/queries/note/getNote/fixture'
 import { previousTrainings } from '@/graphql/schema/queries/training/getPreviousTrainings/fixture'
+import { client } from '@/pages/_app'
 import useIsEditingStore from '@/store/note/isEditing'
 import useEditedTrainingIdStore from '@/store/training/editedTrainingId'
 import useLastTrainingIdStore from '@/store/training/lastTrainingId'
@@ -50,6 +52,9 @@ export default {
     lastTrainingId: trainings?.at(-1)?.id,
     isEditing: true,
   },
+  decorators: [
+    (story) => <ApolloProvider client={client}>{story()}</ApolloProvider>,
+  ],
 } as Meta<typeof Component>
 
 type Story = StoryObj<typeof Component>

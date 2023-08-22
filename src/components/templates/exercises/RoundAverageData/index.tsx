@@ -50,10 +50,15 @@ export const Presentational = ({
         <p>・平均セット数:</p>
         <p>
           {loading ? (
-            <Skeleton width={180} className="ml-2" />
+            <div data-testid="skelton">
+              <Skeleton width={180} className="ml-2" />
+            </div>
           ) : (
             <span>
-              <span className="text-base font-bold mx-1">
+              <span
+                className="text-base font-bold mx-1"
+                data-testid="roundAverage"
+              >
                 {Number.isNaN(roundCountAverage)
                   ? '--'
                   : Number(roundCountAverage).toFixed(2)}

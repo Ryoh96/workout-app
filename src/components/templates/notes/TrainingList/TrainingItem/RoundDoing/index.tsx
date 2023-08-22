@@ -29,6 +29,7 @@ const RoundDoing = ({ training, ...props }: Props) => {
       <p
         className="text-center text-xl mb-4 pb-2 border-b border-gray-300 mt-2"
         id={id}
+        data-testid="round-doing"
       >
         {`${(training.rounds?.length ?? 0) + 1}set`}
       </p>

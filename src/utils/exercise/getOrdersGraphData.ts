@@ -7,7 +7,9 @@ const getOrdersGraphData = (
   data?: GetAllTrainingsInNoteQuery,
   span = 30
 ) => {
-  const ordersData = getOrders(id, data)?.slice(0, span) ?? []
+  const ordersData =
+    (span !== -1 ? getOrders(id, data)?.slice(0, span) : getOrders(id, data)) ??
+    []
   const orders = ordersData.map((order) => order.order ?? 0)
 
   const countObj =

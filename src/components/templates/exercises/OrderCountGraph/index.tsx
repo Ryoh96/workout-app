@@ -3,14 +3,12 @@ import {
   MagnifyingGlassCircleIcon,
 } from '@heroicons/react/24/solid'
 import clsx from 'clsx'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { toast } from 'react-toastify'
 
 import Spinner from '@/components/atoms/Spinner'
 import Section from '@/components/layouts/Section'
-import HorizontalTable from '@/components/molecules/HorizontalTable'
 import PieChart from '@/components/organisms/PieChart'
-import { datasets } from '@/components/organisms/PieChart/index.stories'
 import ExerciseFilterModal from '@/components/templates/modal/ExerciseFilterModal'
 import ShowDatasetModal from '@/components/templates/modal/ShowDatasetModal'
 import { useGetAllTrainingsInNoteQuery } from '@/graphql/generated/operations-csr'
@@ -37,7 +35,11 @@ const OrderCountGraphContainer = ({ id, className }: Props) => {
   const [isOpenFilterModal, setIsOpenFilterModal] = useState(false)
   const [span, setSpan] = useState(10)
 
-  const [datasets, labels, ordersData] = getOrdersGraphData(id, trainingsData)
+  const [datasets, labels, ordersData] = getOrdersGraphData(
+    id,
+    trainingsData,
+    span
+  )
   const [isOpenDatasetModal, setIsOpenDatasetModal] = useState(false)
 
   return (
@@ -122,7 +124,7 @@ export const Presentational = ({
         <>
           <div className="text-xs pl-4">
             <span>条件：</span>
-            <span>{span}日間</span>
+            {span !== -1 ? <span>{span}日間</span> : <span>全期間</span>}
           </div>
           <div className="w-4/5 mx-auto">
             <PieChart datasets={datasets} labels={labels} />
@@ -136,7 +138,7 @@ export const Presentational = ({
           </button>
         </>
       ) : (
-        <p className="text-sm">データがありません</p>
+        <p className="text-sm px-4">データがありません</p>
       )}
     </Section>
   )

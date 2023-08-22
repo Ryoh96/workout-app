@@ -48,14 +48,14 @@ const Countdown = ({ initialTime }: Props) => {
     const audioContext = new window.AudioContext()
 
     timerSoundId.current = setTimeout(() => {
-      const oscillator2 = audioContext.createOscillator()
-      oscillator2.type = 'sine'
-      oscillator2.frequency.value = 880 // 1オクターブ上の音（440Hzの2倍）
-      oscillator2.connect(audioContext.destination)
-      oscillator2.start()
+      const oscillator = audioContext.createOscillator()
+      oscillator.type = 'sine'
+      oscillator.frequency.value = 880 // 1オクターブ上の音（440Hzの2倍）
+      oscillator.connect(audioContext.destination)
+      oscillator.start()
 
       setTimeout(() => {
-        oscillator2.stop()
+        oscillator.stop()
       }, 3000) // 1オクターブ上の音を1秒間鳴らす
     }, duration) // 残り1秒になる時間
 
@@ -63,14 +63,14 @@ const Countdown = ({ initialTime }: Props) => {
       countDownSoundId.current = setTimeout(() => {
         let count = 3
         threeTimesCountId.current = setInterval(() => {
-          const oscillator3 = audioContext.createOscillator()
-          oscillator3.type = 'sine'
-          oscillator3.frequency.value = 440 // 440Hzの音
-          oscillator3.connect(audioContext.destination)
-          oscillator3.start()
+          const oscillator2 = audioContext.createOscillator()
+          oscillator2.type = 'sine'
+          oscillator2.frequency.value = 440 // 440Hzの音
+          oscillator2.connect(audioContext.destination)
+          oscillator2.start()
 
           setTimeout(() => {
-            oscillator3.stop()
+            oscillator2.stop()
           }, 300)
           count--
           if (count <= 0) clearInterval(threeTimesCountId.current)

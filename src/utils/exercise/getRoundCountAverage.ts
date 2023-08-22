@@ -1,7 +1,8 @@
 import type { StatData } from '@/types'
 
 const getRoundCountAverage = (normalizedStatData: StatData, span = 30) => {
-  const statData = normalizedStatData?.slice(-span)
+  const statData =
+    span !== -1 ? normalizedStatData?.slice(-span) : normalizedStatData
   return statData
     ? statData.reduce(
         (accumulator, data) => accumulator + (data.rounds?.length ?? 0),

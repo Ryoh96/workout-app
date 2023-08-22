@@ -4,7 +4,7 @@ import { useGetExerciseNamesByPartLazyQuery } from '@/graphql/generated/operatio
 import type { ComboBoxOption } from '@/types'
 
 const useExerciseName = (partIds: string) => {
-  const [exercise, setExercise] = useState<ComboBoxOption>()
+  const [exercise, setExercise] = useState<ComboBoxOption | null>(null)
 
   const [
     getExerciseName,
@@ -18,7 +18,9 @@ const useExerciseName = (partIds: string) => {
   })
 
   useEffect(() => {
-    getExerciseName().then((res) => setExercise(res.data?.part?.exercises?.[0]))
+    getExerciseName().then((res) =>
+      setExercise(res.data?.part?.exercises?.[0] ?? null)
+    )
   }, [])
 
   return {

@@ -19,7 +19,6 @@ const SetAlarmModal = ({ isOpen, setIsOpen }: Props) => {
         title="アラームの時間"
         content={
           <SetAlarmForm
-            defaultValues={{ minutes: 0, seconds: 0 }}
             onValid={(data) => {
               const time = (data.minutes ?? 0) * 60 + (data.seconds ?? 0)
               setIsOpen(false)

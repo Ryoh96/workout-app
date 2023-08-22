@@ -15,6 +15,10 @@ export const data: GetPinnedMemosByExercisesQuery = {
   ],
 }
 
+export const noData: GetPinnedMemosByExercisesQuery = {
+  pinnedMemos: [],
+}
+
 export const hasLongMemData: GetPinnedMemosByExercisesQuery = {
   pinnedMemos: [
     {

@@ -79,14 +79,14 @@ const ShowMemoListModal = ({
                             <span className="text-gray-800">
                               {dateFormat(new Date(memo.createdAt))}
                             </span>
-                            <button>
-                              <TrashIcon
-                                className="w-4 h-4 text-orange-600"
-                                onClick={() => {
-                                  setMemoId(memo.id)
-                                  setIsOpen(true)
-                                }}
-                              />
+                            <button
+                              data-testid="deleteButton"
+                              onClick={() => {
+                                setMemoId(memo.id)
+                                setIsOpen(true)
+                              }}
+                            >
+                              <TrashIcon className="w-4 h-4 text-orange-600" />
                             </button>
                           </div>
                           <div className="flex items-center gap-1">
@@ -95,8 +95,10 @@ const ShowMemoListModal = ({
                                 setMemoId(memo.id)
                                 setIsOpenPinOutMemoModal(true)
                               }}
+                              data-testid="pinOutButton"
                             >
                               <BookmarkIcon className="w-4 h-4 text-red-600" />
+                              <span className="sr-only">固定解除</span>
                             </button>
                             <span className="text-base">{memo.content}</span>
                           </div>
@@ -141,10 +143,12 @@ const ShowMemoListModal = ({
                   }),
                   {
                     success: '削除しました',
+                    pending: '削除中',
                     error: {
                       render({ data }) {
                         //@ts-ignore
-                        return `${data.message}`
+                        console.error(data.message)
+                        return `エラーが発生しました`
                       },
                     },
                   },

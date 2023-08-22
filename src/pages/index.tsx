@@ -21,6 +21,7 @@ import HorizontalTable from '@/components/molecules/HorizontalTable'
 import TitleWithIcon from '@/components/molecules/TitleWithIcon'
 import AccordionList from '@/components/organisms/AccordionList'
 import SelectCalendarModal from '@/components/templates/modal/SelectCalendarModal'
+import { APP_NAME } from '@/constants'
 import { useGetNotesQuery } from '@/graphql/generated/operations-csr'
 import type { Round } from '@/graphql/generated/operations-type'
 import useCurrentDateStore from '@/store/date/currentDate'
@@ -82,7 +83,7 @@ const Home: NextPage = () => {
   return (
     <>
       <div className="h-full space-y-3 self-start">
-        <Title as="h1">Workout Note</Title>
+        <Title as="h1">{APP_NAME}</Title>
         <div className="md:flex gap-3">
           <Section className="w-full">
             <TitleWithIcon as="h2" icon={<BookOpenIcon />}>
@@ -119,7 +120,7 @@ const Home: NextPage = () => {
                 onClick={() => router.push('/exercises')}
                 loading={status === 'loading'}
               >
-                種目一覧へ
+                種目一覧
               </Button>
             </div>
           </Section>

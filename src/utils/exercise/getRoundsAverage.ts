@@ -13,7 +13,8 @@ const getRoundsAverage = (
     count: 0,
   }))
 
-  const statData = normalizedStatData?.slice(-span)
+  const statData =
+    span !== -1 ? normalizedStatData?.slice(-span) : normalizedStatData
   statData?.forEach((data) => {
     for (let index = 0; index < round; index++) {
       if (data.rounds?.[index] === undefined) continue
@@ -32,7 +33,6 @@ const getRoundsAverage = (
       totalAndCount[index].count += 1
     }
   })
-  console.log(totalAndCount)
   const averages = totalAndCount.map((stat) => ({
     weight: stat.totalWeight / stat.count,
     reps: stat.totalReps / stat.count,

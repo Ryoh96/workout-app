@@ -1,5 +1,7 @@
 import type { SelectOption } from '@/types'
 
+export const APP_NAME = 'Workout Note'
+
 export const unitOptions = [
   {
     name: 'kg',

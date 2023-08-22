@@ -46,6 +46,7 @@ const RenameExerciseForm = ({
             <InputCounter name="exercise" control={control} max={30} />
           }
           error={errors.exercise?.message}
+          testPrefix="renameExercise"
         />
       </div>
       <div className="flex justify-center gap-5">

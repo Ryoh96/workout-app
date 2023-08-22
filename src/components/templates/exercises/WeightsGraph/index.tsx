@@ -43,7 +43,8 @@ const WeightsGraph = ({ normalizedStatData, className, loading }: Props) => {
             <div className="text-xs pl-4 pb-2">
               <span>条件：</span>
               <span>
-                {span}日間 / {round}セット
+                {span !== -1 ? <span>{span}日間</span> : <span>全期間</span>}/{' '}
+                {round}セット
               </span>
             </div>
             <LineChart
@@ -59,7 +60,7 @@ const WeightsGraph = ({ normalizedStatData, className, loading }: Props) => {
             </button>
           </>
         ) : (
-          <p className="text-sm">データがありません</p>
+          <p className="text-sm px-4">データがありません</p>
         )}
       </Section>
       <ExerciseFilterModal

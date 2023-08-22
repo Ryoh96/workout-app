@@ -55,7 +55,7 @@ export const Default: Story = {}
 export const Loading: Story = {
   parameters: {
     msw: {
-      handlers: [handlePinOutMemo({ status: 200 })],
+      handlers: [handlePinOutMemo({ status: 200, loadingInfinite: true })],
     },
   },
 }

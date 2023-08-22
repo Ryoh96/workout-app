@@ -26,9 +26,13 @@ const OrderAverageDataContainer = ({ id }: ContainerProps) => {
       },
     })
 
-  const orders = getOrders(id, trainingsData)
-    ?.map((order) => order.order ?? 0)
-    .slice(0, span)
+  const orders =
+    span !== -1
+      ? getOrders(id, trainingsData)
+          ?.map((order) => order.order ?? 0)
+          .slice(0, span)
+      : getOrders(id, trainingsData)?.map((order) => order.order ?? 0)
+
   const ordersAverage = orders
     ? orders.reduce((acc, num) => acc + num, 0) / orders.length
     : 0
@@ -67,10 +71,15 @@ export const Presentational = ({
         <p>・平均種目目：</p>
         <p>
           {trainingsLoading ? (
-            <Skeleton width={180} className="ml-2" />
+            <div data-testid="skelton">
+              <Skeleton width={180} className="ml-2" />
+            </div>
           ) : (
             <span>
-              <span className="text-base font-bold mx-1">
+              <span
+                className="text-base font-bold mx-1"
+                data-testid="ordersAverage"
+              >
                 {Number.isNaN(ordersAverage)
                   ? '--'
                   : Number(ordersAverage + 1).toFixed(2)}
@@ -81,6 +90,7 @@ export const Presentational = ({
         </p>
       </div>
       <button className="pr-2" onClick={() => setIsOpenFilterModal(true)}>
+        <span className="sr-only">フィルター</span>
         <AdjustmentsHorizontalIcon className="w-6 h-6 text-indigo-800" />
       </button>
     </div>

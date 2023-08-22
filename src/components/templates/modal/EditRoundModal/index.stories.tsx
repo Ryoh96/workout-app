@@ -73,11 +73,14 @@ export const Loading: Story = {
   },
   parameters: {
     msw: {
-      handlers: [handleEditRound({ status: 200 })],
+      handlers: [handleEditRound({ status: 200, loadingInfinite: true })],
     },
   },
 }
 export const Error: Story = {
+  args: {
+    editRound: note.note?.trainings?.[0].rounds?.[0] as Round,
+  },
   parameters: {
     msw: {
       handlers: [handleEditRound({ status: 500 })],

@@ -25,3 +25,12 @@ export const exerciseNamesByParts: GetExerciseNamesByPartQuery[] = [
     },
   },
 ]
+
+export const noData: GetExerciseNamesByPartQuery[] = [
+  {
+    part: {
+      name: '胸',
+      exercises: [],
+    },
+  },
+]

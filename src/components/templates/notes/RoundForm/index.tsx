@@ -50,7 +50,7 @@ const RoundForm = ({ id, loading, ...props }: Props) => {
             label="重量"
             {...register('weight', { valueAsNumber: true })}
             error={errors.weight?.message}
-            placeholder="-- kg"
+            placeholder="0"
             unit={
               <SelectBoxWithLabel
                 options={unitOptions}
@@ -60,16 +60,19 @@ const RoundForm = ({ id, loading, ...props }: Props) => {
                 {...register('unit')}
               />
             }
+            testPrefix="weight"
           />
         </div>
         <div>
           <TextBoxWithInfo
+            type="number"
             inputMode="numeric"
             label="回数"
-            placeholder="-- 回"
+            placeholder="0"
             {...register('repetition', { valueAsNumber: true })}
             error={errors.repetition?.message}
             unit="回"
+            testPrefix="repetition"
           />
         </div>
         <div>
@@ -92,6 +95,7 @@ const RoundForm = ({ id, loading, ...props }: Props) => {
             inputCounter={
               <InputCounter name="memo" control={control} max={100} />
             }
+            testPrefix="memo"
           />
         </div>
         <div className="flex justify-center gap-5">

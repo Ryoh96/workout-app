@@ -34,7 +34,7 @@ const SelectBoxWithLabel = forwardRef<HTMLSelectElement, Props>(
       >
         <label
           htmlFor={id}
-          className={`text-sm mr-2 text-indigo-800 font-bold ${
+          className={`text-sm mr-2 text-sky-800 font-bold ${
             !labelVisible && 'sr-only'
           } 
           ${labelPosition === 'top' && 'pl-1'}

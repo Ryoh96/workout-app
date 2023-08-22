@@ -37,29 +37,34 @@ const AddExerciseModal = ({
         <AddExerciseForm
           loading={loading}
           onValid={async (data) => {
-            await toast.promise(
-              addExerciseByPartMutation({
-                variables: {
-                  name: data.exercise,
-                  partId: data.part,
-                },
-              }),
-              {
-                error: {
-                  render({ data }) {
-                    //@ts-ignore
-                    return `${data.message}`
+            try {
+              await toast.promise(
+                addExerciseByPartMutation({
+                  variables: {
+                    name: data.exercise,
+                    partId: data.part,
                   },
+                }),
+                {
+                  error: {
+                    render({ data }) {
+                      //@ts-ignore
+                      console.error(data.message)
+                      return `エラーが発生しました`
+                    },
+                  },
+                  success: '登録完了',
+                  pending: '登録中',
                 },
-                success: '登録完了',
-                pending: '登録中',
-              },
-              {
-                autoClose: 3000,
-              }
-            )
-
-            setIsOpen(false)
+                {
+                  autoClose: 3000,
+                }
+              )
+            } catch (error) {
+              console.error(error)
+            } finally {
+              setIsOpen(false)
+            }
           }}
           onInvalid={(e) => {
             console.error(e)

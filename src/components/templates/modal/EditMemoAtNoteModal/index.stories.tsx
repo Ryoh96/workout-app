@@ -5,6 +5,8 @@ import { useState } from 'react'
 
 import Button from '@/components/atoms/Button'
 import Toast from '@/components/atoms/Toast'
+import { handleDeleteMemoAtNote } from '@/graphql/schema/mutations/note/deleteMemoAtNote/msw'
+import { handleUpsertMemoAtNote } from '@/graphql/schema/mutations/note/upsertMemoAtNote/msw'
 import { note } from '@/graphql/schema/queries/note/getNote/fixture'
 import { handleGetNoteMemo } from '@/graphql/schema/queries/note/getNoteMemo/msw'
 import { client } from '@/pages/_app'
@@ -37,7 +39,11 @@ export default {
   },
   parameters: {
     msw: {
-      handlers: [handleGetNoteMemo()],
+      handlers: [
+        handleGetNoteMemo(),
+        handleUpsertMemoAtNote(),
+        handleDeleteMemoAtNote(),
+      ],
     },
     ...SPStory,
   },
@@ -59,7 +65,11 @@ export const DoesNotHaveNote: Story = {
 export const Loading: Story = {
   parameters: {
     msw: {
-      handlers: [handleGetNoteMemo({ status: 200 })],
+      handlers: [
+        handleUpsertMemoAtNote({ status: 200, loadingInfinite: true }),
+        handleDeleteMemoAtNote({ status: 200, loadingInfinite: true }),
+        handleGetNoteMemo(),
+      ],
     },
     ...SPStory,
   },

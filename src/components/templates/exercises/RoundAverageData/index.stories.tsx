@@ -1,24 +1,34 @@
 import type { Meta, StoryObj } from '@storybook/react'
 
 import { SPStory, TABStory } from '@/tests/storybook'
+import {
+  fixture as data,
+  noDataFixture as noData,
+} from '@/utils/exercise/getNormalizedStatData/fixture'
 
-import { Presentational } from '.'
+import Component from '.'
 
 export default {
-  component: Presentational,
+  component: Component,
   args: {
-    roundCountAverage: 3,
+    normalizedStatData: data,
     loading: false,
   },
   ...SPStory,
-} as Meta<typeof Presentational>
+} as Meta<typeof Component>
 
-type Story = StoryObj<typeof Presentational>
+type Story = StoryObj<typeof Component>
 
 export const Default: Story = {}
 
 export const Loading: Story = {
   args: {
     loading: true,
+  },
+}
+
+export const NoData: Story = {
+  args: {
+    normalizedStatData: noData,
   },
 }

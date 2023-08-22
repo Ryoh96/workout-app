@@ -26,6 +26,7 @@ const TestComponent = (props: Props) => {
         setIsOpen={setIsOpen}
         onCompleted={() => console.log('completed')}
         id={id}
+        defaultValue={props.defaultValue}
       />
       <Toast />
     </>
@@ -52,10 +53,18 @@ type Story = StoryObj<typeof TestComponent>
 
 export const Default: Story = {}
 
+export const Edit: Story = {
+  args: {
+    defaultValue: {
+      exercise: 'ダンベルプレス',
+    },
+  },
+}
+
 export const Loading: Story = {
   parameters: {
     msw: {
-      handlers: [handleRenameExercise({ status: 200 })],
+      handlers: [handleRenameExercise({ status: 200, loadingInfinite: true })],
     },
   },
 }

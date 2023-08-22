@@ -22,7 +22,7 @@ const ShowExerciseDetailModal = ({ isOpen, setIsOpen, id, name }: Props) => {
       closeModal={() => setIsOpen(false)}
       handlers={[
         {
-          name: '種目ページ',
+          name: '詳細を見る',
           handleClick: () => router.push(`/exercises/${id}`),
         },
         {

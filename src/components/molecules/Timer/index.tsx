@@ -47,7 +47,10 @@ const Timer = () => {
   }
 
   return (
-    <div className="flex justify-between items-center max-w-xl">
+    <div
+      className="flex justify-between items-center max-w-xl"
+      data-testid="timer"
+    >
       <ClockIcon className="w-6 h-6" />{' '}
       <span className="text-lg md:text-3xl">{formatTime(elapsedTime)}</span>
       <div className="flex gap-4">

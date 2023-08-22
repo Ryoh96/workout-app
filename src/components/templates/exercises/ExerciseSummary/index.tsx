@@ -98,10 +98,15 @@ export const Presentational = ({
           <p className="flex items-baseline justify-between">
             <span className="mr-2">・トレーニング回数:</span>
             {statLoading ? (
-              <Skeleton width={160} className="ml-2" />
+              <div data-testid="skelton">
+                <Skeleton width={160} className="ml-2" data-testid="skelton" />
+              </div>
             ) : (
               <span className="inline-flex items-center">
-                <span className="font-bold text-base mr-0.5">
+                <span
+                  className="font-bold text-base mr-0.5"
+                  data-testid="trainingNum"
+                >
                   {trainingNum}
                 </span>
                 回
@@ -111,13 +116,17 @@ export const Presentational = ({
           <p className="flex items-baseline justify-between">
             <span className="mr-2">・最終更新日: </span>
             {statLoading ? (
-              <Skeleton width={200} className="ml-2" />
+              <div data-testid="skelton">
+                <Skeleton width={200} className="ml-2" />
+              </div>
             ) : lastDate ? (
-              <span className="font-bold text-base">
+              <span className="font-bold text-base" data-testid="lastUpdatedAt">
                 {dateFormat(new Date(lastDate), true)}
               </span>
             ) : (
-              '--:--'
+              <span className="font-bold text-base" data-testid="lastUpdatedAt">
+                {'--:--'}
+              </span>
             )}
           </p>
         </div>

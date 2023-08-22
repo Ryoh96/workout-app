@@ -45,9 +45,11 @@ const RenameExerciseModal = ({
                   error: {
                     render({ data }) {
                       //@ts-ignore
-                      return `${data.message}`
+                      console.error(data.message)
+                      return `エラーが発生しました`
                     },
                   },
+
                   success: '登録完了',
                   pending: '登録中',
                 },

@@ -21,7 +21,7 @@ import { ManipulationError } from '@/utils/errors'
 
 type ContainerProps = { id: string } & React.ComponentPropsWithoutRef<'div'>
 
-const ExerciseMemoSectionContainer = forwardRef<HTMLDivElement, ContainerProps>(
+const ExerciseMemoSection = forwardRef<HTMLDivElement, ContainerProps>(
   function ExerciseMemoSection({ id }, ref) {
     const queryResult = useGetPinnedMemosByExercisesQuery({
       variables: { id },
@@ -92,6 +92,7 @@ export const Presentational = forwardRef<HTMLDivElement, PresentationalProps>(
           </TitleWithIcon>
           <div className="absolute -top-1 right-2">
             <DropDownWithButton
+              label="ヘルプ"
               icon={
                 <QuestionMarkCircleIcon className="text-indigo-800 w-6 h-6" />
               }
@@ -102,7 +103,7 @@ export const Presentational = forwardRef<HTMLDivElement, PresentationalProps>(
                 },
                 {
                   icon: <TrashIcon className="w-4 h-4 text-gray-600" />,
-                  name: 'メモの固定解除',
+                  name: 'メモの削除',
                 },
               ]}
             />
@@ -136,6 +137,7 @@ export const Presentational = forwardRef<HTMLDivElement, PresentationalProps>(
                                 }}
                               >
                                 <BookmarkIcon className="w-5 h-5  text-red-600 hover:text-red-400" />
+                                <span className="sr-only">固定</span>
                               </button>
                               <button
                                 onClick={() => {
@@ -144,6 +146,7 @@ export const Presentational = forwardRef<HTMLDivElement, PresentationalProps>(
                                 }}
                               >
                                 <TrashIcon className="w-5 h-5 text-orange-600 cursor-pointer hover:text-orange-400" />
+                                <span className="sr-only">削除</span>
                               </button>
                             </span>
                           </div>
@@ -166,4 +169,4 @@ export const Presentational = forwardRef<HTMLDivElement, PresentationalProps>(
   }
 )
 
-export default ExerciseMemoSectionContainer
+export default ExerciseMemoSection

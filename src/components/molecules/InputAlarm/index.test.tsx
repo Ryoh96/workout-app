@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event'
 import type { ReactNode } from 'react'
 import { useForm } from 'react-hook-form'
 
-import type { UpsertRoundInput } from '@/libs/schema/upsertRound'
+import type { SetAlarmInput } from '@/libs/schema/setAlarms'
 
 import InputTime from '.'
 
@@ -16,7 +16,7 @@ const TestComponent = (props: Props) => {
   const {
     register,
     formState: { errors },
-  } = useForm<UpsertRoundInput>()
+  } = useForm<SetAlarmInput>()
 
   return <InputTime register={register} errors={errors} {...props} />
 }

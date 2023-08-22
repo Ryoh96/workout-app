@@ -45,7 +45,10 @@ const SummarySection = ({ noteData, className, datetime }: Props) => {
                 <div className="whitespace-nowrap flex gap-2 items-baseline">
                   <p>
                     種目数:{' '}
-                    <span className="text-base font-bold">
+                    <span
+                      className="text-base font-bold"
+                      data-testid="totalTrainings"
+                    >
                       {summary.totalTrainings}
                     </span>
                   </p>{' '}

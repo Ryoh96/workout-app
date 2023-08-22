@@ -28,13 +28,19 @@ const getWeightGraphData = (
 
   const weightsDatasets = statPerRound?.map((rounds, index) => ({
     label: `${index + 1}set`,
-    data: rounds.map((round) => round.weight).slice(-span),
+    data:
+      span !== -1
+        ? rounds.map((round) => round.weight).slice(-span)
+        : rounds.map((round) => round.weight),
   }))
 
   const labels = weightsDatasets[0].data.map(() => '')
-  const dates = normalizedStatData
-    ?.map((data) => new Date(data.date as string))
-    .slice(-span)
+  const dates =
+    span !== -1
+      ? normalizedStatData
+          ?.map((data) => new Date(data.date as string))
+          .slice(-span)
+      : normalizedStatData?.map((data) => new Date(data.date as string))
 
   return [weightsDatasets, labels, dates] as const
 }

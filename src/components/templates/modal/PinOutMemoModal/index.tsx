@@ -42,7 +42,8 @@ const PinOutMemoModal = ({
                   error: {
                     render({ data }) {
                       //@ts-ignore
-                      return `${data.message}`
+                      console.error(data.message)
+                      return `エラーが発生しました`
                     },
                   },
                 },

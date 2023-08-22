@@ -10,7 +10,7 @@ const CheckedIcon = forwardRef<HTMLInputElement, Props>(function CheckedIcon(
   ref
 ) {
   return (
-    <span className="relative w-6 cursor-pointer inline-block">
+    <button className="relative w-6 cursor-pointer inline-block">
       <input
         id={props.id}
         type="checkbox"
@@ -18,10 +18,13 @@ const CheckedIcon = forwardRef<HTMLInputElement, Props>(function CheckedIcon(
         ref={ref}
         className="opacity-0 absolute peer z-10 top-0 left-0 w-full h-full cursor-pointer"
       />
-      <span className="text-gray-400 peer-checked:text-red-500 relative">
+      <span
+        className="text-gray-400 peer-checked:text-red-500 relative"
+        data-testid="icon"
+      >
         {icon}
       </span>
-    </span>
+    </button>
   )
 })
 

@@ -11,12 +11,20 @@ type Props = {
     link?: `/${string}`
     handleClick?: () => void
   }[]
+  label?: string
 }
 
-const DropDownWithButton = ({ icon, menuItems }: Props) => {
+const DropDownWithButton = ({ icon, menuItems, label }: Props) => {
   return (
-    <Menu as="div" className="relative mt-1 ml-auto text-right">
-      <Menu.Button>{icon}</Menu.Button>
+    <Menu
+      as="div"
+      className="relative mt-1 ml-auto text-right"
+      data-testid="menuButton"
+    >
+      <Menu.Button>
+        {icon}
+        <span className="sr-only">{label ? label : 'メニュー'}</span>
+      </Menu.Button>
       <Transition
         as={React.Fragment}
         enter="transition ease-out duration-100"
@@ -26,7 +34,10 @@ const DropDownWithButton = ({ icon, menuItems }: Props) => {
         leaveFrom="transform opacity-100 scale-100"
         leaveTo="transform opacity-0 scale-90"
       >
-        <Menu.Items className="absolute right-0   mt-2 w-56 bg-white text-black divide-y flex flex-col origin-top-right rounded-md ring-1 ring-black ring-opacity-5 focus:outline-none cursor-pointer">
+        <Menu.Items
+          className="absolute right-0   mt-2 w-56 bg-white text-black divide-y flex flex-col origin-top-right rounded-md ring-1 ring-black ring-opacity-5 focus:outline-none cursor-pointer"
+          data-testid="dropdown"
+        >
           {menuItems.map((item, index) => (
             <Menu.Item key={index}>
               {({ active, close }) => (

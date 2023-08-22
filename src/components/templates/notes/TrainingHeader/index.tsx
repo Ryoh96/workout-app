@@ -39,18 +39,26 @@ const TrainingHeader = () => {
           <div className="flex items-center justify-between  mx-auto">
             <button onClick={() => handleGetNoteByDate('prev')}>
               <ChevronLeftIcon className="w-5 h-5" />
+              <span className="sr-only">前の日付</span>
             </button>
-            <div
+            <button
               className="flex items-center gap-2 cursor-pointer"
               onClick={() => setIsOpenCalenderModal(true)}
             >
-              <p className="font-bold text-red-600 text-lg lg:text-xl">
+              <p
+                className="font-bold text-red-600 text-lg lg:text-xl"
+                data-testid="currentDate"
+              >
                 {formattedCurrentDate}
               </p>
-              <ChevronDownIcon className="w-4 h-4 mt-1" />
-            </div>
+              <ChevronDownIcon
+                className="w-4 h-4 mt-1"
+                aria-label="カレンダーを開く"
+              />
+            </button>
             <button onClick={() => handleGetNoteByDate('next')}>
               <ChevronRightIcon className="w-5 h-5" />
+              <span className="sr-only">次の日付</span>
             </button>
           </div>
         </div>

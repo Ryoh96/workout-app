@@ -4,10 +4,11 @@ import { useState } from 'react'
 import Spinner from '@/components/atoms/Spinner'
 import { DeleteMemoAtNoteModal } from '@/components/templates/modal/DeleteModal/DeleteMemoAtNoteModal'
 import type { GetNoteMemoQuery } from '@/graphql/generated/operations-csr'
+import useDeleteMemoAtModalStore from '@/store/modal/deleteMemoAtNoteModal'
 import useDeleteMemoModalStore from '@/store/modal/deleteMemoModal'
 import useNoteIdStore from '@/store/note/noteId'
 
-type Props = {
+export type Props = {
   data: GetNoteMemoQuery | undefined
   setDefaultValue: React.Dispatch<React.SetStateAction<string | undefined>>
   setIsOpenCreateMemoModal: React.Dispatch<React.SetStateAction<boolean>>
@@ -56,7 +57,7 @@ export const Presentational = ({
   setIsOpenCreateMemoModal,
   setDeleteMemoIndex,
 }: PresentationalProps) => {
-  const setIsOpenDeleteMemoModal = useDeleteMemoModalStore(
+  const setIsOpenDeleteMemoModal = useDeleteMemoAtModalStore(
     (state) => state.setIsOpen
   )
   return (
@@ -77,6 +78,7 @@ export const Presentational = ({
                   setEditMemoIndex(index)
                   setIsOpenCreateMemoModal(true)
                 }}
+                aria-label="編集"
               >
                 <PencilSquareIcon className="h-4 w-4 text-indigo-800" />
               </button>
@@ -85,6 +87,7 @@ export const Presentational = ({
                   setDeleteMemoIndex(index)
                   setIsOpenDeleteMemoModal(true)
                 }}
+                aria-label="削除"
               >
                 <TrashIcon className="h-4 w-4 text-indigo-800" />
               </button>

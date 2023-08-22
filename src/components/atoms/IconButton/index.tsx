@@ -11,7 +11,7 @@ const IconButton = ({ icon, text, ...props }: Props) => {
       className="text-orange-600 flex items-center hover:text-orange-400 gap-0.5"
       {...props}
     >
-      <div>{icon}</div>
+      <div data-testid="icon">{icon}</div>
       <span className="text-sm font-bold ">{text}</span>
     </button>
   )

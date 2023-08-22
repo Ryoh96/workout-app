@@ -16,10 +16,8 @@ import ShowMemoListModal from '.'
 
 type Props = ComponentProps<typeof ShowMemoListModal>
 
-const id = note.note?.id as string
 const TestComponent = (props: Props) => {
   const [isOpen, setIsOpen] = useState(false)
-  const [date, setCurrentDate] = useState(new Date())
   return (
     <>
       <Button onClick={() => setIsOpen(true)}>Click</Button>
@@ -63,7 +61,7 @@ export const Loading: Story = {
     msw: {
       handlers: [
         handleDeleteMemo(),
-        handleGetPinnedMemos({ status: 200 }),
+        handleGetPinnedMemos({ status: 200, loadingInfinite: true }),
         handlePinOutMemo(),
       ],
     },
@@ -78,6 +76,58 @@ export const LoadingError: Story = {
         handleDeleteMemo(),
         handleGetPinnedMemos({ status: 500 }),
         handlePinOutMemo(),
+      ],
+    },
+    ...SPStory,
+  },
+}
+
+export const DeletePending: Story = {
+  parameters: {
+    msw: {
+      handlers: [
+        handleDeleteMemo({ status: 200, loadingInfinite: true }),
+        handleGetPinnedMemos(),
+        handlePinOutMemo(),
+      ],
+    },
+    ...SPStory,
+  },
+}
+
+export const PinOutPending: Story = {
+  parameters: {
+    msw: {
+      handlers: [
+        handleDeleteMemo(),
+        handleGetPinnedMemos(),
+        handlePinOutMemo({ status: 200, loadingInfinite: true }),
+      ],
+    },
+    ...SPStory,
+  },
+}
+
+export const DeleteError: Story = {
+  parameters: {
+    msw: {
+      handlers: [
+        handleDeleteMemo({ status: 500 }),
+        handleGetPinnedMemos(),
+        handlePinOutMemo(),
+      ],
+    },
+    ...SPStory,
+  },
+}
+
+export const PinOutError: Story = {
+  parameters: {
+    msw: {
+      handlers: [
+        handleDeleteMemo(),
+        handleGetPinnedMemos(),
+        handlePinOutMemo({ status: 500 }),
       ],
     },
     ...SPStory,

@@ -1,5 +1,6 @@
 import { ApolloProvider } from '@apollo/client'
 import type { Meta, StoryObj } from '@storybook/react'
+import { SessionProvider } from 'next-auth/react'
 
 import { note } from '@/graphql/schema/queries/note/getNote/fixture'
 import { handleGetNoteMemo } from '@/graphql/schema/queries/note/getNoteMemo/msw'
@@ -18,7 +19,11 @@ export default {
     datetime: datetimeFormat(new Date()),
   },
   decorators: [
-    (story) => <ApolloProvider client={client}>{story()}</ApolloProvider>,
+    (story) => (
+      <SessionProvider>
+        <ApolloProvider client={client}>{story()}</ApolloProvider>
+      </SessionProvider>
+    ),
   ],
   parameters: {
     msw: {

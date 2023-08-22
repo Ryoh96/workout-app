@@ -60,9 +60,9 @@ export const Loading: Story = {
   parameters: {
     msw: {
       handlers: [
-        handleGetMaxWeight({ status: 200 }),
-        handleGetMaxToalLoad({ status: 200 }),
-        handleGetTrainingStat({ status: 200 }),
+        handleGetMaxWeight({ status: 200, loadingInfinite: true }),
+        handleGetMaxToalLoad({ status: 200, loadingInfinite: true }),
+        handleGetTrainingStat({ status: 200, loadingInfinite: true }),
       ],
     },
   },

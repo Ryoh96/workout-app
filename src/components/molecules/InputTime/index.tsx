@@ -32,6 +32,7 @@ const InputTime = ({ label, register, errors, info }: Props) => {
               type="number"
               {...register('minutes', { valueAsNumber: true })}
               error={errors.minutes?.message}
+              testPrefix="minutes"
             />
           </div>
           <span className="text-lg">:</span>
@@ -45,6 +46,7 @@ const InputTime = ({ label, register, errors, info }: Props) => {
               className="flex-auto"
               {...register('seconds', { valueAsNumber: true })}
               error={errors.seconds?.message}
+              testPrefix="seconds"
             />
           </div>
         </div>

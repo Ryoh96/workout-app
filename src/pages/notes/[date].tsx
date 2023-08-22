@@ -91,7 +91,7 @@ const Note: NextPage<Props> = ({ date: dateString }) => {
           <ChevronLeftIcon className="text-white w-6 h-6" />
         </button>
         <Title as="h1">ノート</Title>
-        <div className="z-50">
+        <div className="z-50" data-testid="noteMenu">
           <DropDownWithButton
             icon={<EllipsisHorizontalIcon className="text-white w-6 h-6" />}
             menuItems={[

@@ -51,7 +51,10 @@ const ExerciseHeader = ({
 
   return (
     <>
-      <div className="flex justify-between items-start border-b-2 pb-2">
+      <div
+        className="flex justify-between items-start border-b-2 pb-2"
+        data-testid="exercise-header"
+      >
         <span className="text-lg">{index + 1}.</span>
         <div
           className={`flex flex-col  items-center sticky top-0 bg-white bg-opacity-90 `}
@@ -83,7 +86,7 @@ const ExerciseHeader = ({
             </p>
           </div>
         </div>
-        <div className="z-[100]">
+        <div className="z-[100]" data-testid="trainingHeaderMenu">
           <DropDownWithButton
             icon={
               <EllipsisHorizontalIcon className="text-indigo-800 w-6 h-6" />

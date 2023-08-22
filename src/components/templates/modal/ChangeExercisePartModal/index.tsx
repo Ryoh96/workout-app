@@ -58,28 +58,34 @@ const ChangeExercisePartModal = ({
             partsOptions={partsOptions ?? []}
             selected={selected}
             onValid={async (data) => {
-              await toast.promise(
-                changeExercisePart({
-                  variables: {
-                    partId: data.part,
-                    exerciseId,
-                  },
-                }),
-                {
-                  error: {
-                    render({ data }) {
-                      //@ts-ignore
-                      return `${data.message}`
+              try {
+                await toast.promise(
+                  changeExercisePart({
+                    variables: {
+                      partId: data.part,
+                      exerciseId,
                     },
+                  }),
+                  {
+                    error: {
+                      render({ data }) {
+                        //@ts-ignore
+                        console.error(data.message)
+                        return 'エラーが発生しました'
+                      },
+                    },
+                    success: '登録完了',
+                    pending: '登録中',
                   },
-                  success: '登録完了',
-                  pending: '登録中',
-                },
-                {
-                  autoClose: 3000,
-                }
-              )
-              setIsOpen(false)
+                  {
+                    autoClose: 3000,
+                  }
+                )
+              } catch (error) {
+                console.error(error)
+              } finally {
+                setIsOpen(false)
+              }
             }}
             handleCancel={() => setIsOpen(false)}
           />

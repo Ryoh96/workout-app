@@ -108,6 +108,12 @@ export const trainingStat: GetTrainingStatQuery = {
           interval: 90,
           unit: 'KG',
         },
+        {
+          weight: 25,
+          repetition: 10,
+          interval: 90,
+          unit: 'KG',
+        },
       ],
       note: {
         date: '2023-06-11T00:00:00.000Z',
@@ -127,6 +133,12 @@ export const trainingStat: GetTrainingStatQuery = {
         {
           weight: 30,
           repetition: 12,
+          interval: 90,
+          unit: 'KG',
+        },
+        {
+          weight: 25,
+          repetition: 10,
           interval: 90,
           unit: 'KG',
         },
@@ -161,6 +173,12 @@ export const trainingStat: GetTrainingStatQuery = {
         {
           weight: 25,
           repetition: 10,
+          interval: 90,
+          unit: 'KG',
+        },
+        {
+          weight: 30,
+          repetition: 12,
           interval: 90,
           unit: 'KG',
         },
@@ -171,4 +189,8 @@ export const trainingStat: GetTrainingStatQuery = {
       totalLoad: 902,
     },
   ],
+}
+
+export const noData: GetTrainingStatQuery = {
+  trainingsStat: [],
 }

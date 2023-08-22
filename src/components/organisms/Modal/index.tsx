@@ -35,7 +35,12 @@ const Modal = ({
   return (
     <>
       <Transition appear show={isOpen} as={Fragment}>
-        <Dialog as="div" className="relative z-[9999]" onClose={closeModal!}>
+        <Dialog
+          as="div"
+          className="relative z-[9999]"
+          onClose={closeModal!}
+          data-testid="modal"
+        >
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"
@@ -79,6 +84,7 @@ const Modal = ({
                     </div>
                     <button onClick={closeModal}>
                       <XMarkIcon className="w-7 h-7" />
+                      <span className="sr-only">close</span>
                     </button>
                   </div>
                   <div className="mt-6">
