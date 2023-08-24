@@ -1,4 +1,4 @@
-import { useEffect, useId } from 'react'
+import { useId } from 'react'
 import type {
   FieldValues,
   SubmitErrorHandler,
@@ -6,10 +6,7 @@ import type {
 } from 'react-hook-form'
 
 import RoundForm from '@/components/templates/notes/RoundForm'
-import type {
-  GetPreviousTrainingsQuery,
-  Training,
-} from '@/graphql/generated/operations-type'
+import type { Training } from '@/graphql/generated/operations-type'
 import type { UpsertRoundInput } from '@/libs/schema/upsertRound'
 import { timeFormat } from '@/utils/dateFormat'
 

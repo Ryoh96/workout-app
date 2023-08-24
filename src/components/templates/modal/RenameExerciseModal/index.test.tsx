@@ -1,22 +1,11 @@
 import { ApolloProvider } from '@apollo/client'
-import {
-  cleanup,
-  render,
-  screen,
-  waitFor,
-  within,
-} from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import type { ReactNode } from 'react'
 import { useState } from 'react'
-import { toast } from 'react-toastify'
 
-import Button from '@/components/atoms/Button'
 import Toast from '@/components/atoms/Toast'
-import { handleAddExercisesByPart } from '@/graphql/schema/mutations/exercise/addExerciseByPart/msw'
 import { handleRenameExercise } from '@/graphql/schema/mutations/exercise/renameExercise/msw'
 import { note } from '@/graphql/schema/queries/note/getNote/fixture'
-import { allPartsName } from '@/graphql/schema/queries/part/getAllPartsName/fixture'
 import type { RenameExerciseInput } from '@/libs/schema/renameExercise'
 import { client, setupMockServer } from '@/tests/jest'
 
@@ -118,6 +107,6 @@ describe('RenameExerciseModal', () => {
     render(<TestComponent defaultValue={{ exercise }} />)
     await openModal()
     await register()
-    expect(await screen.findByText('エラーが発生しました')).toBeInTheDocument()
+    expect(await screen.findByText(/500/)).toBeInTheDocument()
   })
 })

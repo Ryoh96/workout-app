@@ -2,10 +2,8 @@ import { faChild, faDumbbell } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   ChevronLeftIcon,
-  ClockIcon,
   EllipsisHorizontalIcon,
 } from '@heroicons/react/24/solid'
-import { GraphQLClient } from 'graphql-request'
 import type { GetServerSideProps, NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
@@ -19,14 +17,14 @@ import TitleWithIcon from '@/components/molecules/TitleWithIcon'
 import DropDownWithButton from '@/components/organisms/DropDownWithButton'
 import ExerciseSummary from '@/components/templates/exercises/ExerciseSummary'
 import AddExerciseModal from '@/components/templates/modal/AddExerciseModal'
+import DeleteExerciseModal from '@/components/templates/modal/DeleteModal/DeleteExerciseModal'
 import ExerciseCountSection from '@/components/templates/part/ExerciseCountSection'
 import TotalLoadSection from '@/components/templates/part/TotalLoadSection'
 import {
   useGetExerciseNamesByPartLazyQuery,
-  useGetExerciseNamesByPartQuery,
   useGetPartNameQuery,
 } from '@/graphql/generated/operations-csr'
-import { getSdk } from '@/graphql/generated/operations-ssg'
+import { useDeleteExercise } from '@/hooks/pages/exercises/useDeleteExercise'
 import type { ComboBoxOption } from '@/types'
 
 type Props = {
@@ -43,6 +41,7 @@ const Parts: NextPage<Props> = ({ id }) => {
     },
   })
   const [isOpenAddExerciseModal, setIsOpenAddExerciseModal] = useState(false)
+  const [deleteExercise, setDeleteExercise] = useDeleteExercise()
   const router = useRouter()
   return (
     <>
@@ -113,9 +112,9 @@ const Parts: NextPage<Props> = ({ id }) => {
                   <ExerciseSummary
                     exercise={exercise}
                     index={index}
-                    onCompleted={() =>
-                      refetch({ partIds: `${data?.part?.id}` })
-                    }
+                    setDeleteExercise={(exercise) => {
+                      setDeleteExercise(exercise)
+                    }}
                   />
                 </div>
               ))}
@@ -132,6 +131,13 @@ const Parts: NextPage<Props> = ({ id }) => {
           partsOptions={[data.part] as ComboBoxOption[]}
           parts={data.part as ComboBoxOption}
           onCompleted={() => refetch({ partIds: data.part?.id as string })}
+        />
+      )}
+      {deleteExercise && data && (
+        <DeleteExerciseModal
+          deleteName={deleteExercise.name}
+          deleteId={deleteExercise.id}
+          onCompleted={() => refetch({ partIds: `${data.part!.id}` })}
         />
       )}
       <Toast />

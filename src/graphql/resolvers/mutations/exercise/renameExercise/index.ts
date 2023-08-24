@@ -27,6 +27,14 @@ export const renameExercise:
     throw new ManipulationError('アクセス権限がありません')
   }
 
+  const existingExercise = await prisma.exercise.findFirst({
+    where: { name, userId: currentUser.id },
+  })
+
+  if (existingExercise) {
+    throw new ManipulationError('既に同じ名前の種目が登録されています')
+  }
+
   return prisma.exercise.update({
     where: {
       id,

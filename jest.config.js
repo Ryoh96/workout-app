@@ -16,4 +16,5 @@ module.exports = createJestConfig({
   testMatch: ['**/?(*.)+(spec|test).[jt]s?(x)'],
   setupFilesAfterEnv: ['./jest.setup.js'],
   silent: true,
-})
+  testPathIgnorePatterns: ["<rootDir>/src/e2e/"],
+}) 

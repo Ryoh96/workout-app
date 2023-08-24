@@ -1,11 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react'
 
-import { SPStory, TABStory } from '@/tests/storybook'
+import { SPStory } from '@/tests/storybook'
 import {
   fixture,
   noDataFixture,
 } from '@/utils/exercise/getNormalizedStatData/fixture'
-import getRoundsAverage from '@/utils/exercise/getRoundsAverage'
 
 import Component from '.'
 

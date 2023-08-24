@@ -5,9 +5,7 @@ import { useState } from 'react'
 
 import Button from '@/components/atoms/Button'
 import Toast from '@/components/atoms/Toast'
-import { note } from '@/graphql/schema/queries/note/getNote/fixture'
 import { client } from '@/pages/_app'
-import { SPStory } from '@/tests/storybook'
 
 import SelectCalenderModal from '.'
 

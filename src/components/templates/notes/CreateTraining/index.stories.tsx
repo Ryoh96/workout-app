@@ -7,7 +7,6 @@ import { handleGetExerciseNamesByPart } from '@/graphql/schema/queries/exricise/
 import { note } from '@/graphql/schema/queries/note/getNote/fixture'
 import { allPartsName } from '@/graphql/schema/queries/part/getAllPartsName/fixture'
 import { client } from '@/pages/_app'
-import { SPStory } from '@/tests/storybook'
 
 import CreateTraining from '.'
 

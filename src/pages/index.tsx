@@ -45,7 +45,7 @@ const Home: NextPage = () => {
   const normalizedData = data?.notes?.map((note) => {
     return {
       title: dateFormat(new Date(note.date)) as string,
-      titleIcon: <FontAwesomeIcon icon={faClock} />,
+      titleIcon: <FontAwesomeIcon icon={faClock} className='text-red-700' />,
       content: (
         <div className="divide-y-2 divide-gray-100 space-y-3 ">
           <>

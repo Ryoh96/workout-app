@@ -4,7 +4,7 @@ import type {
   GetNoteQuery,
   Training,
 } from '@/graphql/generated/operations-type'
-import useAddRound from '@/hooks/pages/editNote/useAddRound'
+import useAddRound from '@/hooks/pages/note/useAddRound'
 import useDeleteTrainingModalStore from '@/store/modal/deleteTrainingModal'
 import useIsEditingStore from '@/store/note/isEditing'
 import useDeleteTrainingIdStore from '@/store/training/deleteTrainingId'

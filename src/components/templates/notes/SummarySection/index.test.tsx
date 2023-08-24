@@ -6,12 +6,14 @@ import React from 'react'
 import Toast from '@/components/atoms/Toast'
 import type { GetNoteQuery } from '@/graphql/generated/operations-type'
 import { note } from '@/graphql/schema/queries/note/getNote/fixture'
+import { handleGetNote } from '@/graphql/schema/queries/note/getNote/msw'
 import useNoteIdStore from '@/store/note/noteId'
 import { client, setupMockServer } from '@/tests/jest'
-import type { ComboBoxOption } from '@/types'
 import { datetimeFormat } from '@/utils/dateFormat'
 
 import SummarySection from '.'
+
+const server = setupMockServer(handleGetNote())
 
 const TestComponent = ({ noteData }: { noteData?: GetNoteQuery }) => {
   const setNoteId = useNoteIdStore((state) => state.setNoteId)
@@ -50,6 +52,6 @@ describe('SummarySection', () => {
   it('should display no data', async () => {
     render(<TestComponent />)
     expect(screen.getByText('要約')).toBeInTheDocument()
-    expect(await screen.getByText('ノートがありません')).toBeInTheDocument()
+    expect(await screen.getByText('トレーニングを追加してください')).toBeInTheDocument()
   })
 })

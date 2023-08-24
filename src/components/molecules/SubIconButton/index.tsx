@@ -1,4 +1,4 @@
-import { MinusCircleIcon, PlusCircleIcon } from '@heroicons/react/24/solid'
+import { MinusCircleIcon } from '@heroicons/react/24/solid'
 
 import IconButton from '@/components/atoms/IconButton'
 

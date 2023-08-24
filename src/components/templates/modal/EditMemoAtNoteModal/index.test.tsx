@@ -1,22 +1,16 @@
 import { ApolloProvider } from '@apollo/client'
 import { render, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { S } from 'msw/lib/glossary-de6278a9'
-import type { ReactNode } from 'react'
 import { useState } from 'react'
 
-import Button from '@/components/atoms/Button'
 import Toast from '@/components/atoms/Toast'
-import { handleAddExercisesByPart } from '@/graphql/schema/mutations/exercise/addExerciseByPart/msw'
 import { handleDeleteMemoAtNote } from '@/graphql/schema/mutations/note/deleteMemoAtNote/msw'
 import { handleUpsertMemoAtNote } from '@/graphql/schema/mutations/note/upsertMemoAtNote/msw'
 import { note } from '@/graphql/schema/queries/note/getNote/fixture'
 import { noteMemo } from '@/graphql/schema/queries/note/getNoteMemo/fixture'
 import { handleGetNoteMemo } from '@/graphql/schema/queries/note/getNoteMemo/msw'
-import { allPartsName } from '@/graphql/schema/queries/part/getAllPartsName/fixture'
 import useNoteIdStore from '@/store/note/noteId'
 import { client, setupMockServer } from '@/tests/jest'
-import type { ComboBoxOption } from '@/types'
 
 import EditMemoAtNoteModal from '.'
 

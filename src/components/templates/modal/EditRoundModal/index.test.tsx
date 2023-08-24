@@ -1,7 +1,6 @@
 import { ApolloProvider } from '@apollo/client'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { c } from 'msw/lib/glossary-de6278a9'
 
 import Toast from '@/components/atoms/Toast'
 import type { Round } from '@/graphql/generated/operations-type'

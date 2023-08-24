@@ -3,7 +3,7 @@ import {
   MagnifyingGlassCircleIcon,
 } from '@heroicons/react/24/solid'
 import clsx from 'clsx'
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import { toast } from 'react-toastify'
 
 import Spinner from '@/components/atoms/Spinner'

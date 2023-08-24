@@ -1,11 +1,10 @@
 import { faDumbbell } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useEffect, useMemo } from 'react'
+import { useEffect } from 'react'
 import Skeleton from 'react-loading-skeleton'
 import { toast } from 'react-toastify'
 
 import Spinner from '@/components/atoms/Spinner'
-import Title from '@/components/atoms/Title'
 import TitleWithIcon from '@/components/molecules/TitleWithIcon'
 import { LineChart } from '@/components/organisms/LineChart'
 import {

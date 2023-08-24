@@ -1,8 +1,7 @@
-import { findByRole, fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import React from 'react'
 
-import { LB_VALUE } from '@/constants'
 import {
   fixture as data,
   noDataFixture as noData,

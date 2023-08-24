@@ -1,4 +1,3 @@
-// import { DescriptionMessage } from "@/components/atoms/DescriptionMessage";
 import type { ComponentProps, ReactNode } from 'react'
 import { forwardRef, useId } from 'react'
 

@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react'
 
 import { unitOptions } from '@/constants'
-import { SPStory } from '@/tests/storybook'
 
 import SwitchWithLabel from '.'
 

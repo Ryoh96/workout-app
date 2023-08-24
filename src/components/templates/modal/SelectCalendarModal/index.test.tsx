@@ -1,27 +1,15 @@
 import { ApolloProvider } from '@apollo/client'
 import {
-  cleanup,
   render,
   screen,
-  waitFor,
-  within,
 } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { format } from 'date-fns'
-import ja from 'date-fns/locale/ja'
-import type { ReactNode } from 'react'
 import { useState } from 'react'
-import { toast } from 'react-toastify'
 
 import Toast from '@/components/atoms/Toast'
-import { handleAddExercisesByPart } from '@/graphql/schema/mutations/exercise/addExerciseByPart/msw'
 import { handleRenameExercise } from '@/graphql/schema/mutations/exercise/renameExercise/msw'
-import { note } from '@/graphql/schema/queries/note/getNote/fixture'
-import { allPartsName } from '@/graphql/schema/queries/part/getAllPartsName/fixture'
 import type { RenameExerciseInput } from '@/libs/schema/renameExercise'
-import useCurrentDateStore from '@/store/date/currentDate'
 import { client, setupMockServer } from '@/tests/jest'
-import { dateFormat } from '@/utils/dateFormat'
 
 import SelectCalendarModal from '.'
 

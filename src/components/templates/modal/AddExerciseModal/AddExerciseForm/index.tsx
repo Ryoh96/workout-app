@@ -4,7 +4,7 @@ import type {
   SubmitErrorHandler,
   SubmitHandler,
 } from 'react-hook-form'
-import { Controller, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 
 import Button from '@/components/atoms/Button'
 import InputCounter from '@/components/atoms/InputCounter'

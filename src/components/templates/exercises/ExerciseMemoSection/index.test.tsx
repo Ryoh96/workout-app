@@ -1,10 +1,8 @@
 import { ApolloProvider } from '@apollo/client'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { setupServer } from 'msw/node'
 import React from 'react'
 
-import Toast from '@/components/atoms/Toast'
 import { data as pinnedMemos } from '@/graphql/schema/queries/memo/getPinnedMemosByExercises/fixture'
 import { handleGetPinnedMemos } from '@/graphql/schema/queries/memo/getPinnedMemosByExercises/msw'
 import { client, setupMockServer } from '@/tests/jest'

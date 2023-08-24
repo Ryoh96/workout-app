@@ -7,7 +7,7 @@ import { DeleteRoundModal } from '@/components/templates/modal/DeleteModal/Delet
 import EditRoundModal from '@/components/templates/modal/EditRoundModal'
 import type { GetNoteQuery } from '@/graphql/generated/operations-type'
 import { note } from '@/graphql/schema/queries/note/getNote/fixture'
-import { client, setupMockServer } from '@/tests/jest'
+import { client } from '@/tests/jest'
 
 import TrainingItem from '.'
 

@@ -1,6 +1,6 @@
 import clsx from 'clsx'
 import type { ReactNode } from 'react'
-import { forwardRef, useId, useRef } from 'react'
+import { forwardRef, useId } from 'react'
 
 import CheckedIcon from '@/components/atoms/CheckIcon'
 

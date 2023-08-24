@@ -1,10 +1,9 @@
-import { ApolloClient, ApolloProvider } from '@apollo/client'
+import { ApolloProvider } from '@apollo/client'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import React from 'react'
 
-import { DeleteTrainingModal } from '@/components/templates/modal/DeleteModal/DeleteTrainingModal'
-import type { Part, Training } from '@/graphql/generated/operations-type'
+import type { Training } from '@/graphql/generated/operations-type'
 import { note } from '@/graphql/schema/queries/note/getNote/fixture'
 import { client } from '@/tests/jest'
 

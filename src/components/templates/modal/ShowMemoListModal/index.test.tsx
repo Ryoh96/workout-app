@@ -1,18 +1,14 @@
 import { ApolloProvider } from '@apollo/client'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { c } from 'msw/lib/glossary-de6278a9'
 import { useState } from 'react'
 
 import Toast from '@/components/atoms/Toast'
 import type { Round } from '@/graphql/generated/operations-type'
 import { handleDeleteMemo } from '@/graphql/schema/mutations/memo/deleteMemo/msw'
 import { handlePinOutMemo } from '@/graphql/schema/mutations/memo/pinOutMemo/msw'
-import { handleEditRound } from '@/graphql/schema/mutations/round/editRoundInput/msw'
 import { data } from '@/graphql/schema/queries/memo/getPinnedMemosByExercises/fixture'
 import { handleGetPinnedMemos } from '@/graphql/schema/queries/memo/getPinnedMemosByExercises/msw'
-import { note } from '@/graphql/schema/queries/note/getNote/fixture'
-import useEditRoundStore from '@/store/round/editRound'
 import { client, setupMockServer } from '@/tests/jest'
 import { dateFormat } from '@/utils/dateFormat'
 

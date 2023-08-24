@@ -109,10 +109,10 @@ const EditRoundModal = ({ onCompleted }: Props) => {
             repetition: editedRound?.repetition,
             minutes: editedRound?.interval
               ? Math.floor(editedRound?.interval / 60)
-              : 0,
+              : undefined,
             seconds: editedRound?.interval
               ? Math.floor(editedRound?.interval % 60)
-              : 0,
+              : undefined,
             memo: editedRound?.memo?.content,
             pin: editedRound?.memo?.pin ?? false,
           }}

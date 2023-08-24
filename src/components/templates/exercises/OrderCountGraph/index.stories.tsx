@@ -1,10 +1,9 @@
 import { ApolloProvider } from '@apollo/client'
 import type { Meta, StoryObj } from '@storybook/react'
 
-import { datasets, labels } from '@/components/organisms/PieChart/index.stories'
 import { handleGetAllTrainingsInNote } from '@/graphql/schema/queries/training/getAllTrainingsInNote/msw'
 import { client } from '@/pages/_app'
-import { SPStory, TABStory } from '@/tests/storybook'
+import { SPStory } from '@/tests/storybook'
 
 import Component from '.'
 

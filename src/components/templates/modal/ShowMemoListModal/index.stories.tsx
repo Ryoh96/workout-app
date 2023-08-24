@@ -8,7 +8,6 @@ import Toast from '@/components/atoms/Toast'
 import { handleDeleteMemo } from '@/graphql/schema/mutations/memo/deleteMemo/msw'
 import { handlePinOutMemo } from '@/graphql/schema/mutations/memo/pinOutMemo/msw'
 import { handleGetPinnedMemos } from '@/graphql/schema/queries/memo/getPinnedMemosByExercises/msw'
-import { note } from '@/graphql/schema/queries/note/getNote/fixture'
 import { client } from '@/pages/_app'
 import { SPStory } from '@/tests/storybook'
 

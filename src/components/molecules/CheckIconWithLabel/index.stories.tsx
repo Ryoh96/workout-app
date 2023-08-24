@@ -1,8 +1,6 @@
 import { BookmarkIcon } from '@heroicons/react/24/solid'
 import type { Meta, StoryObj } from '@storybook/react'
 
-import { SPStory } from '@/tests/storybook'
-
 import CheckedIconWithLabel from '.'
 
 export default {

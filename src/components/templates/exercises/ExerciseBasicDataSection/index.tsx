@@ -1,5 +1,4 @@
 import { ChartBarIcon, ClockIcon } from '@heroicons/react/24/solid'
-import { id } from 'date-fns/locale'
 import { forwardRef, useEffect } from 'react'
 import { toast } from 'react-toastify'
 

@@ -1,9 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import { useForm } from 'react-hook-form'
 
 import EmphasizedText from '@/components/atoms/EmphasizedText'
-import InputCounter from '@/components/atoms/InputCounter'
-import { SPStory } from '@/tests/storybook'
 
 import TextAreaWithInfo from '.'
 

@@ -4,9 +4,7 @@ import type { ComponentProps } from 'react'
 
 import Button from '@/components/atoms/Button'
 import Toast from '@/components/atoms/Toast'
-import type { Exercise } from '@/graphql/generated/operations-type'
 import { handleDeleteExercise } from '@/graphql/schema/mutations/exercise/deleteExercise/msw'
-import { note } from '@/graphql/schema/queries/note/getNote/fixture'
 import { client } from '@/pages/_app'
 import useDeleteExerciseModalStore from '@/store/modal/deleteExerciseModal'
 import { SPStory } from '@/tests/storybook'
@@ -25,6 +23,7 @@ const TestComponent = (props: Props) => {
       <DeleteExerciseModal
         onCompleted={() => console.log('completed')}
         deleteId="hoge"
+        deleteName="fuga"
       />
       <Toast />
     </>

@@ -1,13 +1,9 @@
 import { ApolloProvider } from '@apollo/client'
-import { render, screen, within } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
+import { render, screen } from '@testing-library/react'
 import React from 'react'
 
-import { DeleteRoundModal } from '@/components/templates/modal/DeleteModal/DeleteRoundModal'
-import EditRoundModal from '@/components/templates/modal/EditRoundModal'
-import type { GetNoteQuery } from '@/graphql/generated/operations-type'
 import { note } from '@/graphql/schema/queries/note/getNote/fixture'
-import { client, setupMockServer } from '@/tests/jest'
+import { client } from '@/tests/jest'
 
 import TrainingList from '.'
 

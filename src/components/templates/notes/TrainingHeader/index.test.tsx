@@ -23,15 +23,15 @@ describe('TrainingHeader', () => {
   })
   it('should change currentDate when click chevron button', async () => {
     render(<TrainingHeader />)
-    await user.click(screen.getByRole('button', { name: '前の日付へ' }))
+    await user.click(screen.getByRole('button', { name: '前の日付' }))
     expect(screen.getByTestId('currentDate').textContent).toBe(
       dateFormat(subDays(new Date(), 1))
     )
-    await user.click(screen.getByRole('button', { name: '次の日付へ' }))
+    await user.click(screen.getByRole('button', { name: '次の日付' }))
     expect(screen.getByTestId('currentDate').textContent).toBe(
       dateFormat(new Date())
     )
-    await user.click(screen.getByRole('button', { name: '次の日付へ' }))
+    await user.click(screen.getByRole('button', { name: '次の日付' }))
     expect(screen.getByTestId('currentDate').textContent).toBe(
       dateFormat(addDays(new Date(), 1))
     )

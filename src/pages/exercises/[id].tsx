@@ -7,7 +7,7 @@ import {
 } from '@heroicons/react/24/solid'
 import type { GetServerSideProps, NextPage } from 'next'
 import { useRouter } from 'next/router'
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { toast } from 'react-toastify'
 
 import Spinner from '@/components/atoms/Spinner'
@@ -25,12 +25,9 @@ import TotalLoadGraph from '@/components/templates/exercises/TotalLoadGraph'
 import WeightsGraph from '@/components/templates/exercises/WeightsGraph'
 import ChangeExercisePartModal from '@/components/templates/modal/ChangeExercisePartModal'
 import RenameExerciseModal from '@/components/templates/modal/RenameExerciseModal'
-import {
-  useGetExerciseQuery,
-  useGetTrainingStatQuery,
-} from '@/graphql/generated/operations-csr'
+import { useGetExerciseQuery } from '@/graphql/generated/operations-csr'
+import { useTrainingStat } from '@/hooks/pages/exercises/useTrainingStat'
 import { ManipulationError } from '@/utils/errors'
-import getNormalizedStatData from '@/utils/exercise/getNormalizedStatData'
 
 type Props = {
   id: string
@@ -49,24 +46,8 @@ const Exercise: NextPage<Props> = ({ id }) => {
       if (error instanceof ManipulationError) toast.error(error.message)
     },
   })
-  const {
-    data: statData,
-    loading: statLoading,
-    refetch: statDataRefetch,
-  } = useGetTrainingStatQuery({
-    variables: {
-      exerciseId: id,
-    },
-    onError: (error) => {
-      if (error instanceof ManipulationError) toast.error(error.message)
-    },
-  })
 
-  useEffect(() => {
-    statDataRefetch()
-  }, [statDataRefetch])
-
-  const normalizedStatData = getNormalizedStatData(statData)
+  const [normalizedStatData, statLoading] = useTrainingStat(id)
 
   const router = useRouter()
 

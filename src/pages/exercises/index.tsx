@@ -9,7 +9,6 @@ import {
 import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
-import { toast } from 'react-toastify'
 
 import Spinner from '@/components/atoms/Spinner'
 import Title from '@/components/atoms/Title'
@@ -20,51 +19,19 @@ import TitleWithIcon from '@/components/molecules/TitleWithIcon'
 import DropDownWithButton from '@/components/organisms/DropDownWithButton'
 import ExerciseSummary from '@/components/templates/exercises/ExerciseSummary'
 import AddExerciseModal from '@/components/templates/modal/AddExerciseModal'
-import {
-  useGetAllPartsNameQuery,
-  useGetExerciseNamesByPartLazyQuery,
-} from '@/graphql/generated/operations-csr'
-import type { ComboBoxOption } from '@/types'
-import { ManipulationError } from '@/utils/errors'
+import DeleteExerciseModal from '@/components/templates/modal/DeleteModal/DeleteExerciseModal'
+import { useDeleteExercise } from '@/hooks/pages/exercises/useDeleteExercise'
+import { useExerciseSummaryByParts } from '@/hooks/pages/exercises/useExerciseSummaryByParts'
 
 type Props = {}
 
 const Exercises: NextPage<Props> = ({}) => {
-  const [getExerciseName, { data: getExerciseNameData, loading, refetch }] =
-    useGetExerciseNamesByPartLazyQuery({
-      onError: (error) => {
-        if (error instanceof ManipulationError) toast.error(error.message)
-      },
-    })
-  const [parts, setParts] = useState<ComboBoxOption | undefined>(undefined)
-
-  const { data: partsData } = useGetAllPartsNameQuery({
-    onCompleted: (result) => {
-      getExerciseName({ variables: { partIds: `${result.parts?.[0].id}` } })
-      setParts(result.parts?.[0])
-    },
-  })
-
-  const partsOptions = partsData?.parts ?? ([] as ComboBoxOption[])
-
-  const handleChange = async (id: string) => {
-    try {
-      const part = partsOptions.find((part) => part.id === id)
-      if (!part) throw new ManipulationError('パーツが見つかりません')
-      setParts(part)
-      await refetch({
-        partIds: `${id}`,
-      })
-    } catch (error) {
-      if (error instanceof ManipulationError) {
-        toast.error(error.message)
-        console.error(error)
-      }
-    }
-  }
+  const [getExerciseNameData, parts, partsOptions, handleChange, refetch] =
+    useExerciseSummaryByParts()
   const [isOpenAddExerciseModal, setIsOpenAddExerciseModal] = useState(false)
-
+  const [deleteExercise, setDeleteExercise] = useDeleteExercise()
   const router = useRouter()
+
   return (
     <>
       <div className="flex justify-between px-3">
@@ -158,7 +125,9 @@ const Exercises: NextPage<Props> = ({}) => {
                   <ExerciseSummary
                     exercise={exercise}
                     index={index}
-                    onCompleted={() => refetch({ partIds: `${parts.id}` })}
+                    setDeleteExercise={(exercise) => {
+                      setDeleteExercise(exercise)
+                    }}
                   />
                 </div>
               ))}
@@ -175,6 +144,13 @@ const Exercises: NextPage<Props> = ({}) => {
           partsOptions={partsOptions}
           parts={parts}
           onCompleted={() => refetch({ partIds: parts.id as string })}
+        />
+      )}
+      {deleteExercise && (
+        <DeleteExerciseModal
+          deleteName={deleteExercise.name}
+          deleteId={deleteExercise.id}
+          onCompleted={() => refetch({ partIds: `${parts!.id}` })}
         />
       )}
       <Toast />

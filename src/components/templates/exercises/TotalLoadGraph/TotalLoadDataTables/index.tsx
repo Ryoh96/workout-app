@@ -1,4 +1,3 @@
-import HorizontalTable from '@/components/molecules/HorizontalTable'
 import { dateFormat } from '@/utils/dateFormat'
 import transposeMatrix from '@/utils/transposeMatrix'
 

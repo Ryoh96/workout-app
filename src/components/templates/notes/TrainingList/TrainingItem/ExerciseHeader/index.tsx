@@ -10,7 +10,6 @@ import {
 import { useState } from 'react'
 
 import Tag from '@/components/atoms/Tag'
-import Title from '@/components/atoms/Title'
 import DropDownWithButton from '@/components/organisms/DropDownWithButton'
 import ChangeExercisePartModal from '@/components/templates/modal/ChangeExercisePartModal'
 import RenameExerciseModal from '@/components/templates/modal/RenameExerciseModal'

@@ -6,9 +6,10 @@ import DeleteModal from '..'
 type Props = {
   onCompleted: () => void
   deleteId: string
+  deleteName: string
 }
 
-const DeleteExerciseModal = ({ onCompleted, deleteId }: Props) => {
+const DeleteExerciseModal = ({ onCompleted, deleteId, deleteName }: Props) => {
   const [deleteExercise] = useDeleteExerciseMutation({
     onCompleted,
   })
@@ -19,7 +20,7 @@ const DeleteExerciseModal = ({ onCompleted, deleteId }: Props) => {
   }))
   return (
     <DeleteModal
-      title="種目"
+      title={deleteName}
       deleteMutation={async () =>
         await deleteExercise({
           variables: { id: deleteId },

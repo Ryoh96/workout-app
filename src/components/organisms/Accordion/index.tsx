@@ -1,7 +1,7 @@
 import { Disclosure, Transition } from '@headlessui/react'
 import { ChevronDownIcon } from '@heroicons/react/24/solid'
 import type { ReactNode } from 'react'
-import { forwardRef, useRef, useState } from 'react'
+import { forwardRef } from 'react'
 
 import Tag from '@/components/atoms/Tag'
 

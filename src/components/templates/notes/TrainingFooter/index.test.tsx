@@ -4,14 +4,9 @@ import userEvent from '@testing-library/user-event'
 import React from 'react'
 
 import Toast from '@/components/atoms/Toast'
-import { allPartsName } from '@/graphql/schema/queries/part/getAllPartsName/fixture'
-import { client, setupMockServer } from '@/tests/jest'
-import type { ComboBoxOption } from '@/types'
+import { client } from '@/tests/jest'
 
 import TrainingFooter from '.'
-
-const partsOptions = allPartsName.parts as ComboBoxOption[]
-const existingTrainings = new Set('')
 
 const user = userEvent.setup()
 

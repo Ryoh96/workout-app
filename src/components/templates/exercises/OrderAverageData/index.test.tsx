@@ -1,9 +1,8 @@
 import { ApolloProvider } from '@apollo/client'
-import { findByRole, fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import React from 'react'
 
-import type { GetAllTrainingsInNoteQuery } from '@/graphql/generated/operations-csr'
 import { data } from '@/graphql/schema/queries/training/getAllTrainingsInNote/fixture'
 import { handleGetAllTrainingsInNote } from '@/graphql/schema/queries/training/getAllTrainingsInNote/msw'
 import { client, setupMockServer } from '@/tests/jest'

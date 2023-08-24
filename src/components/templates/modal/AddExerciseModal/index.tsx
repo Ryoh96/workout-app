@@ -49,8 +49,7 @@ const AddExerciseModal = ({
                   error: {
                     render({ data }) {
                       //@ts-ignore
-                      console.error(data.message)
-                      return `エラーが発生しました`
+                      return data.message
                     },
                   },
                   success: '登録完了',

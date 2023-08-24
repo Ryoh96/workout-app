@@ -23,13 +23,13 @@ const exercise = exerciseNamesByParts[0].part?.exercises?.[index] as {
 describe('ExerciseSummary loading', () => {
   it('should display noData when data is empty', async () => {
     server.use(handleGetTrainingStat({ status: 204 }))
-    const onCompleted = jest.fn()
+    const setDeleteExercise = jest.fn()
     render(
       <ApolloProvider client={client}>
         <ExerciseSummary
           exercise={exercise}
           index={index}
-          onCompleted={onCompleted}
+          setDeleteExercise={setDeleteExercise}
         />
       </ApolloProvider>
     )
@@ -40,13 +40,13 @@ describe('ExerciseSummary loading', () => {
 
 describe('ExerciseSummary', () => {
   it('should render props', async () => {
-    const onCompleted = jest.fn()
+    const setDeleteExercise = jest.fn()
     render(
       <ApolloProvider client={client}>
         <ExerciseSummary
           exercise={exercise}
           index={index}
-          onCompleted={onCompleted}
+          setDeleteExercise={setDeleteExercise}
         />
       </ApolloProvider>
     )
@@ -64,13 +64,13 @@ describe('ExerciseSummary', () => {
 
   it('should display skelton when loading', async () => {
     server.use(handleGetTrainingStat({ status: 200 }))
-    const onCompleted = jest.fn()
+    const setDeleteExercise = jest.fn()
     render(
       <ApolloProvider client={client}>
         <ExerciseSummary
           exercise={exercise}
           index={index}
-          onCompleted={onCompleted}
+          setDeleteExercise={setDeleteExercise}
         />
       </ApolloProvider>
     )

@@ -58,6 +58,8 @@ export const maxWeight:
   }
 
   let maxWeight = trainings[0].rounds[0].weight
+  let maxWeightIndex = 0
+  let currentIndex = 0
 
   for (const training of trainings) {
     for (let i = 0; i < training.rounds.length; i++) {
@@ -67,11 +69,13 @@ export const maxWeight:
       )
       if (weight > maxWeight) {
         maxWeight = weight
+        maxWeightIndex = currentIndex
       }
     }
+    currentIndex++
   }
 
-  const noteId = trainings[0].noteId
+  const noteId = trainings[maxWeightIndex].noteId
   const data = await prisma.note.findUnique({ where: { id: noteId } })
   const createdAt = data?.date
 

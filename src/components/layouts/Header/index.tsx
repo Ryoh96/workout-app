@@ -23,7 +23,7 @@ const Header = () => {
           {status === 'authenticated' ? (
             <IconMenuButton {...userIconMenuProps} />
           ) : status === 'loading' ? (
-            <span className='text-base'>ログイン中</span>
+            <span className="text-base">ログイン中</span>
           ) : (
             <button
               className="flex items-center text-sm gap-2"

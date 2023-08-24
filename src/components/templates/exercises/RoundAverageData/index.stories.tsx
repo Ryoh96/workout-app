@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react'
 
-import { SPStory, TABStory } from '@/tests/storybook'
+import { SPStory } from '@/tests/storybook'
 import {
   fixture as data,
   noDataFixture as noData,

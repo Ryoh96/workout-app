@@ -1,7 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
 
-import { SPStory } from '@/tests/storybook'
-
 import Title from '.'
 
 export default {

@@ -1,17 +1,8 @@
 import { ApolloProvider } from '@apollo/client'
-import {
-  cleanup,
-  render,
-  screen,
-  waitFor,
-  within,
-} from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import type { ReactNode } from 'react'
 import { useState } from 'react'
-import { toast } from 'react-toastify'
 
-import Button from '@/components/atoms/Button'
 import Toast from '@/components/atoms/Toast'
 import { handleAddExercisesByPart } from '@/graphql/schema/mutations/exercise/addExerciseByPart/msw'
 import { allPartsName } from '@/graphql/schema/queries/part/getAllPartsName/fixture'
@@ -118,6 +109,6 @@ describe('AddExercise', () => {
     await openModal()
     await type('12345')
     await register()
-    expect(await screen.findByText('エラーが発生しました')).toBeInTheDocument()
+    expect(await screen.findByText(/500/)).toBeInTheDocument()
   })
 })

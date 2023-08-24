@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import type { ReactNode } from 'react'
-import { useReducer, useState } from 'react'
+import { useState } from 'react'
 
 import Button from '@/components/atoms/Button'
 

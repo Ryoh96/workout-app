@@ -8,7 +8,6 @@ import Modal from '@/components/organisms/Modal'
 import {
   useChangeExercisePartMutation,
   useGetAllPartsNameQuery,
-  useRenameExerciseMutation,
 } from '@/graphql/generated/operations-csr'
 import type { RenameExerciseInput } from '@/libs/schema/renameExercise'
 import type { ComboBoxOption } from '@/types'

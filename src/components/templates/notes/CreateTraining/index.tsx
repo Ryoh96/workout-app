@@ -1,7 +1,6 @@
 import { faDumbbell } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
-  EllipsisHorizontalIcon,
   EllipsisVerticalIcon,
   PlusIcon,
   TrashIcon,
@@ -12,16 +11,13 @@ import { toast } from 'react-toastify'
 import Button from '@/components/atoms/Button'
 import Spinner from '@/components/atoms/Spinner'
 import Section from '@/components/layouts/Section'
-import AddIconButton from '@/components/molecules/AddIconButton'
 import SelectBoxWithLabel from '@/components/molecules/SelectBoxWithLabel'
-import SubIconButton from '@/components/molecules/SubIconButton'
 import TitleWithIcon from '@/components/molecules/TitleWithIcon'
 import ComboBox from '@/components/organisms/ComboBox'
 import DropDownWithButton from '@/components/organisms/DropDownWithButton'
 import AddExerciseModal from '@/components/templates/modal/AddExerciseModal'
-import { useRemoveTrainingMutation } from '@/graphql/generated/operations-csr'
-import useCreateTraining from '@/hooks/pages/editNote/useCreateTraining'
-import useExerciseName from '@/hooks/pages/editNote/useExerciseName'
+import useCreateTraining from '@/hooks/pages/note/useCreateTraining'
+import useExerciseName from '@/hooks/pages/note/useExerciseName'
 import useDeleteExerciseModalStore from '@/store/modal/deleteExerciseModal'
 import useNoteIdStore from '@/store/note/noteId'
 import type { ComboBoxOption } from '@/types'
@@ -189,9 +185,9 @@ const CreateTraining = ({
       />
       {exercise && (
         <DeleteExerciseModal
+          deleteName={exercise.name}
           deleteId={exercise.id as string}
           onCompleted={() => {
-            console.log('piyo')
             setExercise(null)
             setExerciseOptions((prev) =>
               prev.filter((exerciseOption) => exerciseOption.id !== exercise.id)

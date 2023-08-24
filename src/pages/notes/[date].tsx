@@ -26,12 +26,10 @@ import TrainingHeader from '@/components/templates/notes/TrainingHeader'
 import TrainingList from '@/components/templates/notes/TrainingList'
 import TrainingsDataSection from '@/components/templates/notes/TrainingsDataSection'
 import TrainingsMemoSection from '@/components/templates/notes/TrainingsMemoSection'
-import {
-  useGetAllPartsNameQuery,
-  useGetNoteQuery,
-} from '@/graphql/generated/operations-csr'
+import { useGetAllPartsNameQuery } from '@/graphql/generated/operations-csr'
 import useCurrentDate from '@/hooks/common/useCurrentDate'
-import { useCreateNote } from '@/hooks/pages/editNote/useCreateNote'
+import { useCreateNote } from '@/hooks/pages/note/useCreateNote'
+import { useGetNote } from '@/hooks/pages/note/useGetNote'
 import useDeleteNoteModalStore from '@/store/modal/deleteNoteModal'
 import useNoteIdStore from '@/store/note/noteId'
 import useLastTrainingIdStore from '@/store/training/lastTrainingId'
@@ -44,10 +42,8 @@ type Props = {
 
 const Note: NextPage<Props> = ({ date: dateString }) => {
   const { status } = useSession()
-
   const date = useMemo(() => new Date(dateString), [dateString])
   useCurrentDate(date)
-
   const { noteId, setNoteId } = useNoteIdStore((state) => ({
     noteId: state.noteId,
     setNoteId: state.setNoteId,
@@ -56,29 +52,8 @@ const Note: NextPage<Props> = ({ date: dateString }) => {
   const setIsOpenDeleteNoteModal = useDeleteNoteModalStore(
     (state) => state.setIsOpen
   )
-
   const { data: partsData, loading: partsLoading } = useGetAllPartsNameQuery()
-
-  const {
-    data: noteData,
-    loading: noteDataLoading,
-    refetch,
-  } = useGetNoteQuery({
-    variables: {
-      date: new Date(date).toISOString(),
-    },
-    onCompleted: (data) => {
-      setNoteId(data.note?.id ?? null)
-    },
-    onError: (error) => {
-      if (error instanceof ManipulationError) {
-        toast.error(error.message)
-        return
-      }
-      console.error(error)
-    },
-  })
-
+  const [noteData, noteDataLoading, refetch] = useGetNote(date, setNoteId)
   const { handleCreateNote, createNoteLoading } = useCreateNote(setNoteId, () =>
     refetch({ date: date.toISOString() })
   )

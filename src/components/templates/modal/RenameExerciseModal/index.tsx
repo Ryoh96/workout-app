@@ -4,6 +4,7 @@ import { toast } from 'react-toastify'
 import Modal from '@/components/organisms/Modal'
 import { useRenameExerciseMutation } from '@/graphql/generated/operations-csr'
 import type { RenameExerciseInput } from '@/libs/schema/renameExercise'
+import { ManipulationError } from '@/utils/errors'
 
 import RenameExerciseForm from './RenameExerciseForm'
 
@@ -45,8 +46,7 @@ const RenameExerciseModal = ({
                   error: {
                     render({ data }) {
                       //@ts-ignore
-                      console.error(data.message)
-                      return `エラーが発生しました`
+                    return data.message
                     },
                   },
 

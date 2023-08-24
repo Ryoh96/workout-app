@@ -1,5 +1,4 @@
 import { render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
 
 import { trainingStat } from '@/graphql/schema/queries/training/getTrainingStat/fixture'
@@ -9,7 +8,6 @@ import ExerciseNoteSection from '.'
 
 const data = trainingStat
 const normalizedData = getNormalizedStatData(data)
-const user = userEvent.setup()
 
 describe('ExerciseNoteSection correct case', () => {
   it('should render values when correct case', async () => {

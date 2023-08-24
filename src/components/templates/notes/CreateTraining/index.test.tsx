@@ -4,7 +4,6 @@ import userEvent from '@testing-library/user-event'
 import React from 'react'
 
 import { handleGetExerciseNamesByPart } from '@/graphql/schema/queries/exricise/getExerciseNamesByPart/msw'
-import { note as noteData } from '@/graphql/schema/queries/note/getNote/fixture'
 import { allPartsName } from '@/graphql/schema/queries/part/getAllPartsName/fixture'
 import { client, setupMockServer } from '@/tests/jest'
 import type { ComboBoxOption } from '@/types'

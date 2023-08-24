@@ -1,5 +1,5 @@
-import type { ReactNode, RefObject } from 'react'
-import { createRef, useMemo, useRef, useState } from 'react'
+import type { ReactNode } from 'react'
+import { useMemo, useState } from 'react'
 
 import Accordion from '../Accordion'
 

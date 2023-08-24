@@ -1,25 +1,12 @@
 import { ApolloProvider } from '@apollo/client'
-import {
-  findByAltText,
-  findByText,
-  fireEvent,
-  render,
-  screen,
-  waitFor,
-  within,
-} from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import type { ReactNode } from 'react'
 import { useState } from 'react'
 
 import Toast from '@/components/atoms/Toast'
 import type { Exercise } from '@/graphql/generated/operations-type'
-import { handleAddExercisesByPart } from '@/graphql/schema/mutations/exercise/addExerciseByPart/msw'
-import { handleChangeExercisePart } from '@/graphql/schema/mutations/exercise/changeExercisePart/msw'
 import { handlePinOutMemo } from '@/graphql/schema/mutations/memo/pinOutMemo/msw'
 import { note } from '@/graphql/schema/queries/note/getNote/fixture'
-import { allPartsName } from '@/graphql/schema/queries/part/getAllPartsName/fixture'
-import { handleGetAllPartName } from '@/graphql/schema/queries/part/getAllPartsName/msw'
 import { client, setupMockServer } from '@/tests/jest'
 
 import PinOutMemoModal from '.'

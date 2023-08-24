@@ -11,26 +11,26 @@ import Skeleton from 'react-loading-skeleton'
 import { toast } from 'react-toastify'
 
 import DropDownWithButton from '@/components/organisms/DropDownWithButton'
-import DeleteExerciseModal from '@/components/templates/modal/DeleteModal/DeleteExerciseModal'
 import { useGetTrainingStatQuery } from '@/graphql/generated/operations-csr'
-import useDeleteExerciseModalStore from '@/store/modal/deleteExerciseModal'
 import { dateFormat } from '@/utils/dateFormat'
 import { ManipulationError } from '@/utils/errors'
 import getNormalizedStatData from '@/utils/exercise/getNormalizedStatData'
 
-type ContainerProps = {
-  exercise: {
-    id: string
-    name: string
-  }
-  index: number
-  onCompleted: () => void
+type Exercise = {
+  id: string
+  name: string
 }
 
-const ExerciseSummaryContainer = (props: ContainerProps) => {
+type Props = {
+  exercise: Exercise
+  index: number
+  setDeleteExercise: (exercise: Exercise) => void
+}
+
+const ExerciseSummary = ({ exercise, index, setDeleteExercise }: Props) => {
   const { data: statData, loading: statLoading } = useGetTrainingStatQuery({
     variables: {
-      exerciseId: props.exercise.id,
+      exerciseId: exercise.id,
     },
     onError: (error) => {
       if (error instanceof ManipulationError) {
@@ -44,40 +44,7 @@ const ExerciseSummaryContainer = (props: ContainerProps) => {
   const normalizedStatData = getNormalizedStatData(statData)
   const trainingNum = normalizedStatData?.length ?? 0
   const lastDate = normalizedStatData?.at(-1)?.date
-
-  return (
-    <>
-      <Presentational
-        trainingNum={trainingNum}
-        lastDate={lastDate}
-        statLoading={statLoading}
-        {...props}
-      />
-      <DeleteExerciseModal
-        deleteId={props.exercise.id}
-        onCompleted={props.onCompleted}
-      />
-    </>
-  )
-}
-
-type PresentationalProps = {
-  trainingNum: number
-  lastDate?: string
-  statLoading: boolean
-} & ContainerProps
-
-export const Presentational = ({
-  exercise,
-  statLoading,
-  index,
-  trainingNum,
-  lastDate,
-}: PresentationalProps) => {
   const router = useRouter()
-  const setIsOpenDeleteExerciseModal = useDeleteExerciseModalStore(
-    (state) => state.setIsOpen
-  )
 
   return (
     <div className="text-sm mb-3 border-2 rounded-lg shadow-md p-3 flex items-center justify-between relative bg-slate-50">
@@ -146,7 +113,7 @@ export const Presentational = ({
             {
               icon: <TrashIcon className="text-indigo-800 w-6 h-6" />,
               name: '種目の削除',
-              handleClick: () => setIsOpenDeleteExerciseModal(true),
+              handleClick: () => setDeleteExercise(exercise),
             },
           ]}
         />
@@ -155,4 +122,4 @@ export const Presentational = ({
   )
 }
 
-export default ExerciseSummaryContainer
+export default ExerciseSummary

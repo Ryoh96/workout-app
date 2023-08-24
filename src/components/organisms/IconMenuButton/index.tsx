@@ -2,18 +2,12 @@ import { faDumbbell } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Menu, Transition } from '@headlessui/react'
 import {
-  ArrowLeftCircleIcon,
   ArrowLeftOnRectangleIcon,
-  ArrowRightOnRectangleIcon,
   BookOpenIcon,
-  Square3Stack3DIcon,
-  UserIcon,
 } from '@heroicons/react/24/solid'
 import { format } from 'date-fns'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { signOut } from 'next-auth/react'
-import type { ReactNode } from 'react'
 import React from 'react'
 
 import UserIconMenu from '@/components/molecules/UserIconMenu'

@@ -8,7 +8,6 @@ import Modal from '@/components/organisms/Modal'
 import { useGetPreviousTrainingsQuery } from '@/graphql/generated/operations-csr'
 import type { Round } from '@/graphql/generated/operations-type'
 import { dateFormat } from '@/utils/dateFormat'
-import { ManipulationError } from '@/utils/errors'
 import makeRoundsSummary from '@/utils/makeRoundsSummary'
 
 type Props = {

@@ -5,7 +5,7 @@ import { maxTotalLoad } from '@/graphql/schema/queries/scalar/getMaxTotalLoad/fi
 import { maxWeight } from '@/graphql/schema/queries/scalar/getMaxWeight/fixture'
 import { SPStory, TABStory } from '@/tests/storybook'
 
-import { Presentational } from '.'
+import Component from '.'
 
 const index = 0
 
@@ -14,7 +14,7 @@ const maxWeightData = maxWeight
 const maxTotalLoadData = maxTotalLoad
 
 export default {
-  component: Presentational,
+  component: Component,
   args: {
     exercise,
     maxWeightData,
@@ -27,30 +27,11 @@ export default {
     index,
   },
   ...SPStory,
-} as Meta<typeof Presentational>
+} as Meta<typeof Component>
 
-type Story = StoryObj<typeof Presentational>
+type Story = StoryObj<typeof Component>
 
 export const Default: Story = {}
-
-export const LoadingAll: Story = {
-  args: {
-    statLoading: true,
-  },
-}
-
-export const LoadingStat: Story = {
-  args: {
-    statLoading: true,
-  },
-}
-
-export const NoData: Story = {
-  args: {
-    trainingNum: 0,
-    lastDate: undefined,
-  },
-}
 
 export const Tablet: Story = {
   ...TABStory,

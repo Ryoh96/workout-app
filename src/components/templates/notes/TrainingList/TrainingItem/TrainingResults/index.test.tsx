@@ -1,6 +1,5 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { addDays, subDays } from 'date-fns'
 import React from 'react'
 
 import type { Training } from '@/graphql/generated/operations-type'
@@ -9,7 +8,6 @@ import { note } from '@/graphql/schema/queries/note/getNote/fixture'
 import TrainingResult from '.'
 
 const training = note.note?.trainings?.[0] as Training
-const user = userEvent.setup()
 
 describe('TrainingResult', () => {
   it('should render props', async () => {
