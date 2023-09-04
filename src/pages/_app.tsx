@@ -3,23 +3,30 @@ import 'react-toastify/dist/ReactToastify.css'
 import 'react-loading-skeleton/dist/skeleton.css'
 
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client'
+import type { NextPage } from 'next'
 import type { AppProps } from 'next/app'
 import { SessionProvider } from 'next-auth/react'
-
-import Layout from '@/components/layouts'
+import type { ReactElement, ReactNode } from 'react'
 
 export const client = new ApolloClient({
   uri: '/api/graphql',
   cache: new InMemoryCache(),
 })
 
-export default function App({ Component, pageProps }: AppProps) {
+export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
+  getLayout?: (page: ReactElement) => ReactNode
+}
+
+type AppPropsWithLayout = AppProps & {
+  Component: NextPageWithLayout
+}
+
+export default function App({ Component, pageProps }: AppPropsWithLayout) {
+  const getLayout = Component.getLayout ?? ((page) => page)
   return (
     <SessionProvider session={pageProps.session}>
       <ApolloProvider client={client}>
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
+        {getLayout(<Component {...pageProps} />)}
       </ApolloProvider>
     </SessionProvider>
   )

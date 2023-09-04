@@ -46,7 +46,7 @@ const RenameExerciseModal = ({
                   error: {
                     render({ data }) {
                       //@ts-ignore
-                    return data.message
+                      return data.message
                     },
                   },
 

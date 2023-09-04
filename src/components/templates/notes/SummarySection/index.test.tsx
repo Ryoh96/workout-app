@@ -52,6 +52,8 @@ describe('SummarySection', () => {
   it('should display no data', async () => {
     render(<TestComponent />)
     expect(screen.getByText('要約')).toBeInTheDocument()
-    expect(await screen.getByText('トレーニングを追加してください')).toBeInTheDocument()
+    expect(
+      await screen.getByText('トレーニングを追加してください')
+    ).toBeInTheDocument()
   })
 })

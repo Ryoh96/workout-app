@@ -7,12 +7,14 @@ import {
 } from '@heroicons/react/24/solid'
 import type { GetServerSideProps, NextPage } from 'next'
 import { useRouter } from 'next/router'
+import type { ReactElement } from 'react'
 import { useRef, useState } from 'react'
 import { toast } from 'react-toastify'
 
 import Spinner from '@/components/atoms/Spinner'
 import Title from '@/components/atoms/Title'
 import Toast from '@/components/atoms/Toast'
+import Layout from '@/components/layouts'
 import Section from '@/components/layouts/Section'
 import TitleWithIcon from '@/components/molecules/TitleWithIcon'
 import DropDownWithButton from '@/components/organisms/DropDownWithButton'
@@ -29,11 +31,13 @@ import { useGetExerciseQuery } from '@/graphql/generated/operations-csr'
 import { useTrainingStat } from '@/hooks/pages/exercises/useTrainingStat'
 import { ManipulationError } from '@/utils/errors'
 
+import type { NextPageWithLayout } from '../_app'
+
 type Props = {
   id: string
 }
 
-const Exercise: NextPage<Props> = ({ id }) => {
+const Exercise: NextPageWithLayout<Props> = ({ id }) => {
   const {
     data: exerciseData,
     loading: exerciseLoading,
@@ -158,6 +162,10 @@ const Exercise: NextPage<Props> = ({ id }) => {
       <Toast />
     </>
   )
+}
+
+Exercise.getLayout = function getLayout(page: ReactElement) {
+  return <Layout>{page}</Layout>
 }
 
 export default Exercise

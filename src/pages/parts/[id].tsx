@@ -6,11 +6,13 @@ import {
 } from '@heroicons/react/24/solid'
 import type { GetServerSideProps, NextPage } from 'next'
 import { useRouter } from 'next/router'
+import type { ReactElement } from 'react'
 import { useState } from 'react'
 
 import Spinner from '@/components/atoms/Spinner'
 import Title from '@/components/atoms/Title'
 import Toast from '@/components/atoms/Toast'
+import Layout from '@/components/layouts'
 import Section from '@/components/layouts/Section'
 import AddIconButton from '@/components/molecules/AddIconButton'
 import TitleWithIcon from '@/components/molecules/TitleWithIcon'
@@ -27,11 +29,13 @@ import {
 import { useDeleteExercise } from '@/hooks/pages/exercises/useDeleteExercise'
 import type { ComboBoxOption } from '@/types'
 
+import type { NextPageWithLayout } from '../_app'
+
 type Props = {
   id: string
 }
 
-const Parts: NextPage<Props> = ({ id }) => {
+const Parts: NextPageWithLayout<Props> = ({ id }) => {
   const [getExerciseNames, { data: getExerciseNameData, refetch }] =
     useGetExerciseNamesByPartLazyQuery()
   const { data, loading } = useGetPartNameQuery({
@@ -143,6 +147,10 @@ const Parts: NextPage<Props> = ({ id }) => {
       <Toast />
     </>
   )
+}
+
+Parts.getLayout = function getLayout(page: ReactElement) {
+  return <Layout>{page}</Layout>
 }
 
 export default Parts

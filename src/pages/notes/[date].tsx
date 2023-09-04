@@ -5,15 +5,17 @@ import {
   TrashIcon,
 } from '@heroicons/react/24/solid'
 import { format } from 'date-fns'
-import type { GetServerSideProps, NextPage } from 'next'
+import type { GetServerSideProps } from 'next'
 import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
+import type { ReactElement } from 'react'
 import React, { useMemo } from 'react'
 import { toast } from 'react-toastify'
 
 import Button from '@/components/atoms/Button'
 import Title from '@/components/atoms/Title'
 import Toast from '@/components/atoms/Toast'
+import Layout from '@/components/layouts'
 import DropDownWithButton from '@/components/organisms/DropDownWithButton'
 import { DeleteNoteModal } from '@/components/templates/modal/DeleteModal/DeleteNoteModal'
 import { DeleteRoundModal } from '@/components/templates/modal/DeleteModal/DeleteRoundModal'
@@ -36,11 +38,13 @@ import useLastTrainingIdStore from '@/store/training/lastTrainingId'
 import { datetimeFormat } from '@/utils/dateFormat'
 import { ManipulationError } from '@/utils/errors'
 
+import type { NextPageWithLayout } from '../_app'
+
 type Props = {
   date: string
 }
 
-const Note: NextPage<Props> = ({ date: dateString }) => {
+const Note: NextPageWithLayout<Props> = ({ date: dateString }) => {
   const { status } = useSession()
   const date = useMemo(() => new Date(dateString), [dateString])
   useCurrentDate(date)
@@ -192,6 +196,10 @@ const Note: NextPage<Props> = ({ date: dateString }) => {
       <Toast />
     </>
   )
+}
+
+Note.getLayout = function getLayout(page: ReactElement) {
+  return <Layout>{page}</Layout>
 }
 
 export default Note

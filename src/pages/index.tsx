@@ -10,12 +10,14 @@ import type { NextPage } from 'next'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
+import type { ReactElement } from 'react'
 import { useMemo, useState } from 'react'
 
 import Button from '@/components/atoms/Button'
 import Spinner from '@/components/atoms/Spinner'
 import Title from '@/components/atoms/Title'
 import Toast from '@/components/atoms/Toast'
+import Layout from '@/components/layouts'
 import Section from '@/components/layouts/Section'
 import HorizontalTable from '@/components/molecules/HorizontalTable'
 import TitleWithIcon from '@/components/molecules/TitleWithIcon'
@@ -28,7 +30,9 @@ import useCurrentDateStore from '@/store/date/currentDate'
 import { dateFormat } from '@/utils/dateFormat'
 import makeRoundsSummary from '@/utils/makeRoundsSummary'
 
-const Home: NextPage = () => {
+import type { NextPageWithLayout } from './_app'
+
+const Home: NextPageWithLayout = () => {
   const { status } = useSession()
 
   const today = useMemo(() => new Date(), [])
@@ -45,7 +49,7 @@ const Home: NextPage = () => {
   const normalizedData = data?.notes?.map((note) => {
     return {
       title: dateFormat(new Date(note.date)) as string,
-      titleIcon: <FontAwesomeIcon icon={faClock} className='text-red-700' />,
+      titleIcon: <FontAwesomeIcon icon={faClock} className="text-red-700" />,
       content: (
         <div className="divide-y-2 divide-gray-100 space-y-3 ">
           <>
@@ -149,6 +153,10 @@ const Home: NextPage = () => {
       <Toast />
     </>
   )
+}
+
+Home.getLayout = function getLayout(page: ReactElement) {
+  return <Layout>{page}</Layout>
 }
 
 export default Home

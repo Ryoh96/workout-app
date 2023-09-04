@@ -47,6 +47,7 @@
     "date-fns": "^2.30.0",
     "eslint": "8.39.0",
     "eslint-config-next": "13.3.2",
+    "framer-motion": "^10.16.1",
     "graphql": "^16.6.0",
     "graphql-scalars": "^1.21.3",
     "immer": "^10.0.2",

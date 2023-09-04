@@ -6,13 +6,14 @@ import {
   MagnifyingGlassIcon,
   PlusIcon,
 } from '@heroicons/react/24/solid'
-import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
+import type { ReactElement } from 'react'
 import { useState } from 'react'
 
 import Spinner from '@/components/atoms/Spinner'
 import Title from '@/components/atoms/Title'
 import Toast from '@/components/atoms/Toast'
+import Layout from '@/components/layouts'
 import Section from '@/components/layouts/Section'
 import SelectBoxWithLabel from '@/components/molecules/SelectBoxWithLabel'
 import TitleWithIcon from '@/components/molecules/TitleWithIcon'
@@ -23,9 +24,11 @@ import DeleteExerciseModal from '@/components/templates/modal/DeleteModal/Delete
 import { useDeleteExercise } from '@/hooks/pages/exercises/useDeleteExercise'
 import { useExerciseSummaryByParts } from '@/hooks/pages/exercises/useExerciseSummaryByParts'
 
+import type { NextPageWithLayout } from '../_app'
+
 type Props = {}
 
-const Exercises: NextPage<Props> = ({}) => {
+const Exercises: NextPageWithLayout<Props> = ({}) => {
   const [getExerciseNameData, parts, partsOptions, handleChange, refetch] =
     useExerciseSummaryByParts()
   const [isOpenAddExerciseModal, setIsOpenAddExerciseModal] = useState(false)
@@ -156,6 +159,10 @@ const Exercises: NextPage<Props> = ({}) => {
       <Toast />
     </>
   )
+}
+
+Exercises.getLayout = function getLayout(page: ReactElement) {
+  return <Layout>{page}</Layout>
 }
 
 export default Exercises
