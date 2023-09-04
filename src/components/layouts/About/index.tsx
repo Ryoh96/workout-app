@@ -17,7 +17,7 @@ export const AboutLayout = ({ children }: { children: ReactNode }) => {
           <div className="flex justify-between items-center px-4 max-w-[1125px] mx-auto w-full">
             <p aria-label="ロゴ">{title}</p>
             <Button className="!bg-yellow-400 !text-black font-bold hover:!bg-yellow-200 hover:!text-slate-800 "
-             onClick={() => signIn()}
+             onClick={() => signIn(undefined, { callbackUrl: "/" })}
             >
               無料で始める
             </Button>

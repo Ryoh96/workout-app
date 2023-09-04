@@ -34,7 +34,7 @@ export const Hero = () => {
           日々のトレーニングを記録して見えるかできるノートアプリ。
         </p>
         <Button variant="important" className="!text-xl max-md:!text-base"
-          onClick={() => signIn()}
+          onClick={() => signIn(undefined, { callbackUrl: "/" })}
         >
           無料で始める
         </Button>

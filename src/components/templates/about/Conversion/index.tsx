@@ -44,7 +44,7 @@ export const Conversion = () => {
       </motion.div>
       <motion.div variants={variants(0.6)}>
         <Button variant="important" className="!text-xl  max-md:!text-base"
-          onClick={() => signIn()}
+          onClick={() => signIn(undefined, { callbackUrl: "/" })}
         >
           無料で始める
         </Button>
